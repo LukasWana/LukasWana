@@ -476,9 +476,10 @@ body {
     margin: 80px 0;
 }
 
+/* Nejvýš 3 karty na řádek (6 hlavních projektů = 2 řady po 3, pokyn 2026-10-10); na užším displeji méně sloupců */
 .projekty-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr));
     gap: 30px;
 }
 
@@ -638,10 +639,9 @@ body {
     font-weight: 600;
 }
 
-/* Starší aplikace v rozklikávací sekci: nejvýš 3 na řádek (víc místa pro popis), světlejší plocha */
+/* Starší aplikace v rozklikávací sekci: stejná mřížka po 3 jako hlavní projekty, světlejší plocha */
 .projekty-archiv .projekty-grid {
     margin-top: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr));
 }
 
 .projekty-archiv .projekty-karta {

@@ -135,6 +135,15 @@ class TestBezCar(unittest.TestCase):
         self.assertNotIn("uppercase", telo)
 
 
+class TestMrizka(unittest.TestCase):
+    def test_hlavni_projekty_po_trech(self):
+        # pokyn uživatele 2026-10-10: 6 hlavních projektů jako 3 × 3 (dvě řady po třech), na užším displeji méně sloupců
+        tela = pravidla(text("style.css"), ".projekty-grid")
+        self.assertEqual(len(tela), 1)
+        self.assertIn("calc((100% - 60px) / 3)", tela[0])
+        self.assertIn("gap: 30px", tela[0])
+
+
 class TestPaticka(unittest.TestCase):
     def test_veta_misto_banneru(self):
         html = text("index.html")
