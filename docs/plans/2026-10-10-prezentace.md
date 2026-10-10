@@ -19,7 +19,7 @@
 **Stav:** 2026-10-10 19:31 — plán napsán, **neimplementováno.** Generátor `tools/enso.py` (kód v Tasku 1) je odzkoušený ve scratchpadu: vyrobil `enso.svg` 18 453 B a `tah.svg` 9 755 B. Na snímku je kulaté nasazení, tah po směru hodin, mezera vlevo dole a suchý, rozštěpený konec ze 4 vláken. Jemné ladění parametrů proběhne až nad náhledem s uživatelem.
 
 **Otevřené:**
-- Server asus-server byl 10. 10. večer (zpráva přišla před 19:26) podle uživatele „asi bez internetu“. Cron v :17 pak data nestáhne ani nepushne a na webu zůstane datum poslední aktualizace. Tenhle plán to neovlivní, protože nasazení vzhledu jde přes GitHub Action ze zdroje. Před Taskem 6 zkontrolovat log cronu (příkaz je v Předávce v `2026-10-10-projekty.md`).
+- ~~Server asus-server je „asi bez internetu“ (uživatel 10. 10. před 19:26)~~ — **ověřeno logem cronu ve 20:59:** běh v 19:17 skončil chybou `fatal: unable to access 'https://github.com/LukasWana/LukasWana.git/': Could not resolve host: github.com`. Běh ve 20:17 už prošel („6 aktivních, 10 v archivu / pushnuto da767a0“). Výpadek DNS nebo sítě tedy trval nejvýš do 20:17 a cron se srovnal sám, bez zásahu. Před Taskem 6 stačí znovu pohled do logu (příkaz je v Předávce níže).
 - `W-ilustration-banner.png` (736 KB) zůstává v repu a dál se nasazuje, i když ho stránka nepoužívá. Smazat ho lze jen na pokyn uživatele (je mimo zadání).
 
 **Pravidla prostředí:** kód, testy a texty se zpětným lomítkem zapisuj jen přes Write/Edit, nikdy heredocem ani `sed` (`~/.claude/rules/bash-heredoc-omezeni.md`). `index.html` má CRLF, `style.css` LF; Edit konce řádků zachová. Zprávy commitů piš přes Write do souboru ve scratchpadu a commituj s `git commit -F`. **Push do `main` = okamžitě živý web.** Proto se pushuje až v Tasku 6 po schválení snímků. Do té doby jen lokální commity.
@@ -44,18 +44,18 @@ Návrh: docs/plans/2026-10-10-prezentace-design.md (potvrzený).
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
 Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony) a ps-roura-ssh-bom.md.
 
-Stav k 10. 10. 2026, 19:31:
+Stav k 10. 10. 2026, 20:59 (session skončila po napsání plánu; uživatel: „vše udělej v nové session“):
 - Uživatel potvrdil návrh webu jako prezentace („Ano, podle návrhu“) a jako kontakt v hlavičce zvolil qwanap@gmail.com.
 - Implementační plán je napsaný a NIC z něj není implementované. Web je beze změny od 14:21.
 - Kód plánu je ověřený ve scratchpadu. Generátor tools/enso.py (Task 1) je totožný s prototypem, který vyrobil enso.svg 18 453 B a tah.svg 9 755 B. Snímek ukázal kulaté nasazení a suchý konec ze 4 vláken.
 - Testy z plánu jsem pustil proti dnešní stránce: 4 testy generátoru prošly, 10 testů vzhledu padá ze správného důvodu (chybí e-mail, písmo, ensō; čáry, verzálky a třpytivá fotka jsou pořád na stránce).
-- Testy repa: 28 Python + 9 JS zelených (stav před plánem, tato session je nespouštěla).
+- Testy repa: 28 Python + 9 JS zelených (spuštěno ve 20:59 při kontrole session).
 
 Další krok: Task 1 až Task 5 s lokálními commity BEZ pushe, pak Task 6. Ten znamená náhled na portu 8790, snímky 1280 a 400 px, jejich ukázání uživateli a push AŽ po jeho výslovném schválení (push = hned živý web). Nakonec Task 7, dokumentace.
 
 Otevřené:
 - (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá s tracebackem a na webu stojí datum „Aktualizováno“. Tři varianty řešení jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“, nic nedělat bez jeho rozhodnutí.
-- asus-server byl 10. 10. večer (zpráva přišla před 19:26) podle uživatele „asi bez internetu“. Neověřeno; cron v 18:17 ještě pushnul. Před Taskem 6 zkontroluj log cronu. Výpadek nasazení vzhledu neblokuje, to jde přes GitHub Action.
+- asus-server byl 10. 10. večer bez internetu. Cron v 19:17 skončil chybou „Could not resolve host: github.com“, ve 20:17 už pushnul da767a0, takže se srovnal sám. Před Taskem 6 se znovu podívej do logu cronu. Případný další výpadek nasazení vzhledu neblokuje, to jde přes GitHub Action.
 - W-ilustration-banner.png po Tasku 5 nikdo nepoužívá, ale zůstává v repu i na webu. Smazat jen na pokyn uživatele.
 
 Užitečné příkazy:
@@ -404,7 +404,7 @@ Pravidla `.hero-*` v CSS zatím zůstanou, protože je do Tasku 5 používá spo
 
 **Step 2:** `python -m pytest -q tests/test_stranka.py` → 1 FAIL (`test_enso_v_banneru`).
 
-**Step 3: `index.html`** — horní `<section class="hero-image">…</section>` nahradit:
+**Step 3: `index.html`** — horní `<section class="hero-image">…</section>` **i s komentářem `<!-- Hero Image Section -->` nad ním** nahradit:
 ```html
         <!-- Banner: ensō (img/enso.svg z tools/enso.py) -->
         <section class="enso-banner">
@@ -552,13 +552,13 @@ class TestPaticka(unittest.TestCase):
 
 **Step 2:** → 2 FAIL.
 
-**Step 3: `index.html`** — spodní `<section class="hero-image bottom-hero">…</section>` nahradit:
+**Step 3: `index.html`** — spodní `<section class="hero-image bottom-hero">…</section>` **i s komentářem `<!-- Bottom Hero Image -->` nad ním** nahradit:
 ```html
         <!-- Motto: jedna věta s malým tahem štětce (img/tah.svg) -->
         <p class="motto">Kvalitní práce v klidu — bez tlaku, bez stresu, bez přetvářky.</p>
 ```
 
-**Step 4: `style.css`** — smazat pravidla `.hero-image`, `.hero-image::before`, `.glitter-overlay`, `.hero-text`, `.hero-subtext`, `.bottom-hero` a v `@media` bloky `.hero-text`, `.hero-subtext`, `.hero-image`. Přidat:
+**Step 4: `style.css`** — smazat pravidla `.hero-image`, `.hero-image::before`, `.glitter-overlay`, `.hero-text`, `.hero-subtext`, `.bottom-hero`, jejich komentáře `/* Hero Image Sections */` a `/* Bottom Hero */` a v `@media` bloky `.hero-text`, `.hero-subtext`, `.hero-image`. Přidat:
 ```css
 .motto {
     text-align: center;
@@ -577,7 +577,7 @@ class TestPaticka(unittest.TestCase):
 }
 ```
 
-**Step 5:** `python -m pytest -q tests/` → vše zelené, `node --test tests/projekty_js.test.js` → 9 zelených. Kontrola, že v CSS nezůstal mrtvý selektor: `grep -n "hero\|glitter\|divider\|tagline" style.css index.html` → nic.
+**Step 5:** `python -m pytest -q tests/` → vše zelené, `node --test tests/projekty_js.test.js` → 9 zelených. Kontrola, že v CSS nezůstal mrtvý selektor: `grep -ni "hero\|glitter\|divider\|tagline" style.css index.html` → nic (`-i` kvůli komentářům „Hero“).
 
 **Step 6:** Commit „patička: motto místo třpytivého banneru“.
 
