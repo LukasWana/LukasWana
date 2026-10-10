@@ -85,7 +85,7 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
 - Styl stávajícího webu: černobílý, Inter, rámečky `#e2e2e2`, text `#666`, hover jako `.skill-frame`.
 - Karta: název + jazyk, popis, 12 sloupků po týdnech (inline SVG s textovým popisem pro čtečky),
   „N dní práce“, „naposledy před X“ (přesné datum v `title`), ↗ jen u veřejných. Skupina má štítky.
-- Pořadí podle poslední práce; mřížka `auto-fill`, mobil 1 sloupec, desktop 3.
+- Pořadí podle poslední práce; mřížka `auto-fill`, mobil 1 sloupec, desktop 4 (kontejner 1 160 px, karta min. 260 px; změřeno v Chrome 10. 10.).
 - Archiv: `<details>` „Starší projekty (N)“ — název, jazyk, měsíc/rok.
 - Patička „Data k D. M. RRRR“ (vidět zastavenou aktualizaci).
 - `projekty.js` načte JSON a vykreslí; při chybě nebo prázdných datech se sekce celá skryje.
