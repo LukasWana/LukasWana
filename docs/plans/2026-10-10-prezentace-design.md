@@ -1,6 +1,7 @@
 # Web jako prezentace: ensō a jeden tah štětcem (návrh)
 
-Datum: 2026-10-10 · Stav: **návrh schválený uživatelem („uprav plán“), neimplementováno**
+Datum: 2026-10-10 · Stav: **návrh, neimplementováno.** Uživatel na otázku „jdeme touhle cestou?“ odpověděl „uprav plán“ —
+vyloženo jako souhlas s revidovanou verzí, výslovné „ano“ nezaznělo; před implementací potvrdit.
 Repo: `c:/work/graphic/LukasWana` (zdroj webu https://lukaswana.github.io/web/, nasazení viz paměť `web-nasazeni.md`).
 
 ## Zadání uživatele
