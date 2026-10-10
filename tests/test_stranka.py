@@ -56,5 +56,31 @@ class TestEnso(unittest.TestCase):
             self.assertNotIn("stroke", text(cesta))
 
 
+class TestHlavicka(unittest.TestCase):
+    def setUp(self):
+        self.html = text("index.html")
+        self.css = text("style.css")
+
+    def test_pismo_se_opravdu_nacita(self):
+        self.assertIn("https://fonts.googleapis.com/css2?family=Inter+Tight", self.html)
+        self.assertIn("display=swap", self.html)
+        telo = pravidla(self.css, "body")[0]
+        self.assertIn("font-family: 'Inter Tight'", telo)
+
+    def test_kontakt_v_hlavicce(self):
+        hlavicka = self.html.split('<header class="header">')[1].split("</header>")[0]
+        self.assertIn('href="mailto:qwanap@gmail.com"', hlavicka)
+        self.assertIn(">qwanap@gmail.com</a>", hlavicka)  # adresa je vidět jako text
+
+    def test_podtitul_zkraceny(self):
+        self.assertIn('<p class="subtitle">vibecoder · rychlé prototypy · technická řešení</p>', self.html)
+
+    def test_pryc_cara_a_tagline(self):
+        self.assertNotIn('class="divider"', self.html)
+        self.assertNotIn('class="tagline"', self.html)
+        self.assertEqual(pravidla(self.css, ".divider"), [])
+        self.assertEqual(pravidla(self.css, ".tagline"), [])
+
+
 if __name__ == "__main__":
     unittest.main()
