@@ -46,7 +46,8 @@ Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony) a ps-roura-ssh-
 
 Stav k 10. 10. 2026, 20:59 (session skončila po napsání plánu; uživatel: „vše udělej v nové session“):
 - Uživatel potvrdil návrh webu jako prezentace („Ano, podle návrhu“) a jako kontakt v hlavičce zvolil qwanap@gmail.com.
-- Implementační plán je napsaný a NIC z něj není implementované. Web je beze změny od 14:21.
+- Implementační plán je napsaný a NIC z něj není implementované. Poslední změna vzhledu webu je 9b84585 (commit 14:19), od té doby přibývají jen data z cronu.
+- Pozor na snímky mobilu: --window-size=400 v headless Chrome dá ve skutečnosti asi 500 px a snímek ořízne. Platí obal s iframe, viz Task 6 Step 3 (ověřeno 10. 10. na živém webu).
 - Kód plánu je ověřený ve scratchpadu. Generátor tools/enso.py (Task 1) je totožný s prototypem, který vyrobil enso.svg 18 453 B a tah.svg 9 755 B. Snímek ukázal kulaté nasazení a suchý konec ze 4 vláken.
 - Testy z plánu jsem pustil proti dnešní stránce: 4 testy generátoru prošly, 10 testů vzhledu padá ze správného důvodu (chybí e-mail, písmo, ensō; čáry, verzálky a třpytivá fotka jsou pořád na stránce).
 - Testy repa: 28 Python + 9 JS zelených (spuštěno ve 20:59 při kontrole session).
@@ -591,12 +592,17 @@ class TestPaticka(unittest.TestCase):
 **Step 2: Server** na jiném portu než 8765 (ten drží API EmailRatoru), na pozadí:
 `python -m http.server 8790 --bind 127.0.0.1` (z kořene repa, `run_in_background`).
 
-**Step 3: Snímky** headless Chromem do scratchpadu. Plné výšky stránky 3200 px u desktopu a 4200 px u mobilu (bílá plocha pod obsahem je jen výška okna, ne vada):
+**Step 3: Snímky** headless Chromem do scratchpadu. Plné výšky stránky jsou 3200 px u desktopu a 4200 px u mobilu (bílá plocha pod obsahem je jen výška okna, ne vada).
+
+**Pozor, ověřeno 10. 10.:** `--window-size=400,…` NEDÁ 400 px. Headless Chrome na Windows má minimální šířku okna, stránka se vykreslí asi na 500 px a snímek se vpravo ořízne. Na živém webu to ukázalo useknuté „LUKÁŠ WAN“, tedy falešnou chybu mobilu. Mobil proto snímej přes obal s `<iframe>` širokým přesně 400 px. Obal zapiš přes Write do `<scratchpad>/mobil.html`:
+```html
+<!doctype html><body style="margin:0"><iframe src="http://127.0.0.1:8790/" width="400" height="4200" style="border:0;display:block"></iframe></body>
 ```
-"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --hide-scrollbars --virtual-time-budget=5000 --screenshot=<scratchpad>/n1280.png --window-size=1280,3200 http://127.0.0.1:8790/
-"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --hide-scrollbars --virtual-time-budget=5000 --screenshot=<scratchpad>/n400.png --window-size=400,4200 http://127.0.0.1:8790/
 ```
-`--virtual-time-budget` počká na písmo a `projekty.js`. Snímky prohlédni nástrojem Read.
+"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --hide-scrollbars --virtual-time-budget=8000 --screenshot=<scratchpad>/n1280.png --window-size=1280,3200 http://127.0.0.1:8790/
+"C:/Program Files/Google/Chrome/Application/chrome.exe" --headless=new --hide-scrollbars --virtual-time-budget=8000 --screenshot=<scratchpad>/n400.png --window-size=600,4200 "file:///<scratchpad>/mobil.html"
+```
+`--virtual-time-budget` počká na písmo a `projekty.js`. Snímky prohlédni nástrojem Read. U mobilu je napravo od iframe bílý pruh široký 200 px, to je jen okno.
 
 **Step 4: Kontrola nad snímky:**
 - ensō ostré, suchý konec čitelný i v 220 px na mobilu,
