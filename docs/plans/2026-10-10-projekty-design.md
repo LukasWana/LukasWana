@@ -1,6 +1,6 @@
 # Přehled projektů na webu — návrh
 
-Datum: 2026-10-10 · Stav: návrh schválen uživatelem, implementace nezačala · plán: `2026-10-10-projekty.md`
+Datum: 2026-10-10 · Stav: návrh schválen uživatelem, implementace rozpracovaná (Tasky 0–7 hotové, viz plán) · plán: `2026-10-10-projekty.md`
 
 > **Revize 2026-10-10 (kontrola před předáním; platí přednostně před textem níže):**
 > - Data `data/projekty.generated.json` žijí **jen v repu `web`** — server je pushuje tam (deploy key na `web`),
