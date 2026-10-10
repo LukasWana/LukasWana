@@ -53,7 +53,10 @@
   function karta(k, dnes) {
     var odkaz = k.url ? '<a class="projekty-odkaz" href="' + esc(k.url) + '" target="_blank" rel="noopener"' +
       ' aria-label="' + esc(k.nazev) + ' na GitHubu">↗</a>' : '';
-    return '<article class="projekty-karta">' +
+    // Živý web: odkaz roztažený přes celou kartu (CSS), odkaz na GitHub leží nad ním.
+    var web = k.web ? '<a class="projekty-web" href="' + esc(k.web) + '" target="_blank" rel="noopener"' +
+      ' aria-label="' + esc(k.nazev) + ' – web"></a>' : '';
+    return '<article class="projekty-karta' + (k.web ? ' projekty-karta-web' : '') + '">' + web +
       '<header><h3>' + esc(k.nazev) + '</h3>' +
       (k.jazyk ? '<span class="projekty-jazyk">' + esc(k.jazyk) + '</span>' : '') + '</header>' +
       (k.popis ? '<p class="projekty-popis">' + esc(k.popis) + '</p>' : '') +

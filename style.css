@@ -512,6 +512,27 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Karta se živým webem: celá plocha je odkaz (roztažený přes kartu), ↗ na GitHub zůstává nad ním */
+.projekty-karta-web {
+    position: relative;
+}
+
+.projekty-web {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.projekty-web:focus-visible {
+    outline: 2px solid #000;
+    outline-offset: 2px;
+}
+
+.projekty-karta-web .projekty-odkaz {
+    position: relative;
+    z-index: 2;
+}
+
 .projekty-karta header,
 .projekty-karta footer {
     display: flex;

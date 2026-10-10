@@ -54,3 +54,13 @@ test('karta: bez aktivity (doplněná nebo starší aplikace) nemá graf, má da
   const aktivni = p.karta({ nazev: 'X', posledni: '2026-10-09', dni_prace: 2, tydny: [0, 1] }, DNES);
   assert.match(aktivni, /<svg/);
 });
+
+test('karta: živý web proliní celou kartu do nového tabu, GitHub zůstane', () => {
+  const html = p.karta({ nazev: 'ZvukStetce.cz', posledni: '2025-11-10', url: 'https://github.com/LukasWana/ZvukStetce.cz',
+    web: 'https://zvukstetce.cz/?a=1&b=2' }, DNES);
+  assert.match(html, /<article class="projekty-karta projekty-karta-web">/);
+  assert.match(html, /<a class="projekty-web" href="https:\/\/zvukstetce.cz\/\?a=1&amp;b=2" target="_blank" rel="noopener"/);
+  assert.match(html, /aria-label="ZvukStetce.cz na GitHubu"/);
+  const bez = p.karta({ nazev: 'X', posledni: '2025-11-10' }, DNES);
+  assert.doesNotMatch(bez, /projekty-web|projekty-karta-web/);
+});

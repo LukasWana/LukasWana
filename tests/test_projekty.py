@@ -172,6 +172,16 @@ class Starsi(unittest.TestCase):
         self.assertEqual(d["aktivni"], [])
         self.assertEqual([k["nazev"] for k in d["archiv"]], ["Jine"])
 
+    def test_zivy_web_z_nastaveni(self):
+        nast = {"starsi": [{"nazev": "Kaligrafie", "popis": "web", "repa": ["Zvuk"], "web": "https://zvukstetce.cz"},
+                           {"nazev": "Bez webu", "popis": "x", "repa": ["Jine"]}],
+                "projekty": {"Akt": {"nazev": "Akt", "web": "https://akt.example"}}}
+        repa = [repo("Zvuk", hlavni=[c("a", "2025-11-10")]), repo("Jine", hlavni=[c("b", "2025-01-01")]),
+                repo("Akt", okno=[c("c", "2026-10-09")])]
+        d = p.sestav(repa, nast, set(), DNES)
+        self.assertEqual([k.get("web") for k in d["starsi"]], ["https://zvukstetce.cz", None])
+        self.assertEqual(d["aktivni"][0]["web"], "https://akt.example")
+
 
 class Samostatne(unittest.TestCase):
     NAST = {"skupiny": {"asus-server-": {

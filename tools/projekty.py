@@ -18,11 +18,11 @@ from pathlib import Path
 API = "https://api.github.com"
 TYDNU = 12
 HROMADNY_PRAH = 5
-POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url")
+POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url", "web")
 POLE_ARCHIV = ("nazev", "jazyk", "posledni", "url")
 POLE_SAMOSTATNE = ("nazev", "popis", "posledni", "dni_prace", "tydny", "aplikace")
 POLE_APLIKACE = ("nazev", "popis")
-POLE_STARSI = ("nazev", "popis", "jazyk", "posledni", "url")
+POLE_STARSI = ("nazev", "popis", "jazyk", "posledni", "url", "web")
 KOREN = Path(__file__).resolve().parent.parent
 VYSTUP = KOREN / "data" / "projekty.generated.json"
 NASTAVENI = KOREN / "projekty.json"
@@ -133,6 +133,7 @@ def sestav(repa, nastaveni, skryt, dnes):
             "jazyk": jazyky.most_common(1)[0][0] if jazyky else "",
             "url": None if skupina or clenove[0]["soukrome"] else clenove[0]["url"],
             "stitky": sorted(r["nazev"][len(klic_karty):] for r in clenove) if skupina else [],
+            "web": info.get("web"),   # živý web: celá karta na něj odkazuje
         }
         okno = [c for r in clenove for c in ciste_commity(r["commity_okno"], automaty, hromadne)]
         akt = aktivita(okno, dnes)
@@ -181,6 +182,7 @@ def starsi_karta(info, clenove, automaty, hromadne):
         "jazyk": jazyky.most_common(1)[0][0] if jazyky else "",
         "posledni": posledni,
         "url": verejne[0] if verejne else None,
+        "web": info.get("web"),
     }, POLE_STARSI)
 
 
