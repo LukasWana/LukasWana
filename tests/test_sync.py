@@ -1,6 +1,7 @@
 """tools/sync.sh proti skutečnému gitu: lokální holé repozitáře místo GitHubu, generátor nahrazený stubem."""
 import os
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -12,7 +13,7 @@ SH = shutil.which("sh")
 
 # Stub generátoru: zapíše data. S proměnnou SOUBEH_ORIGIN navíc při prvním volání pushne
 # do webu cizí commit — tak, jako by mezitím doběhl deploy z repa LukasWana.
-STUB = '''import os, subprocess, sys, tempfile
+STUB = '''import os, subprocess, sys
 args = sys.argv[1:]
 vystup = args[args.index("--vystup") + 1]
 os.makedirs(os.path.dirname(vystup), exist_ok=True)
@@ -22,7 +23,7 @@ origin = os.environ.get("SOUBEH_ORIGIN")
 znacka = os.environ.get("SOUBEH_ZNACKA")
 if origin and not os.path.exists(znacka):
     open(znacka, "w").close()
-    d = tempfile.mkdtemp()
+    d = os.path.join(os.path.dirname(znacka), "deploy-klon")
     subprocess.run(["git", "clone", "--quiet", origin, d], check=True)
     with open(os.path.join(d, "index.html"), "w", encoding="utf-8", newline="") as f:
         f.write("deploy" + chr(10))
@@ -40,6 +41,14 @@ def git(*args, cwd=None):
                           env=dict(os.environ, **IDENTITA), text=True, encoding="utf-8").stdout
 
 
+def smaz(cesta):
+    # Git zakládá objekty jen pro čtení a rmtree je na Windows bez chmod nesmaže.
+    def oprav(funkce, p, _):
+        os.chmod(p, stat.S_IWRITE)
+        funkce(p)
+    shutil.rmtree(cesta, onexc=oprav)
+
+
 def zapis(cesta, text):
     cesta.parent.mkdir(parents=True, exist_ok=True)
     with open(cesta, "w", encoding="utf-8", newline="") as f:
@@ -50,7 +59,7 @@ def zapis(cesta, text):
 class Sync(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
-        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.addCleanup(smaz, self.tmp)
         t = self.tmp
         self.env = dict(os.environ, **IDENTITA, HOME=t.joinpath("home").as_posix(),
                         GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=t.joinpath("gitconfig").as_posix())
