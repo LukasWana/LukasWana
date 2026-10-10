@@ -94,5 +94,24 @@ class TestBanner(unittest.TestCase):
         self.assertIn("introvertní technicko-kreativní tvůrce", banner)
 
 
+class TestBezCar(unittest.TestCase):
+    def setUp(self):
+        self.css = text("style.css")
+
+    def test_zrusene_cary(self):
+        for sel in (".section-title", ".projekty-karta footer", ".projekty-aplikace li", ".projekty-archiv"):
+            for telo in pravidla(self.css, sel):
+                self.assertNotRegex(telo, r"border(-top|-bottom)?\s*:", sel)
+
+    def test_podtah_pod_nadpisem(self):
+        tela = pravidla(self.css, ".section-title::after")
+        self.assertEqual(len(tela), 1)
+        self.assertIn("url('img/tah.svg')", tela[0])
+
+    def test_nadpis_sekce_bez_verzalek(self):
+        telo = pravidla(self.css, ".section-title")[0]
+        self.assertNotIn("uppercase", telo)
+
+
 if __name__ == "__main__":
     unittest.main()
