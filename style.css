@@ -563,24 +563,6 @@ body {
     font-size: 18px;
 }
 
-/* Starší vybrané aplikace (poslední řádek přehledu) */
-.projekty-starsi {
-    margin-top: 50px;
-}
-
-/* Nejvýš 3 na řádek: víc místa pro popis */
-.projekty-starsi .projekty-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr));
-}
-
-.projekty-podnadpis {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin: 0 0 20px;
-}
-
 /* Projekt s vlastním boxem přes celý řádek (Domácí server) */
 .projekty-samostatne:not(:empty) {
     margin-top: 30px;
@@ -633,18 +615,14 @@ body {
     font-weight: 600;
 }
 
-.projekty-archiv ul {
-    list-style: none;
-    padding: 0;
-    columns: 2 260px;
+/* Starší aplikace v rozklikávací sekci: nejvýš 3 na řádek (víc místa pro popis), šedý rámeček */
+.projekty-archiv .projekty-grid {
+    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr));
 }
 
-.projekty-archiv li {
-    padding: 6px 0;
-}
-
-.projekty-archiv a {
-    color: #000;
+.projekty-archiv .projekty-karta {
+    border-color: #c8c8c8;
 }
 
 .projekty-data-k {

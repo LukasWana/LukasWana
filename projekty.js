@@ -81,32 +81,21 @@
       '</article>';
   }
 
-  function polozkaArchivu(a) {
-    var nazev = a.url ? '<a href="' + esc(a.url) + '" target="_blank" rel="noopener">' + esc(a.nazev) + '</a>' : esc(a.nazev);
-    var c = a.posledni ? a.posledni.split('-') : null;
-    return '<li>' + nazev +
-      (a.jazyk ? ' <span class="projekty-jazyk">' + esc(a.jazyk) + '</span>' : '') +
-      (c ? ' <time datetime="' + esc(a.posledni) + '">' + Number(c[1]) + '/' + c[0] + '</time>' : '') + '</li>';
-  }
-
+  // Rozklikávací „Starší projekty“ ukazují jen vybrané starší aplikace (data.starsi) jako karty;
+  // zbytek archivu (data.archiv) se na webu neukazuje.
   function vykresli(data, dnes) {
     var aktivni = (data && data.aktivni) || [];
-    var archiv = (data && data.archiv) || [];
     var samostatne = (data && data.samostatne) || [];
     var starsi = (data && data.starsi) || [];
-    if (!aktivni.length && !archiv.length && !samostatne.length && !starsi.length) return;
-    if (starsi.length) {
-      document.getElementById('projekty-starsi-grid').innerHTML =
-        starsi.map(function (k) { return karta(k, dnes); }).join('');
-      document.getElementById('projekty-starsi').hidden = false;
-    }
+    if (!aktivni.length && !samostatne.length && !starsi.length) return;
     document.getElementById('projekty-grid').innerHTML =
       aktivni.map(function (k) { return karta(k, dnes); }).join('');
     document.getElementById('projekty-samostatne').innerHTML =
       samostatne.map(function (b) { return boxSamostatny(b, dnes); }).join('');
-    if (archiv.length) {
-      document.getElementById('projekty-archiv-pocet').textContent = archiv.length;
-      document.getElementById('projekty-archiv-seznam').innerHTML = archiv.map(polozkaArchivu).join('');
+    if (starsi.length) {
+      document.getElementById('projekty-archiv-pocet').textContent = starsi.length;
+      document.getElementById('projekty-starsi-grid').innerHTML =
+        starsi.map(function (k) { return karta(k, dnes); }).join('');
       document.getElementById('projekty-archiv').hidden = false;
     }
     if (data.aktualizovano) {
