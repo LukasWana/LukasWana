@@ -23,7 +23,7 @@
 
 **Otevřené:**
 - ~~Server asus-server je „asi bez internetu“ (uživatel 10. 10. před 19:26)~~ — **ověřeno logem cronu ve 20:59:** běh v 19:17 skončil chybou `fatal: unable to access 'https://github.com/LukasWana/LukasWana.git/': Could not resolve host: github.com`. Běh ve 20:17 už prošel („6 aktivních, 10 v archivu / pushnuto da767a0“). Výpadek DNS nebo sítě tedy trval nejvýš do 20:17 a cron se srovnal sám, bez zásahu. Před Taskem 6 stačí znovu pohled do logu (příkaz je v Předávce níže). **22:26: log ukázal běh 22:17 „pushnuto 7c28233“, cron jede.**
-- `W-ilustration-banner.png` (736 KB) zůstává v repu a dál se nasazuje, i když ho stránka nepoužívá. Smazat ho lze jen na pokyn uživatele (je mimo zadání).
+- ~~`W-ilustration-banner.png` (736 KB) zůstává v repu a dál se nasazuje, i když ho stránka nepoužívá.~~ — **10. 10. 22:39: smazán na pokyn uživatele** („2 smazat“). Z webu zmizí s nejbližším nasazením (`peaceiris/actions-gh-pages` bez `keep_files` cílové repo přepíše).
 
 **Pravidla prostředí:** kód, testy a texty se zpětným lomítkem zapisuj jen přes Write/Edit, nikdy heredocem ani `sed` (`~/.claude/rules/bash-heredoc-omezeni.md`). `index.html` má CRLF, `style.css` LF; Edit konce řádků zachová. Zprávy commitů piš přes Write do souboru ve scratchpadu a commituj s `git commit -F`. **Push do `main` = okamžitě živý web.** Proto se pushuje až v Tasku 6 po schválení snímků. Do té doby jen lokální commity.
 

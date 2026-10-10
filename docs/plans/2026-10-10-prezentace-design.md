@@ -49,7 +49,7 @@ k meditačním aplikacím v projektech.
 - Text uvnitř nebo vedle kruhu, čistě vysázený: **Deep work creator**, pod ním „introvertní
   technicko-kreativní tvůrce“.
 - `W-ilustration-banner.png` (třpytivá fotka) se přestane používat. Soubor zůstává v repu, dokud uživatel
-  neřekne jinak (smazání je mimo zadání).
+  neřekne jinak (smazání je mimo zadání). *Smazán na pokyn uživatele 10. 10. (viz Stav plánu).*
 - Mobil: kruh se zmenší a text jde pod něj, kdyby se dovnitř nevešel.
 
 ### Na čem pracuju
