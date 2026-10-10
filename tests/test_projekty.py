@@ -182,6 +182,23 @@ class Starsi(unittest.TestCase):
         self.assertEqual([k.get("web") for k in d["starsi"]], ["https://zvukstetce.cz", None])
         self.assertEqual(d["aktivni"][0]["web"], "https://akt.example")
 
+    def test_dalsi_odkazy_z_nastaveni(self):
+        odkazy = [{"nazev": "App Store", "url": "https://apps.apple.com/app/id1", "navic": "nejde ven"},
+                   {"nazev": "Google Play", "url": "https://play.google.com/store/apps/details?id=x"}]
+        nast = {"starsi": [{"nazev": "Jidelnicek", "popis": "x", "repa": ["Jid", "JidA"], "web": "https://j.example",
+                            "odkazy": odkazy},
+                           {"nazev": "Bez odkazů", "popis": "x", "repa": ["Jine"]}],
+                "projekty": {"Akt": {"nazev": "Akt", "odkazy": odkazy[:1]}}}
+        repa = [repo("Jid", hlavni=[c("a", "2025-11-10")]), repo("JidA", hlavni=[c("d", "2025-12-01")]),
+                repo("Jine", hlavni=[c("b", "2025-01-01")]), repo("Akt", okno=[c("c", "2026-10-09")])]
+        d = p.sestav(repa, nast, set(), DNES)
+        ciste = [{"nazev": "App Store", "url": "https://apps.apple.com/app/id1"},
+                 {"nazev": "Google Play", "url": "https://play.google.com/store/apps/details?id=x"}]
+        self.assertEqual([k.get("odkazy") for k in d["starsi"]], [ciste, None])
+        self.assertEqual(d["starsi"][0]["web"], "https://j.example")   # web zůstává vedle dalších odkazů
+        self.assertEqual(d["starsi"][0]["posledni"], "2025-12-01")      # jedna karta za všechna repa
+        self.assertEqual(d["aktivni"][0]["odkazy"], ciste[:1])
+
 
 class Samostatne(unittest.TestCase):
     NAST = {"skupiny": {"asus-server-": {

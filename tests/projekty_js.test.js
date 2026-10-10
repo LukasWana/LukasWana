@@ -64,3 +64,16 @@ test('karta: živý web proliní celou kartu do nového tabu, GitHub zůstane', 
   const bez = p.karta({ nazev: 'X', posledni: '2025-11-10' }, DNES);
   assert.doesNotMatch(bez, /projekty-web|projekty-karta-web/);
 });
+
+test('karta: další odkazy (obchody, nápověda) v patičce vedle webu', () => {
+  const html = p.karta({ nazev: 'e-Jídelníček', posledni: '2025-11-10', web: 'https://e-jidelnicek.cz/', odkazy: [
+    { nazev: 'App Store', url: 'https://apps.apple.com/us/app/e-j%C3%ADdeln%C3%AD%C4%8Dek/id1618220241' },
+    { nazev: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.altisima.Jidelnicek.org' },
+    { nazev: 'Nápověda', url: 'https://doc.e-jidelnicek.cz/' }] }, DNES);
+  assert.match(html, /<a class="projekty-web" href="https:\/\/e-jidelnicek.cz\/"/);
+  assert.match(html, /<a class="projekty-dalsi" href="https:\/\/apps.apple.com\/us\/app\/e-j%C3%ADdeln%C3%AD%C4%8Dek\/id1618220241" target="_blank" rel="noopener">App Store ↗<\/a>/);
+  assert.match(html, /<a class="projekty-dalsi" href="https:\/\/play.google.com\/store\/apps\/details\?id=com.altisima.Jidelnicek.org" target="_blank" rel="noopener">Google Play ↗<\/a>/);
+  assert.match(html, /<a class="projekty-dalsi" href="https:\/\/doc.e-jidelnicek.cz\/" target="_blank" rel="noopener">Nápověda ↗<\/a>/);
+  const bez = p.karta({ nazev: 'X', posledni: '2025-11-10' }, DNES);
+  assert.doesNotMatch(bez, /projekty-dalsi/);
+});

@@ -18,11 +18,12 @@ from pathlib import Path
 API = "https://api.github.com"
 TYDNU = 12
 HROMADNY_PRAH = 5
-POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url", "web")
+POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url", "web", "odkazy")
 POLE_ARCHIV = ("nazev", "jazyk", "posledni", "url")
 POLE_SAMOSTATNE = ("nazev", "popis", "posledni", "dni_prace", "tydny", "aplikace")
 POLE_APLIKACE = ("nazev", "popis")
-POLE_STARSI = ("nazev", "popis", "jazyk", "posledni", "url", "web")
+POLE_ODKAZ = ("nazev", "url")
+POLE_STARSI = ("nazev", "popis", "jazyk", "posledni", "url", "web", "odkazy")
 KOREN = Path(__file__).resolve().parent.parent
 VYSTUP = KOREN / "data" / "projekty.generated.json"
 NASTAVENI = KOREN / "projekty.json"
@@ -96,6 +97,11 @@ def jen_pole(zaznam, pole):
     return {k: zaznam[k] for k in pole if zaznam.get(k) not in (None, "", [])}
 
 
+def dalsi_odkazy(info):
+    """Další odkazy karty (App Store, Google Play, nápověda) z nastavení, jen povolená pole."""
+    return [jen_pole(o, POLE_ODKAZ) for o in info.get("odkazy", [])]
+
+
 def sestav(repa, nastaveni, skryt, dnes):
     """repa: [{nazev, soukrome, jazyk, url, commity_okno, commity_hlavni}] → data pro web."""
     automaty = set(nastaveni.get("automaty", []))
@@ -134,6 +140,7 @@ def sestav(repa, nastaveni, skryt, dnes):
             "url": None if skupina or clenove[0]["soukrome"] else clenove[0]["url"],
             "stitky": sorted(r["nazev"][len(klic_karty):] for r in clenove) if skupina else [],
             "web": info.get("web"),   # živý web: celá karta na něj odkazuje
+            "odkazy": dalsi_odkazy(info),
         }
         okno = [c for r in clenove for c in ciste_commity(r["commity_okno"], automaty, hromadne)]
         akt = aktivita(okno, dnes)
@@ -183,6 +190,7 @@ def starsi_karta(info, clenove, automaty, hromadne):
         "posledni": posledni,
         "url": verejne[0] if verejne else None,
         "web": info.get("web"),
+        "odkazy": dalsi_odkazy(info),
     }, POLE_STARSI)
 
 

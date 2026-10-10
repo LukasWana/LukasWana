@@ -524,9 +524,33 @@ body {
     outline-offset: 2px;
 }
 
-.projekty-karta-web .projekty-odkaz {
+.projekty-karta-web .projekty-odkaz,
+.projekty-karta-web .projekty-dalsi {
     position: relative;
     z-index: 2;
+}
+
+/* Další odkazy karty (App Store, Google Play, nápověda): řádek nad patičkou, patička přiléhá k němu */
+.projekty-odkazy {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin: auto 0 0;
+}
+
+.projekty-karta .projekty-odkazy + footer {
+    margin-top: 0;
+}
+
+.projekty-dalsi {
+    color: #000;
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.projekty-dalsi:hover {
+    text-decoration-thickness: 2px;
 }
 
 .projekty-karta header,

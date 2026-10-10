@@ -147,8 +147,16 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
 - **Živý web (`"web"`)**: u starší aplikace nebo karty z `projekty`. Celá karta je pak odkazem do nového
   tabu: odkaz `.projekty-web` je roztažený přes kartu, ↗ na GitHub leží nad ním (z-index). Weby jsou
   ověřené 10. 10. přes curl a Chrome: ad-radar a test-openclaw-pages (GitHub Pages), zvukstetce.cz,
-  e-jidelnicek.cz (iOS i Android) a sunset-apartment.com. **Bez odkazu, protože nefungují:**
+  e-jidelnicek.cz a sunset-apartment.com. **Bez odkazu, protože nefungují:**
   chatavpekle.cz (DNS má A záznam 88.146.221.173, ale web neodpovídá ani v Chrome), haluzator.eu
   a contyco.cz (bez A záznamu; GitHub Pages u Haluzator.eu přitom má jako doménu nastavené
   haluzator.eu). Až weby poběží, stačí doplnit `web`.
+- **Další odkazy (`"odkazy"`, od 10. 10. odpoledne, zadání uživatele)**: seznam `{"nazev", "url"}` u starší
+  aplikace nebo karty z `projekty`; generátor propustí jen tato dvě pole (`POLE_ODKAZ`). Na kartě jsou
+  textovým řádkem „Název ↗“ mezi popisem a patičkou, nad odkazem přes kartu (z-index). V patičce
+  se nevešly: datum i odkazy se lámaly na dva řádky (ověřeno snímkem).
+  **e-Jídelníček je jedna karta** (uživatel: „nedrobit to“): repa `e-jidelnicek-ios-2025`,
+  `00-jidelnicek--android`, `00-jidelnicek--android2024` a `e-jidelnicek-doc2022` (nápověda). Celá karta vede
+  na e-jidelnicek.cz, odkazy App Store, Google Play a Nápověda (doc.e-jidelnicek.cz). Všechny čtyři adresy
+  vrátily 10. 10. HTTP 200. Starších projektů je tím 15 místo 17.
 - **Skryto na přání uživatele:** `Dychani` a `emailrator-info` (v `skryt`, tedy ani v archivu).
