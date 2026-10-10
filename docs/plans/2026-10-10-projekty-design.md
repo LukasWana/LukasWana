@@ -86,7 +86,8 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
 - Karta: název + jazyk, popis, 12 sloupků po týdnech (inline SVG s textovým popisem pro čtečky),
   „N dní práce“, „naposledy před X“ (přesné datum v `title`), ↗ jen u veřejných. Skupina má štítky.
 - Pořadí podle poslední práce; mřížka `auto-fill`, mobil 1 sloupec, desktop 4 (kontejner 1 160 px, karta min. 260 px; změřeno v Chrome 10. 10.).
-- Archiv: `<details>` „Starší projekty (N)“ — název, jazyk, měsíc/rok.
+- Archiv: `<details>` „Starší projekty (N)“ — název, jazyk, měsíc/rok. *Nahrazeno 10. 10. (`0b5aecb`),
+  viz sekce 4: `<details>` obsahuje karty starších aplikací a zbytek archivu se neukazuje.*
 - Patička „Data k D. M. RRRR“ (vidět zastavenou aktualizaci).
 - `projekty.js` načte JSON a vykreslí; při chybě nebo prázdných datech se sekce celá skryje.
   V `index.html` jen prázdný kontejner + `<script>`.
@@ -124,9 +125,28 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
   volná místa zaplní tyto neaktivní projekty v uvedeném pořadí (karta bez grafu, „naposledy před X“)
   a zmizí z archivu. Aktivní mají přednost: přibude-li aktivní, doplněný ustoupí do archivu.
   Vybral uživatel: ACRS, Desktop-Voice-Assistant („Hlasový asistent“), TTS-cesky-test („Český TTS“).
-- **Starší aplikace (poslední řádek):** `"starsi": [{nazev, popis, repa[]}]` → pole `starsi` ve výstupu
-  (`POLE_STARSI`: `nazev, popis, jazyk, posledni, url`), pořadí z nastavení. Jazyk = nejčastější z rep,
+  *Od `66d88fd` nevyužito:* všechny tři přešly do starších aplikací, volba `doplnit` z `projekty.json` zmizela
+  (kód zůstává).
+- **Starší aplikace:** `"starsi": [{nazev, popis, repa[], web?}]` → pole `starsi` ve výstupu
+  (`POLE_STARSI`: `nazev, popis, jazyk, posledni, url, web`), pořadí z nastavení. Jazyk = nejčastější z rep,
   poslední práce = nejnovější z rep, `url` = první veřejné repo v pořadí z nastavení. Jejich repa nejdou
-  do karet ani do archivu. Vybral uživatel: e-jídelníček, Haluzátor, Mandalátor (`patern-paint`),
-  Meditácie (`meditation-app`).
+  do karet ani do archivu. První výběr (10:43): e-jídelníček, Haluzátor, Mandalátor, Meditácie jako řádek
+  „Starší aplikace“.
+  **Od `66d88fd` (uživatel):** seznam 17 položek, které uživatel vybral ze starého archivu, každá s jedním
+  repem, jménem od uživatele a krátkým popisem. Popisy jsou z README, `package.json` a `index.html`
+  a uživatel je zatím neviděl, kromě e-jídelníčku, jehož popis dodal sám. Na webu nejsou
+  samostatným řádkem: jsou (od `0b5aecb`) kartami uvnitř rozklikávací sekce `<details>` „Starší projekty (N)“
+  (N = počet starších aplikací). Mají šedý rámeček `#c8c8c8` a jsou nejvýš 3 na řádek, aby měly víc
+  místa pro popis.
+  **Zbytek archivu (repa mimo karty) se na webu neukazuje.** Generátor ho dál zapisuje do pole `archiv`
+  a JS ho ignoruje.
+- **Meditácie** (`meditation-app`): když vypadla ze starších, stala se aktivní kartou s dosavadním popisem
+  (volba uživatele, `66d88fd`). Bez záznamu v `projekty` by se ukázala holá jako „meditation-app“.
+- **Živý web (`"web"`)**: u starší aplikace nebo karty z `projekty`. Celá karta je pak odkazem do nového
+  tabu: odkaz `.projekty-web` je roztažený přes kartu, ↗ na GitHub leží nad ním (z-index). Weby jsou
+  ověřené 10. 10. přes curl a Chrome: ad-radar a test-openclaw-pages (GitHub Pages), zvukstetce.cz,
+  e-jidelnicek.cz (iOS i Android) a sunset-apartment.com. **Bez odkazu, protože nefungují:**
+  chatavpekle.cz (DNS má A záznam 88.146.221.173, ale web neodpovídá ani v Chrome), haluzator.eu
+  a contyco.cz (bez A záznamu; GitHub Pages u Haluzator.eu přitom má jako doménu nastavené
+  haluzator.eu). Až weby poběží, stačí doplnit `web`.
 - **Skryto na přání uživatele:** `Dychani` a `emailrator-info` (v `skryt`, tedy ani v archivu).
