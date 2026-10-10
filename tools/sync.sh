@@ -25,6 +25,25 @@ main() {
     fi
     git -C "$WEB" add data/projekty.generated.json
     git -C "$WEB" commit --quiet -m "data: projekty (asus-server)"
+    if git -C "$WEB" push --quiet; then
+        echo "pushnuto $(git -C "$WEB" rev-parse --short HEAD)"
+        return 0
+    fi
+    # Souběh s deployem z repa LukasWana (ten pushuje do webu taky). Deploy data/ nemění,
+    # takže stačí vzít vygenerovaný soubor, postavit ho na čerstvý origin/main a pushnout znovu.
+    echo "push odmítnut, opakuji nad čerstvým origin/main"
+    DATA="$(mktemp)"
+    cp "$WEB/data/projekty.generated.json" "$DATA"
+    git -C "$WEB" fetch --quiet origin
+    git -C "$WEB" reset --quiet --hard origin/main
+    cp "$DATA" "$WEB/data/projekty.generated.json"
+    rm -f "$DATA"
+    if [ -z "$(git -C "$WEB" status --porcelain -- data)" ]; then
+        echo "beze změny"
+        return 0
+    fi
+    git -C "$WEB" add data/projekty.generated.json
+    git -C "$WEB" commit --quiet -m "data: projekty (asus-server)"
     git -C "$WEB" push --quiet
     echo "pushnuto $(git -C "$WEB" rev-parse --short HEAD)"
 }
