@@ -26,7 +26,7 @@
   "TTS-cesky-test": {"nazev": "Český TTS", "popis": "Offline převod českého textu na řeč a klonování hlasu (XTTS-v2)"}
  },
  "starsi": [
-  {"nazev": "e-jídelníček", "popis": "Mobilní aplikace pro inteligentní stravování, pro Android, iOS i web",
+  {"nazev": "e-jídelníček", "popis": "NodeJS aplikace pro pohodlné objednávání jídel, pro Android, iOS i web",
    "repa": ["e-jidelnicek-ios-2025", "00-jidelnicek--android2024", "00-jidelnicek--android", "e-jidelnicek-doc2022"]},
   {"nazev": "Haluzátor", "popis": "Domácí projekce: vlastní fotky a videa s vizuálními efekty v reálném čase a sekvencerem",
    "repa": ["Haluzator-stable", "Haluzator.eu"]},
