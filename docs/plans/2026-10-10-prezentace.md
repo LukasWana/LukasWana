@@ -26,7 +26,7 @@
 - ~~**Zub v ensō (nalezeno 10. 10. ve 22:45 nad náhledem ve 2× rozlišení, je i na živém webu):**~~ **Opraveno** v `_bezier` (nulová tečna v rozích, `_roh`), test `test_roh_obrysu_neprestreli` (před opravou přestřel na y = 36,7 při okraji 40). Stejný hrot měl i podtah `img/tah.svg`, oprava ho odstranila (ověřeno snímkem před/po). Původní popis: v místě, kde tělo tahu přechází do suchých vláken, vyčnívá ven malý hrot. Příčina: `obrys()` uzavírá obrys Catmull-Rom křivkou (`_bezier`) a v ostrém rohu (rovně useknutý konec těla, začátky vláken) křivka přestřelí ven. Ořez pásu vláken na 0–1 to NEřeší (vyzkoušeno). Řeší to nulová tečna v rozích se zatočením > 50° (ověřeno snímkem, kód v náhledovém skriptu ve scratchpadu, v repu zatím ne). Čeká na rozhodnutí uživatele spolu s variantami suchého konce.
 - ~~Server asus-server je „asi bez internetu“ (uživatel 10. 10. před 19:26)~~ — **ověřeno logem cronu ve 20:59:** běh v 19:17 skončil chybou `fatal: unable to access 'https://github.com/LukasWana/LukasWana.git/': Could not resolve host: github.com`. Běh ve 20:17 už prošel („6 aktivních, 10 v archivu / pushnuto da767a0“). Výpadek DNS nebo sítě tedy trval nejvýš do 20:17 a cron se srovnal sám, bez zásahu. Před Taskem 6 stačí znovu pohled do logu (příkaz je v Předávce níže). **22:26: log ukázal běh 22:17 „pushnuto 7c28233“, cron jede.**
 - ~~`W-ilustration-banner.png` (736 KB) zůstává v repu a dál se nasazuje, i když ho stránka nepoužívá.~~ — **10. 10. 22:39: smazán na pokyn uživatele** („2 smazat“). Z webu zmizel s nasazením run 38085643598 (`peaceiris/actions-gh-pages` bez `keep_files` cílové repo přepíše), ověřeno `curl` → 404.
-- **10. 10. 23:42, pokyn uživatele „6 hlavních projektů rozděl na 3x3“:** `.projekty-grid` má nejvýš 3 sloupce (tentýž vzorec, který dosud měl jen archiv: `minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr)`). Předtím `minmax(260px, 1fr)` dávalo na desktopu 4 + 2. Archiv vzorec dědí. Test `test_hlavni_projekty_po_trech`, celkem 46 Python + 9 JS. Snímek 1400 px nad živými daty: 2 řady po 3. Výklad „3x3“ = 2 řady po 3 kartách (karet je 6).
+- **10. 10. 23:42, pokyn uživatele „6 hlavních projektů rozděl na 3x3“:** `.projekty-grid` má nejvýš 3 sloupce (tentýž vzorec, který dosud měl jen archiv: `minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr)`). Předtím `minmax(260px, 1fr)` dávalo na desktopu 4 + 2. Archiv vzorec dědí. Test `test_hlavni_projekty_po_trech`, celkem 46 Python + 9 JS. Snímek 1400 px nad živými daty: 2 řady po 3. Výklad „3x3“ = 2 řady po 3 kartách (karet je 6). Commit `004090c` pushnut po „pushni“, Action run 38089255740 `success`, živé `style.css` ověřeno `curl` (`minmax(260px` 0×). Mobil po změně nesnímkován (vzorec je tentýž jako u archivu, `min(100%, …)` dává 1 sloupec).
 
 **Pravidla prostředí:** kód, testy a texty se zpětným lomítkem zapisuj jen přes Write/Edit, nikdy heredocem ani `sed` (`~/.claude/rules/bash-heredoc-omezeni.md`). `index.html` má CRLF, `style.css` LF; Edit konce řádků zachová. Zprávy commitů piš přes Write do souboru ve scratchpadu a commituj s `git commit -F`. **Push do `main` = okamžitě živý web.** Proto se pushuje až v Tasku 6 po schválení snímků. Do té doby jen lokální commity.
 
@@ -50,13 +50,14 @@ Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz s
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
 Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
 
-Stav k 10. 10. 2026, 22:56:
+Stav k 10. 10. 2026, 23:52:
 - Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
 - Ensō má od commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
 - W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
 - Push po „pushni“, Action run 38085643598 success, živý web ověřen curl (enso.svg 31 967 B, tah.svg 9 772 B).
 - Karty projektů: světlá plocha #f6f5f2 s oblými rohy 16 px, bez rámečku (rozhodnutí uživatele).
-- Testy: 45 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu a 8 cest ensō (tělo + 7 vláken).
+- Hlavní projekty (6 karet) jsou od 004090c nejvýš po 3 na řádek = 2 řady po 3 (pokyn „rozděl na 3x3“), dřív 4 + 2. Stejný vzorec jako archiv. Push po „pushni“, run 38089255740 success, živé CSS ověřeno curl.
+- Testy: 46 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu, 8 cest ensō (tělo + 7 vláken) a mřížku po 3 (test_hlavni_projekty_po_trech).
 - Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
 Otevřené (čeká na rozhodnutí uživatele):
