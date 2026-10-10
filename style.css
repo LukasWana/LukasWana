@@ -568,6 +568,11 @@ body {
     margin-top: 50px;
 }
 
+/* Nejvýš 3 na řádek: víc místa pro popis */
+.projekty-starsi .projekty-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr));
+}
+
 .projekty-podnadpis {
     font-size: 14px;
     font-weight: 500;
