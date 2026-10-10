@@ -106,3 +106,17 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
 - Testy `tests/` (unittest, fixtures): automaty, hromadné commity, deduplikace přes větve, skupiny,
   povolená pole (soukromé repo bez `url`). `projekty.py --nanecisto` — nejdřív z PC s `gh` tokenem,
   výstup ukázat uživateli před nasazením na server.
+
+## 4. Změny po nasazení (10. 10. 2026, zadání uživatele)
+
+- **Limit karet:** `"max_aktivnich": 8` v `projekty.json`. Aktivní projekty nad limit (nejstarší podle
+  poslední práce) jdou na začátek archivu s poli archivu. Důvod: osiřelá karta na 3. řádku.
+- **Samostatný box:** skupina s `"samostatne": true` nejde do karet ani do limitu, ale do pole
+  `samostatne` ve výstupu (`POLE_SAMOSTATNE`: `nazev, popis, posledni, dni_prace, tydny, aplikace`).
+  Místo štítků (jmen repozitářů) ukazuje ručně vybrané `aplikace` z `projekty.json`, z každé jen
+  `nazev` a `popis` (`POLE_APLIKACE`). Na webu box přes celý řádek pod kartami. Používá ho Domácí
+  server, aplikace vybral uživatel (jen vlastní, ne obaly cizích jako Jellyfin nebo Nextcloud).
+- **Hlavička webu:** pod přehledem projektů je starý statický obsah (dovednosti, obsah, aplikace,
+  platformy) skrytý v `<div class="stary-obsah" hidden>`, v HTML zůstává. Podtitul a tagline česky.
+  Nadpis „Lukáš Wana“ má přesně šířku podtitulu: `nadpis.js` měří inkoust písmen přes canvas
+  (`measureText`), protože šířka závisí na písmu zařízení; bez JS zůstane velikost z CSS.

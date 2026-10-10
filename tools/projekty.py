@@ -1,7 +1,7 @@
 """Přehled projektů pro https://lukaswana.github.io/web/ — generátor dat.
 
 Čte GitHub API tokenem jen pro čtení a zapíše data/projekty.generated.json.
-Do výstupu jdou jen povolená pole (POLE_KARTA, POLE_ARCHIV): informace o práci,
+Do výstupu jdou jen povolená pole (POLE_KARTA, POLE_ARCHIV, POLE_SAMOSTATNE, POLE_APLIKACE): informace o práci,
 nikdy obsah repozitářů. Návrh: docs/plans/2026-10-10-projekty-design.md
 """
 import argparse
