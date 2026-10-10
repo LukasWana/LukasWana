@@ -1,0 +1,14 @@
+{
+ "skupiny": {"asus-server-": {"nazev": "Domácí server", "popis": "Vlastní služby na domácím serveru: knihy, hudba, videa, cloud, hledání"}},
+ "automaty": ["ENT AutoBackup"],
+ "skryt": ["web", "LukasWana", "ent-backup"],
+ "projekty": {
+  "EmailRator": {"nazev": "EmailRator", "popis": "Vytěžování údajů z firemní pošty jazykovými modely, panel v Gmailu"},
+  "WanGP_SD_wholepipeline": {"nazev": "WanGP pipeline", "popis": "Lokální výroba obrázků, videa a řeči na jedné grafické kartě"},
+  "Dychani": {"nazev": "Dýchání", "popis": "Webová aplikace pro řízené dýchání"},
+  "whisper-sk-transcriber": {"nazev": "whisper-sk-transcriber", "popis": "Lokální přepis porad a rozlišení mluvčích (slovenština, čeština)"},
+  "Gramps": {"nazev": "Rodokmen", "popis": "Rodokmen rodiny v Gramps Web na domácím serveru"},
+  "emailrator-info": {"nazev": "emailrator-info", "popis": "Úvodní stránka a zásady ochrany soukromí EmailRatoru"},
+  "meditation-app": {"nazev": "meditation-app", "popis": "Meditační aplikace v Reactu (předchůdce Dýchání)"}
+ }
+}

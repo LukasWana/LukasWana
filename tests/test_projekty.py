@@ -118,5 +118,13 @@ class Sestav(unittest.TestCase):
         self.assertLessEqual(set(d["archiv"][0]), set(p.POLE_ARCHIV))
 
 
+class Strankovani(unittest.TestCase):
+    def test_dalsi_stranka(self):
+        link = '<https://api.github.com/x?page=2>; rel="next", <https://api.github.com/x?page=5>; rel="last"'
+        self.assertEqual(p.dalsi_stranka(link), "https://api.github.com/x?page=2")
+        self.assertIsNone(p.dalsi_stranka('<https://api.github.com/x?page=1>; rel="prev"'))
+        self.assertIsNone(p.dalsi_stranka(""))
+
+
 if __name__ == "__main__":
     unittest.main()

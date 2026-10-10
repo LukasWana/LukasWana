@@ -134,3 +134,105 @@ def sestav(repa, nastaveni, skryt, dnes):
         seznam.sort(key=lambda k: k["nazev"].lower())
         seznam.sort(key=lambda k: k.get("posledni", ""), reverse=True)
     return {"aktivni": aktivni, "archiv": archiv}
+
+
+def dalsi_stranka(link):
+    for cast in link.split(","):
+        if 'rel="next"' in cast:
+            return cast[cast.index("<") + 1:cast.index(">")]
+    return None
+
+
+def api(cesta, token, parametry=None):
+    """GET na GitHub API; seznamy projde přes všechny stránky. Prázdné repo (HTTP 409) = []."""
+    url = API + cesta + ("?" + urllib.parse.urlencode(parametry) if parametry else "")
+    vysledek = []
+    while url:
+        pozadavek = urllib.request.Request(url, headers={
+            "Authorization": "Bearer " + token,
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "lukaswana-web-projekty",
+        })
+        try:
+            with urllib.request.urlopen(pozadavek, timeout=30) as odpoved:
+                data = json.load(odpoved)
+                odkaz = odpoved.headers.get("Link", "")
+        except urllib.error.HTTPError as chyba:
+            if chyba.code == 409:
+                return []
+            raise
+        if not isinstance(data, list):
+            return data
+        vysledek += data
+        url = dalsi_stranka(odkaz)
+    return vysledek
+
+
+def commit_z_api(c):
+    autor = c["commit"]["author"]
+    return {"sha": c["sha"], "datum": autor["date"], "autor": autor["name"], "zprava": c["commit"]["message"]}
+
+
+def stahni(token, dnes):
+    """Vlastní repa bez forků; u rep s pushem v okně commity ze všech větví, jinak 30 z hlavní větve."""
+    od = zacatek_okna(dnes)
+    repa = []
+    for r in api("/user/repos", token, {"affiliation": "owner", "per_page": 100}):
+        if r["fork"]:
+            continue
+        cesta = "/repos/" + r["full_name"]
+        okno = []
+        if r["pushed_at"] and r["pushed_at"][:10] >= od.isoformat():
+            for vetev in api(cesta + "/branches", token, {"per_page": 100}):
+                okno += api(cesta + "/commits", token,
+                            {"sha": vetev["name"], "since": od.isoformat() + "T00:00:00Z", "per_page": 100})
+        hlavni = [] if okno else api(cesta + "/commits", token, {"per_page": 30})
+        repa.append({
+            "nazev": r["name"], "soukrome": r["private"], "jazyk": r["language"] or "",
+            "url": r["html_url"],
+            "commity_okno": [commit_z_api(c) for c in okno],
+            "commity_hlavni": [commit_z_api(c) for c in hlavni],
+        })
+    return repa
+
+
+def nacti_skryt(cesta):
+    if not cesta or not Path(cesta).exists():
+        return set()
+    radky = Path(cesta).read_text(encoding="utf-8").splitlines()
+    return {r.strip() for r in radky if r.strip() and not r.startswith("#")}
+
+
+def main(argv=None):
+    sys.stdout.reconfigure(encoding="utf-8")
+    parser = argparse.ArgumentParser(description="Generátor přehledu projektů pro web.")
+    parser.add_argument("--nanecisto", action="store_true", help="jen vypsat JSON, nic nezapisovat")
+    parser.add_argument("--token-soubor", help="soubor s tokenem (jinak proměnná GITHUB_TOKEN)")
+    parser.add_argument("--skryt-soubor", help="repa ke skrytí, jedno na řádek (# = komentář)")
+    parser.add_argument("--vystup", default=str(VYSTUP), help="kam zapsat JSON (sync.sh: klon repa web)")
+    a = parser.parse_args(argv)
+    if a.token_soubor:
+        token = Path(a.token_soubor).read_text(encoding="utf-8").strip()
+    else:
+        token = os.environ.get("GITHUB_TOKEN", "")
+    if not token:
+        sys.exit("chybí token: --token-soubor nebo GITHUB_TOKEN")
+    nastaveni = json.loads(NASTAVENI.read_text(encoding="utf-8"))
+    dnes = dt.datetime.now(dt.timezone.utc).date()
+    data = sestav(stahni(token, dnes), nastaveni, nacti_skryt(a.skryt_soubor), dnes)
+    # den generování (ne čas): bez změny dat nejvýš 1 commit denně; na webu „Aktualizováno …“
+    data["aktualizovano"] = dnes.isoformat()
+    # chr(10) a newline="": LF i na Windows a v kódu žádné zpětné lomítko (Git Bash)
+    text = json.dumps(data, ensure_ascii=False, indent=1) + chr(10)
+    if a.nanecisto:
+        sys.stdout.write(text)
+        return
+    vystup = Path(a.vystup)
+    vystup.parent.mkdir(parents=True, exist_ok=True)
+    vystup.write_text(text, encoding="utf-8", newline="")
+    print(f"zapsáno {vystup}: {len(data['aktivni'])} aktivních, {len(data['archiv'])} v archivu")
+
+
+if __name__ == "__main__":
+    main()
