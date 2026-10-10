@@ -1,0 +1,29 @@
+# Nasadí obsah tohoto repa na https://lukaswana.github.io/web/
+# (GitHub Pages běží z větve main repa LukasWana/web).
+name: Deploy na lukaswana.github.io/web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.WEB_DEPLOY_KEY }}
+          external_repository: LukasWana/web
+          publish_branch: main
+          publish_dir: .
+          exclude_assets: '.github,README.md,.gitignore'
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          full_commit_message: 'deploy: ${{ github.event.head_commit.message }} (LukasWana/LukasWana@${{ github.sha }})'
