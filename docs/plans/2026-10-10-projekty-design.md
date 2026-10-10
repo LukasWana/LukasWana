@@ -120,3 +120,13 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
   platformy) skrytý v `<div class="stary-obsah" hidden>`, v HTML zůstává. Podtitul a tagline česky.
   Nadpis „Lukáš Wana“ má přesně šířku podtitulu: `nadpis.js` měří inkoust písmen přes canvas
   (`measureText`), protože šířka závisí na písmu zařízení; bez JS zůstane velikost z CSS.
+- **Doplnění volných míst:** `"doplnit": [klíče karet]` — když je aktivních méně než `max_aktivnich`,
+  volná místa zaplní tyto neaktivní projekty v uvedeném pořadí (karta bez grafu, „naposledy před X“)
+  a zmizí z archivu. Aktivní mají přednost: přibude-li aktivní, doplněný ustoupí do archivu.
+  Vybral uživatel: ACRS, Desktop-Voice-Assistant („Hlasový asistent“), TTS-cesky-test („Český TTS“).
+- **Starší aplikace (poslední řádek):** `"starsi": [{nazev, popis, repa[]}]` → pole `starsi` ve výstupu
+  (`POLE_STARSI`: `nazev, popis, jazyk, posledni, url`), pořadí z nastavení. Jazyk = nejčastější z rep,
+  poslední práce = nejnovější z rep, `url` = první veřejné repo v pořadí z nastavení. Jejich repa nejdou
+  do karet ani do archivu. Vybral uživatel: e-jídelníček, Haluzátor, Mandalátor (`patern-paint`),
+  Meditácie (`meditation-app`).
+- **Skryto na přání uživatele:** `Dychani` a `emailrator-info` (v `skryt`, tedy ani v archivu).

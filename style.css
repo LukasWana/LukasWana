@@ -563,6 +563,19 @@ body {
     font-size: 18px;
 }
 
+/* Starší vybrané aplikace (poslední řádek přehledu) */
+.projekty-starsi {
+    margin-top: 50px;
+}
+
+.projekty-podnadpis {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin: 0 0 20px;
+}
+
 /* Projekt s vlastním boxem přes celý řádek (Domácí server) */
 .projekty-samostatne:not(:empty) {
     margin-top: 30px;

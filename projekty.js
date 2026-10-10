@@ -58,7 +58,8 @@
       (k.jazyk ? '<span class="projekty-jazyk">' + esc(k.jazyk) + '</span>' : '') + '</header>' +
       (k.popis ? '<p class="projekty-popis">' + esc(k.popis) + '</p>' : '') +
       (k.stitky ? '<p class="projekty-stitky">' + k.stitky.map(esc).join(' · ') + '</p>' : '') +
-      '<div class="projekty-aktivita">' + graf(k.tydny) + '<span>' + dniPrace(k.dni_prace) + '</span></div>' +
+      (k.tydny ? '<div class="projekty-aktivita">' + graf(k.tydny) + '<span>' + dniPrace(k.dni_prace) +
+        '</span></div>' : '') +
       '<footer><time datetime="' + esc(k.posledni) + '" title="' + datumCesky(k.posledni) + '">naposledy ' +
       pred(k.posledni, dnes) + '</time>' + odkaz + '</footer>' +
       '</article>';
@@ -92,7 +93,13 @@
     var aktivni = (data && data.aktivni) || [];
     var archiv = (data && data.archiv) || [];
     var samostatne = (data && data.samostatne) || [];
-    if (!aktivni.length && !archiv.length && !samostatne.length) return;
+    var starsi = (data && data.starsi) || [];
+    if (!aktivni.length && !archiv.length && !samostatne.length && !starsi.length) return;
+    if (starsi.length) {
+      document.getElementById('projekty-starsi-grid').innerHTML =
+        starsi.map(function (k) { return karta(k, dnes); }).join('');
+      document.getElementById('projekty-starsi').hidden = false;
+    }
     document.getElementById('projekty-grid').innerHTML =
       aktivni.map(function (k) { return karta(k, dnes); }).join('');
     document.getElementById('projekty-samostatne').innerHTML =
@@ -110,7 +117,7 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { pred: pred, dniPrace: dniPrace, esc: esc, datumCesky: datumCesky, graf: graf,
-      boxSamostatny: boxSamostatny };
+      boxSamostatny: boxSamostatny, karta: karta };
     return;
   }
 

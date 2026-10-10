@@ -46,3 +46,11 @@ test('boxSamostatny: aplikace, graf jen při aktivitě', () => {
   const bezAktivity = p.boxSamostatny({ nazev: 'S', posledni: '2025-03-01', aplikace: [] }, DNES);
   assert.doesNotMatch(bezAktivity, /<svg|<ul/);
 });
+
+test('karta: bez aktivity (doplněná nebo starší aplikace) nemá graf, má datum', () => {
+  const html = p.karta({ nazev: 'ACRS', popis: 'bannery', jazyk: 'Python', posledni: '2026-05-04' }, DNES);
+  assert.doesNotMatch(html, /<svg|dní práce|dny práce|den práce/);
+  assert.match(html, /naposledy před 5 měsíci/);
+  const aktivni = p.karta({ nazev: 'X', posledni: '2026-10-09', dni_prace: 2, tydny: [0, 1] }, DNES);
+  assert.match(aktivni, /<svg/);
+});

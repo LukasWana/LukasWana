@@ -106,7 +106,7 @@ class Sestav(unittest.TestCase):
         d = p.sestav(repa, self.NAST, set(), DNES)
         self.assertEqual([k["nazev"] for k in d["aktivni"]], ["Nove", "Stare"])
         self.assertEqual(d["archiv"][0]["posledni"], "2025-03-01")
-        self.assertEqual(set(d), {"aktivni", "archiv", "samostatne"})   # nic dalšího na nejvyšší úrovni
+        self.assertEqual(set(d), {"aktivni", "archiv", "samostatne", "starsi"})   # nic dalšího na nejvyšší úrovni
 
     def test_prazdne_repo_se_neukaze(self):
         # PDFValidator, Projects: repo bez commitů (API 409) není projekt
@@ -125,6 +125,52 @@ class Sestav(unittest.TestCase):
         self.assertEqual([k["nazev"] for k in d["archiv"]], ["P1", "P0", "Archiv"])
         for k in d["archiv"]:
             self.assertLessEqual(set(k), set(p.POLE_ARCHIV))
+
+    def test_doplnit_zaplni_volna_mista_z_archivu(self):
+        repa = [repo("Akt1", okno=[c("a", "2026-10-09")]), repo("Akt2", okno=[c("b", "2026-10-01")]),
+                repo("A", hlavni=[c("x", "2026-05-04")]), repo("B", hlavni=[c("y", "2026-03-21")]),
+                repo("C", hlavni=[c("z", "2025-01-01")])]
+        nast = dict(self.NAST, max_aktivnich=4, doplnit=["B", "Neexistuje", "A", "C"],
+                    projekty={"B": {"nazev": "Bé", "popis": "popis B"}})
+        d = p.sestav(repa, nast, set(), DNES)
+        self.assertEqual([k["nazev"] for k in d["aktivni"]], ["Akt1", "Akt2", "Bé", "A"])
+        self.assertEqual([k["nazev"] for k in d["archiv"]], ["C"])
+        doplneny = d["aktivni"][2]
+        self.assertEqual((doplneny["popis"], doplneny["posledni"]), ("popis B", "2026-03-21"))
+        self.assertNotIn("tydny", doplneny)
+        self.assertLessEqual(set(doplneny), set(p.POLE_KARTA))
+
+    def test_doplnit_ustoupi_aktivnim(self):
+        repa = [repo(f"P{i}", okno=[c(str(i), f"2026-10-0{i + 1}")]) for i in range(4)]
+        repa.append(repo("B", hlavni=[c("y", "2026-03-21")]))
+        d = p.sestav(repa, dict(self.NAST, max_aktivnich=4, doplnit=["B"]), set(), DNES)
+        self.assertNotIn("B", [k["nazev"] for k in d["aktivni"]])
+        self.assertEqual([k["nazev"] for k in d["archiv"]], ["B"])
+
+
+class Starsi(unittest.TestCase):
+    NAST = {"starsi": [
+        {"nazev": "Jídelníček", "popis": "jídlo", "repa": ["jid-ios", "jid-android"]},
+        {"nazev": "Haluzátor", "popis": "projekce", "repa": ["Halu-stable", "Halu.eu"]},
+        {"nazev": "Chybí", "popis": "žádné repo", "repa": ["neni"]}]}
+
+    def test_vybrane_aplikace_v_poradi_z_nastaveni_a_mimo_prehled(self):
+        repa = [repo("jid-ios", hlavni=[c("a", "2025-02-09")], jazyk="JavaScript"),
+                repo("jid-android", hlavni=[c("b", "2024-10-08")], jazyk="Vue"),
+                repo("Halu.eu", hlavni=[c("c", "2026-04-23")], soukrome=False, jazyk="JavaScript"),
+                repo("Halu-stable", okno=[c("d", "2026-10-01")], soukrome=False, jazyk="TypeScript"),
+                repo("Jine", hlavni=[c("e", "2025-01-01")])]
+        d = p.sestav(repa, self.NAST, set(), DNES)
+        self.assertEqual([k["nazev"] for k in d["starsi"]], ["Jídelníček", "Haluzátor"])
+        jid, halu = d["starsi"]
+        self.assertEqual(jid["posledni"], "2025-02-09")
+        self.assertNotIn("url", jid)   # obě repa soukromá
+        self.assertEqual(halu["url"], "https://github.com/LukasWana/Halu-stable")   # první veřejné podle nastavení
+        self.assertEqual(halu["posledni"], "2026-10-01")
+        for k in d["starsi"]:
+            self.assertLessEqual(set(k), set(p.POLE_STARSI))
+        self.assertEqual(d["aktivni"], [])
+        self.assertEqual([k["nazev"] for k in d["archiv"]], ["Jine"])
 
 
 class Samostatne(unittest.TestCase):

@@ -1,7 +1,7 @@
 """Přehled projektů pro https://lukaswana.github.io/web/ — generátor dat.
 
 Čte GitHub API tokenem jen pro čtení a zapíše data/projekty.generated.json.
-Do výstupu jdou jen povolená pole (POLE_KARTA, POLE_ARCHIV, POLE_SAMOSTATNE, POLE_APLIKACE): informace o práci,
+Do výstupu jdou jen povolená pole (POLE_KARTA, POLE_ARCHIV, POLE_SAMOSTATNE, POLE_APLIKACE, POLE_STARSI): informace o práci,
 nikdy obsah repozitářů. Návrh: docs/plans/2026-10-10-projekty-design.md
 """
 import argparse
@@ -22,6 +22,7 @@ POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stit
 POLE_ARCHIV = ("nazev", "jazyk", "posledni", "url")
 POLE_SAMOSTATNE = ("nazev", "popis", "posledni", "dni_prace", "tydny", "aplikace")
 POLE_APLIKACE = ("nazev", "popis")
+POLE_STARSI = ("nazev", "popis", "jazyk", "posledni", "url")
 KOREN = Path(__file__).resolve().parent.parent
 VYSTUP = KOREN / "data" / "projekty.generated.json"
 NASTAVENI = KOREN / "projekty.json"
@@ -104,12 +105,21 @@ def sestav(repa, nastaveni, skryt, dnes):
     repa = [r for r in repa if r["nazev"] not in skryte]
     hromadne = hromadne_zpravy({r["nazev"]: r["commity_okno"] for r in repa})
 
+    # Starší vybrané aplikace (poslední řádek webu): jejich repa do přehledu ani archivu nejdou.
+    vyber = nastaveni.get("starsi", [])
+    podle_jmena = {r["nazev"]: r for r in repa}
+    ve_vyberu = {jmeno for a in vyber for jmeno in a.get("repa", [])}
+    starsi = [s for s in (starsi_karta(a, [podle_jmena[j] for j in a.get("repa", []) if j in podle_jmena],
+                                       automaty, hromadne) for a in vyber) if s]
+    repa = [r for r in repa if r["nazev"] not in ve_vyberu]
+
     karty = {}
     for r in repa:
         predpona = next((s for s in skupiny if r["nazev"].startswith(s)), None)
         karty.setdefault(predpona or r["nazev"], []).append(r)
 
     aktivni, archiv, samostatne = [], [], []
+    neaktivni = {}   # klíč karty → plný záznam, pro doplnění volných míst
     for klic_karty, clenove in karty.items():
         skupina = klic_karty in skupiny
         info = skupiny[klic_karty] if skupina else popisy.get(klic_karty, {})
@@ -133,17 +143,45 @@ def sestav(repa, nastaveni, skryt, dnes):
             data = [posledni_prace(r["commity_okno"] + r["commity_hlavni"], automaty, hromadne) for r in clenove]
             zaklad["posledni"] = max((d for d in data if d), default=None)
             if zaklad["posledni"]:   # prázdné repo (žádný commit) není projekt
-                archiv.append(jen_pole(zaklad, POLE_ARCHIV))
+                neaktivni[klic_karty] = zaklad
+
+    # Volná místa do limitu doplní vybrané neaktivní projekty (v pořadí z nastavení); aktivní mají přednost.
+    limit = nastaveni.get("max_aktivnich")
+    volno = float("inf") if limit is None else limit - len(aktivni)
+    doplnene = []
+    for klic in nastaveni.get("doplnit", []):
+        if len(doplnene) >= volno:
+            break
+        if klic in neaktivni:
+            doplnene.append(jen_pole(neaktivni.pop(klic), POLE_KARTA))
+    archiv = [jen_pole(z, POLE_ARCHIV) for z in neaktivni.values()]
 
     for seznam in (aktivni, archiv):
         seznam.sort(key=lambda k: k["nazev"].lower())
         seznam.sort(key=lambda k: k.get("posledni", ""), reverse=True)
-    limit = nastaveni.get("max_aktivnich")
     if limit is not None and len(aktivni) > limit:
         # Nejstarší aktivní jsou pořád novější než celý archiv, proto jdou na jeho začátek.
         archiv[:0] = [jen_pole(k, POLE_ARCHIV) for k in aktivni[limit:]]
         del aktivni[limit:]
-    return {"aktivni": aktivni, "archiv": archiv, "samostatne": samostatne}
+    aktivni += doplnene
+    return {"aktivni": aktivni, "archiv": archiv, "samostatne": samostatne, "starsi": starsi}
+
+
+def starsi_karta(info, clenove, automaty, hromadne):
+    """Starší vybraná aplikace: název a popis z nastavení, jazyk a poslední práce z jejích rep."""
+    data = [posledni_prace(r["commity_okno"] + r["commity_hlavni"], automaty, hromadne) for r in clenove]
+    posledni = max((d for d in data if d), default=None)
+    if not posledni:
+        return None
+    jazyky = collections.Counter(r["jazyk"] for r in clenove if r["jazyk"])
+    verejne = [r["url"] for r in clenove if not r["soukrome"]]
+    return jen_pole({
+        "nazev": info.get("nazev", ""),
+        "popis": info.get("popis", ""),
+        "jazyk": jazyky.most_common(1)[0][0] if jazyky else "",
+        "posledni": posledni,
+        "url": verejne[0] if verejne else None,
+    }, POLE_STARSI)
 
 
 def box(info, klic_karty, clenove, automaty, hromadne, dnes):

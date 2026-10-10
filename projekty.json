@@ -12,16 +12,27 @@
    {"nazev": "Vzhled UI", "popis": "Jedno nastavení tématu, písma a rozložení pro všechny moje aplikace"}
   ]}},
  "automaty": ["ENT AutoBackup"],
- "skryt": ["web", "LukasWana", "ent-backup"],
+ "skryt": ["web", "LukasWana", "ent-backup", "Dychani", "emailrator-info"],
  "max_aktivnich": 8,
+ "doplnit": ["ACRS", "Desktop-Voice-Assistant", "TTS-cesky-test"],
  "projekty": {
   "EmailRator": {"nazev": "EmailRator", "popis": "Vytěžování údajů z firemní pošty jazykovými modely, panel v Gmailu"},
   "WanGP_SD_wholepipeline": {"nazev": "WanGP pipeline", "popis": "Lokální výroba obrázků, videa a řeči na jedné grafické kartě"},
-  "Dychani": {"nazev": "Dýchání", "popis": "Webová aplikace pro řízené dýchání"},
   "whisper-sk-transcriber": {"nazev": "whisper-sk-transcriber", "popis": "Lokální přepis porad a rozlišení mluvčích (slovenština, čeština)"},
   "Gramps": {"nazev": "Rodokmen", "popis": "Rodokmen rodiny v Gramps Web na domácím serveru"},
-  "emailrator-info": {"nazev": "emailrator-info", "popis": "Úvodní stránka a zásady ochrany soukromí EmailRatoru"},
-  "meditation-app": {"nazev": "meditation-app", "popis": "Meditační aplikace v Reactu (předchůdce Dýchání)"},
-  "NakupUX": {"nazev": "NakupUX", "popis": "Doplněk do Chrome, který zpřehlední a zpříjemní nákup v e-shopu Fichema"}
- }
+  "NakupUX": {"nazev": "NakupUX", "popis": "Doplněk do Chrome, který zpřehlední a zpříjemní nákup v e-shopu Fichema"},
+  "ACRS": {"nazev": "ACRS", "popis": "AI generátor reklamních bannerů: rozbor podkladů značky a návrhy pro sociální sítě"},
+  "Desktop-Voice-Assistant": {"nazev": "Hlasový asistent", "popis": "Hlasový asistent pro počítač s lokálním jazykovým modelem a zvukovými efekty"},
+  "TTS-cesky-test": {"nazev": "Český TTS", "popis": "Offline převod českého textu na řeč a klonování hlasu (XTTS-v2)"}
+ },
+ "starsi": [
+  {"nazev": "e-jídelníček", "popis": "Mobilní aplikace pro inteligentní stravování, pro Android, iOS i web",
+   "repa": ["e-jidelnicek-ios-2025", "00-jidelnicek--android2024", "00-jidelnicek--android", "e-jidelnicek-doc2022"]},
+  {"nazev": "Haluzátor", "popis": "Domácí projekce: vlastní fotky a videa s vizuálními efekty v reálném čase a sekvencerem",
+   "repa": ["Haluzator-stable", "Haluzator.eu"]},
+  {"nazev": "Mandalátor", "popis": "Kreslení mandal na Android tabletu s knihovnou vzorových štětců",
+   "repa": ["patern-paint"]},
+  {"nazev": "Meditácie", "popis": "Mluvená meditace s afirmacemi na míru, hudba k relaxaci a dýchací cvičení",
+   "repa": ["meditation-app"]}
+ ]
 }
