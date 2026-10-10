@@ -1,7 +1,9 @@
 # Web jako prezentace: ensō a jeden tah štětcem (návrh)
 
-Datum: 2026-10-10 · Stav: **návrh, neimplementováno.** Uživatel na otázku „jdeme touhle cestou?“ odpověděl „uprav plán“ —
-vyloženo jako souhlas s revidovanou verzí, výslovné „ano“ nezaznělo; před implementací potvrdit.
+Datum: 2026-10-10 · Stav: **potvrzeno, neimplementováno.** Uživatel 10. 10. večer na výslovnou otázku odpověděl
+„Ano, podle návrhu“ a kontaktní e-mail v hlavičce zvolil **qwanap@gmail.com**. Implementační plán je
+`docs/plans/2026-10-10-prezentace.md`. Jsou v něm 4 odchylky od tohoto návrhu (ensō přes `<img>`, text vedle kruhu,
+podtitul 22 px, podtah jako `::after`) i s důvody.
 Repo: `c:/work/graphic/LukasWana` (zdroj webu https://lukaswana.github.io/web/, nasazení viz paměť `web-nasazeni.md`).
 
 ## Zadání uživatele
@@ -33,9 +35,9 @@ k meditačním aplikacím v projektech.
 - Podtitul zkrácen: „vibecoder · rychlé prototypy · technická řešení“ (místo pomlček a „hezky a funkčně“).
 - **Pryč:** šedá čára `.divider`, tagline „KREATIVNÍ PROFESIONÁL, KTERÝ DĚLÁ KVALITNÍ A MODERNÍ PRÁCI“
   (výplň, opakuje banner).
-- **Kontakt — OTEVŘENÉ:** profesionální prezentace potřebuje jasnou cestu, jak oslovit. Návrh: e-mail jako
-  jediný výrazný odkaz v hlavičce. **Uživatel zatím neřekl, jaký e-mail (nebo žádný).** Do rozhodnutí se
-  kontakt nepřidává; implementace na to musí počkat nebo ho vynechat.
+- **Kontakt:** profesionální prezentace potřebuje jasnou cestu, jak oslovit. E-mail je jediný výrazný odkaz
+  v hlavičce. ~~Uživatel zatím neřekl, jaký e-mail~~ → **rozhodnuto 10. 10.: qwanap@gmail.com**, adresa
+  je vidět jako text.
 
 ### Banner (místo třpytivé fotky)
 - Bílá plocha, žádný rámeček boxu. Velké **ensō** jako inline SVG: jeden tah s proměnlivou šířkou
