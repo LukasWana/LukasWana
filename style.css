@@ -53,6 +53,34 @@ body {
     border-bottom-color: transparent;
 }
 
+/* Banner: jeden tah štětcem, žádný rámeček */
+.enso-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    margin: 56px 0 80px;
+}
+
+.enso {
+    width: 300px;
+    max-width: 70vw;
+    height: auto;
+}
+
+.enso-text h2 {
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.enso-text p {
+    font-size: 18px;
+    color: #555;
+}
+
 /* Hero Image Sections */
 .hero-image {
     width: 100%;
@@ -468,6 +496,21 @@ body {
 
     .hero-image {
         height: 250px;
+    }
+
+    .enso-banner {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+        margin: 40px 0 56px;
+    }
+
+    .enso {
+        width: 220px;
+    }
+
+    .enso-text h2 {
+        font-size: 32px;
     }
 
     .social-icons {

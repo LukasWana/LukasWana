@@ -82,5 +82,17 @@ class TestHlavicka(unittest.TestCase):
         self.assertEqual(pravidla(self.css, ".tagline"), [])
 
 
+class TestBanner(unittest.TestCase):
+    def setUp(self):
+        self.html = text("index.html")
+        self.css = text("style.css")
+
+    def test_enso_v_banneru(self):
+        banner = self.html.split('<section class="enso-banner">')[1].split("</section>")[0]
+        self.assertIn('src="img/enso.svg"', banner)
+        self.assertIn("<h2>Deep work creator</h2>", banner)
+        self.assertIn("introvertní technicko-kreativní tvůrce", banner)
+
+
 if __name__ == "__main__":
     unittest.main()
