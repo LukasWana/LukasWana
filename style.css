@@ -482,18 +482,19 @@ body {
     gap: 30px;
 }
 
+/* Karta = světlá teplá plocha s oblými rohy, žádný rámeček (varianta B, rozhodnutí 2026-10-10) */
 .projekty-karta {
-    border: 1px solid #d6d6d6;
     padding: 25px;
-    background-color: #fff;
+    background-color: #f6f5f2;
+    border-radius: 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: box-shadow 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .projekty-karta:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #efede8;
 }
 
 /* Karta se živým webem: celá plocha je odkaz (roztažený přes kartu), ↗ na GitHub zůstává nad ním */
@@ -505,6 +506,7 @@ body {
     position: absolute;
     inset: 0;
     z-index: 1;
+    border-radius: inherit; /* fokus z klávesnice kopíruje oblé rohy karty */
 }
 
 .projekty-web:focus-visible {
@@ -636,14 +638,14 @@ body {
     font-weight: 600;
 }
 
-/* Starší aplikace v rozklikávací sekci: nejvýš 3 na řádek (víc místa pro popis), šedý rámeček */
+/* Starší aplikace v rozklikávací sekci: nejvýš 3 na řádek (víc místa pro popis), světlejší plocha */
 .projekty-archiv .projekty-grid {
     margin-top: 20px;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr));
 }
 
 .projekty-archiv .projekty-karta {
-    border-color: #e6e6e6;
+    background-color: #fafaf8;
 }
 
 .projekty-data-k {

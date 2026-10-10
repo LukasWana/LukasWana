@@ -103,6 +103,16 @@ class TestBezCar(unittest.TestCase):
             for telo in pravidla(self.css, sel):
                 self.assertNotRegex(telo, r"border(-top|-bottom)?\s*:", sel)
 
+    def test_karta_je_plocha_ne_ramecek(self):
+        # rozhodnutí uživatele 2026-10-10: varianta B — světlý teplý podklad s oblými rohy, žádný rámeček
+        telo = pravidla(self.css, ".projekty-karta")[0]
+        self.assertNotRegex(telo, r"border\s*:")
+        self.assertIn("background-color: #f6f5f2", telo)
+        self.assertRegex(telo, r"border-radius:\s*\d+px")
+        for sel in (".projekty-karta:hover", ".projekty-archiv .projekty-karta"):
+            self.assertNotIn("border", pravidla(self.css, sel)[0], sel)
+        self.assertNotIn("box-shadow", pravidla(self.css, ".projekty-karta:hover")[0])
+
     def test_podtah_pod_nadpisem(self):
         tela = pravidla(self.css, ".section-title::after")
         self.assertEqual(len(tela), 1)
