@@ -133,8 +133,10 @@ Náročnost ~100–150 dotazů za běh (limit 5 000/h).
   do karet ani do archivu. První výběr (10:43): e-jídelníček, Haluzátor, Mandalátor, Meditácie jako řádek
   „Starší aplikace“.
   **Od `66d88fd` (uživatel):** seznam 17 položek, které uživatel vybral ze starého archivu, každá s jedním
-  repem, jménem od uživatele a krátkým popisem. Popisy jsou z README, `package.json` a `index.html`
-  a uživatel je zatím neviděl, kromě e-jídelníčku, jehož popis dodal sám. Na webu nejsou
+  repem, jménem od uživatele a krátkým popisem. Uživatel popisy zatím neviděl. Čtyři jsou převzaté z dřívějších karet
+  (ACRS, Desktop Voice Assistant, TTS-cesky-test, Patern paint). Dva (e-jidelnicek ios a android) jsou
+  odvozené z popisu, který uživatel dodal pro e-jídelníček. Zbylých 11 je z README, `package.json`
+  a `index.html`. Na webu nejsou
   samostatným řádkem: jsou (od `0b5aecb`) kartami uvnitř rozklikávací sekce `<details>` „Starší projekty (N)“
   (N = počet starších aplikací). Mají šedý rámeček `#c8c8c8` a jsou nejvýš 3 na řádek, aby měly víc
   místa pro popis.
