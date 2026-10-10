@@ -113,5 +113,20 @@ class TestBezCar(unittest.TestCase):
         self.assertNotIn("uppercase", telo)
 
 
+class TestPaticka(unittest.TestCase):
+    def test_veta_misto_banneru(self):
+        html = text("index.html")
+        self.assertIn('<p class="motto">Kvalitní práce v klidu — bez tlaku, bez stresu, bez přetvářky.</p>', html)
+        self.assertNotIn("KVALITNÍ PRÁCE V KLIDU", html)
+
+    def test_trpytiva_fotka_pryc(self):
+        html, css = text("index.html"), text("style.css")
+        self.assertNotIn("W-ilustration-banner.png", css)
+        self.assertNotIn("hero-image", html)
+        self.assertNotIn("glitter-overlay", html)
+        for sel in (".hero-image", ".hero-image::before", ".glitter-overlay", ".hero-text", ".hero-subtext", ".bottom-hero"):
+            self.assertEqual(pravidla(css, sel), [], sel)
+
+
 if __name__ == "__main__":
     unittest.main()
