@@ -51,7 +51,7 @@ Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-rou
 
 Stav k 10. 10. 2026, 22:56:
 - Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
-- Ensō má od posledního commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
+- Ensō má od commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
 - W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
 - Push po „pushni“, Action run 38085643598 success, živý web ověřen curl (enso.svg 31 967 B, tah.svg 9 772 B).
 - Karty projektů: světlá plocha #f6f5f2 s oblými rohy 16 px, bez rámečku (rozhodnutí uživatele).
@@ -66,7 +66,7 @@ Užitečné příkazy:
 - Testy: python -m pytest -q tests/ (BEZ -I, s ním spadne na importu pygments) a node --test tests/projekty_js.test.js
 - Log cronu: ssh asus-server 'tail -n 12 ~/.local/state/lukaswana-web/sync.log | cut -c1-200'
 - Náhled: data z webu do data/projekty.generated.json (gitignored), python -m http.server 8790 --bind 127.0.0.1 (ne 8765 — API EmailRatoru). Snímky headless Chromem, mobil přes iframe 400 px (Task 6 Step 3; --window-size=400 dá ve skutečnosti ~500 px).
-- Varianty vzhledu k porovnání: kopie index.html do data/var-X.html s <base href="/"> a přepisem CSS v <style> — repo zůstane čisté.
+- Varianty vzhledu k porovnání: kopie index.html do data/var-X.html s <base href="/"> a přepisem CSS v <style> — repo zůstane čisté. Varianty tahu: skript, který importuje tools/enso.py a zapíše SVG do data/. Detail tahu snímkuj s --force-device-scale-factor=2 (v 1× se hrot v rohu obrysu přehlédl).
 
 Důležité:
 - Push do main = hned živý web. Pushovat jen po výslovném schválení uživatele.
