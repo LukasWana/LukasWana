@@ -133,6 +133,11 @@ def sestav(repa, nastaveni, skryt, dnes):
     for seznam in (aktivni, archiv):
         seznam.sort(key=lambda k: k["nazev"].lower())
         seznam.sort(key=lambda k: k.get("posledni", ""), reverse=True)
+    limit = nastaveni.get("max_aktivnich")
+    if limit is not None and len(aktivni) > limit:
+        # Nejstarší aktivní jsou pořád novější než celý archiv, proto jdou na jeho začátek.
+        archiv[:0] = [jen_pole(k, POLE_ARCHIV) for k in aktivni[limit:]]
+        del aktivni[limit:]
     return {"aktivni": aktivni, "archiv": archiv}
 
 

@@ -117,6 +117,15 @@ class Sestav(unittest.TestCase):
         d = p.sestav([repo("Archiv", hlavni=[c("x", "2025-03-01")])], self.NAST, set(), DNES)
         self.assertLessEqual(set(d["archiv"][0]), set(p.POLE_ARCHIV))
 
+    def test_nad_limit_aktivnich_jdou_nejstarsi_do_archivu(self):
+        repa = [repo(f"P{i}", okno=[c(str(i), f"2026-09-{10 + i}")]) for i in range(10)]
+        repa.append(repo("Archiv", hlavni=[c("x", "2025-03-01")]))
+        d = p.sestav(repa, dict(self.NAST, max_aktivnich=8), set(), DNES)
+        self.assertEqual([k["nazev"] for k in d["aktivni"]], [f"P{i}" for i in range(9, 1, -1)])
+        self.assertEqual([k["nazev"] for k in d["archiv"]], ["P1", "P0", "Archiv"])
+        for k in d["archiv"]:
+            self.assertLessEqual(set(k), set(p.POLE_ARCHIV))
+
 
 class Strankovani(unittest.TestCase):
     def test_dalsi_stranka(self):

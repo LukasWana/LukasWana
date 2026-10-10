@@ -2,6 +2,7 @@
  "skupiny": {"asus-server-": {"nazev": "Domácí server", "popis": "Vlastní služby na domácím serveru: knihy, hudba, videa, cloud, hledání"}},
  "automaty": ["ENT AutoBackup"],
  "skryt": ["web", "LukasWana", "ent-backup"],
+ "max_aktivnich": 8,
  "projekty": {
   "EmailRator": {"nazev": "EmailRator", "popis": "Vytěžování údajů z firemní pošty jazykovými modely, panel v Gmailu"},
   "WanGP_SD_wholepipeline": {"nazev": "WanGP pipeline", "popis": "Lokální výroba obrázků, videa a řeči na jedné grafické kartě"},
