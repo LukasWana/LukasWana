@@ -24,6 +24,17 @@
             </div>
         </section>
 
+        <!-- Na čem pracuju (projekty.js, data z tools/projekty.py) -->
+        <section class="projekty-section" id="projekty" hidden>
+            <h2 class="section-title">Na čem pracuju</h2>
+            <div class="projekty-grid" id="projekty-grid"></div>
+            <details class="projekty-archiv" id="projekty-archiv" hidden>
+                <summary>Starší projekty (<span id="projekty-archiv-pocet"></span>)</summary>
+                <ul id="projekty-archiv-seznam"></ul>
+            </details>
+            <p class="projekty-data-k" id="projekty-data-k"></p>
+        </section>
+
         <!-- Skills Section -->
         <section class="skills-section">
             <div class="skill-frame">
@@ -234,6 +245,7 @@
             </div>
         </section>
     </div>
+    <script src="projekty.js" defer></script>
 </body>
 </html>
 

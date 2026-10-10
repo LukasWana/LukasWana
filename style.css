@@ -484,3 +484,109 @@ body {
     }
 }
 
+/* Na čem pracuju (projekty.js) */
+.projekty-section {
+    margin: 80px 0;
+}
+
+.projekty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.projekty-karta {
+    border: 1px solid #000;
+    padding: 25px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: box-shadow 0.3s ease;
+}
+
+.projekty-karta:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.projekty-karta header,
+.projekty-karta footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.projekty-karta h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.projekty-jazyk,
+.projekty-stitky,
+.projekty-karta footer,
+.projekty-data-k {
+    font-size: 13px;
+    color: #666;
+}
+
+.projekty-popis {
+    color: #333;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.projekty-stitky {
+    margin: 0;
+}
+
+.projekty-aktivita {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.projekty-karta footer {
+    margin-top: auto;
+    border-top: 1px solid #e2e2e2;
+    padding-top: 12px;
+}
+
+.projekty-odkaz {
+    color: #000;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.projekty-archiv {
+    margin-top: 40px;
+    border-top: 1px solid #e2e2e2;
+    padding-top: 20px;
+}
+
+.projekty-archiv summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.projekty-archiv ul {
+    list-style: none;
+    padding: 0;
+    columns: 2 260px;
+}
+
+.projekty-archiv li {
+    padding: 6px 0;
+}
+
+.projekty-archiv a {
+    color: #000;
+}
+
+.projekty-data-k {
+    margin-top: 20px;
+    text-align: right;
+}
+
