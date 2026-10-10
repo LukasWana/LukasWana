@@ -6,7 +6,7 @@
   "aplikace": [
    {"nazev": "Knihy", "popis": "E-knihy a audioknihy: hledání, stažení do knihovny a čtení v telefonu"},
    {"nazev": "Obrázky a fotky", "popis": "Galerie inspirací a fotek z knihovny Eagle, synchronizovaná na server"},
-   {"nazev": "Videa", "popis": "YouTube a vlastní videa a seriály ze serveru v jedné aplikaci"},
+   {"nazev": "Jednotné přihlášení", "popis": "Jedno přihlášení otiskem prstu pro všechny moje aplikace, funguje i bez internetu"},
    {"nazev": "Hudba a slovo", "popis": "Hledání a stažení hudby i mluveného slova, rozpoznání skladby a tempa"},
    {"nazev": "Server monitor", "popis": "Hlídač serveru: stav služeb, disků a záloh, grafy paměti a zátěže"},
    {"nazev": "Vzhled UI", "popis": "Jedno nastavení tématu, písma a rozložení pro všechny moje aplikace"}
