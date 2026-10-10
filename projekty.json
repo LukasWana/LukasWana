@@ -9,6 +9,7 @@
   "whisper-sk-transcriber": {"nazev": "whisper-sk-transcriber", "popis": "Lokální přepis porad a rozlišení mluvčích (slovenština, čeština)"},
   "Gramps": {"nazev": "Rodokmen", "popis": "Rodokmen rodiny v Gramps Web na domácím serveru"},
   "emailrator-info": {"nazev": "emailrator-info", "popis": "Úvodní stránka a zásady ochrany soukromí EmailRatoru"},
-  "meditation-app": {"nazev": "meditation-app", "popis": "Meditační aplikace v Reactu (předchůdce Dýchání)"}
+  "meditation-app": {"nazev": "meditation-app", "popis": "Meditační aplikace v Reactu (předchůdce Dýchání)"},
+  "NakupUX": {"nazev": "NakupUX", "popis": "Doplněk do Chrome, který zpřehlední a zpříjemní nákup v e-shopu Fichema"}
  }
 }
