@@ -20,7 +20,7 @@
 - Odchylka od Tasku 4: prázdné pravidlo `.projekty-aplikace li` (po odebrání `border-top` a `padding-top` nezbylo nic) smazáno celé.
 - **Task 6, rozhodnutí uživatele nad náhledem:** tenké šedé rámečky karet „hrozně ostré“. Ze tří náhledů (A jen mezera, B světlá plocha, C tah pod názvem; doporučoval jsem C) vybral **B s oblými rohy**: `#f6f5f2`, `border-radius: 16px`, hover `#efede8` místo stínu, archiv `#fafaf8`, `.projekty-web` dědí zaoblení kvůli fokusu z klávesnice (`286902f`, test `test_karta_je_plocha_ne_ramecek`). Ostatní (text banneru vedle kruhu, podtitul 22 px, suchý konec ensō) schválil tak, jak jsou. Moje nabídky „výraznější suchý konec“ a „text pod kruh i na desktopu“ nechtěl — neuděláno.
 - Písmo Inter Tight posouzeno jen okem ze snímku, ne měřením.
-- **10. 10. večer, další kolo na pokyn uživatele („3 ukaž varianty“):** náhledy suchého konce A (živý) / A2 (bez hrotu) / B (výraznější) / C (hodně suchý) a textu vedle / pod kruhem. Uživatel vybral **C**, doporučoval jsem B. K umístění textu se nevyjádřil, takže text zůstává vedle kruhu (doporučení). C v `enso()`: suchý konec od 0,6, 7 vláken, dojezd 0,45; vlákna se navíc ořezávají na šířku těla. `img/enso.svg` 31 967 B je bajtově shodný se schváleným náhledem. Testy 45 Python + 9 JS. Mobil (kruh 220 px) nesnímkován, je to stejné SVG, jen zmenšené.
+- **10. 10. večer, další kolo na pokyn uživatele („3 ukaž varianty“):** náhledy suchého konce A (živý) / A2 (bez hrotu) / B (výraznější) / C (hodně suchý) a textu vedle / pod kruhem. Uživatel vybral **C**, doporučoval jsem B. K umístění textu se nevyjádřil, takže text zůstává vedle kruhu (doporučení). C v `enso()`: suchý konec od 0,6, 7 vláken, dojezd 0,45; vlákna se navíc ořezávají na šířku těla. `img/enso.svg` 31 967 B je bajtově shodný se schváleným náhledem. Testy 45 Python + 9 JS. Mobil (kruh 220 px) nesnímkován, je to stejné SVG, jen zmenšené. Commity `d965581` (smazán banner) a `d158405` (C + oprava hrotu) pushnuty po výslovném „pushni“, Action run 38085643598 `success`. Živý web ověřen `curl`: `img/enso.svg` 31 967 B, `img/tah.svg` 9 772 B, `W-ilustration-banner.png` 404.
 
 **Otevřené:**
 - ~~**Zub v ensō (nalezeno 10. 10. ve 22:45 nad náhledem ve 2× rozlišení, je i na živém webu):**~~ **Opraveno** v `_bezier` (nulová tečna v rozích, `_roh`), test `test_roh_obrysu_neprestreli` (před opravou přestřel na y = 36,7 při okraji 40). Stejný hrot měl i podtah `img/tah.svg`, oprava ho odstranila (ověřeno snímkem před/po). Původní popis: v místě, kde tělo tahu přechází do suchých vláken, vyčnívá ven malý hrot. Příčina: `obrys()` uzavírá obrys Catmull-Rom křivkou (`_bezier`) a v ostrém rohu (rovně useknutý konec těla, začátky vláken) křivka přestřelí ven. Ořez pásu vláken na 0–1 to NEřeší (vyzkoušeno). Řeší to nulová tečna v rozích se zatočením > 50° (ověřeno snímkem, kód v náhledovém skriptu ve scratchpadu, v repu zatím ne). Čeká na rozhodnutí uživatele spolu s variantami suchého konce.
@@ -49,16 +49,18 @@ Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz s
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
 Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
 
-Stav k 10. 10. 2026, 22:26:
-- Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce. Poslední commit vzhledu 286902f, Action success, ověřeno curl.
-- Karty projektů: rozhodnutí uživatele nad třemi náhledy = světlá plocha #f6f5f2 s oblými rohy 16 px, žádný rámeček (varianta B).
-- Testy: 43 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu (a že img/*.svg = výstup tools/enso.py).
+Stav k 10. 10. 2026, 22:56:
+- Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
+- Ensō má od posledního commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
+- W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
+- Push po „pushni“, Action run 38085643598 success, živý web ověřen curl (enso.svg 31 967 B, tah.svg 9 772 B).
+- Karty projektů: světlá plocha #f6f5f2 s oblými rohy 16 px, bez rámečku (rozhodnutí uživatele).
+- Testy: 45 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu a 8 cest ensō (tělo + 7 vláken).
 - Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
-Otevřené (vše čeká na rozhodnutí uživatele):
+Otevřené (čeká na rozhodnutí uživatele):
 - (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá s tracebackem a na webu stojí datum „Aktualizováno“. Tři varianty řešení jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“.
-- W-ilustration-banner.png (736 KB) už stránka nepoužívá, ale zůstává v repu i na webu. Smazat jen na pokyn uživatele.
-- Nabídnuto a NEchtěno (10. 10.): výraznější suchý konec ensō, text banneru pod kruhem i na desktopu. Kdyby se k tomu vrátil: parametry v tools/enso.py, pak python tools/enso.py a testy.
+- Text banneru pod kruhem i na desktopu: náhled ukázán 10. 10., uživatel nevybral. Kdyby chtěl: v .enso-banner flex-direction: column + text-align: center (jako v @media pro mobil).
 
 Užitečné příkazy:
 - Testy: python -m pytest -q tests/ (BEZ -I, s ním spadne na importu pygments) a node --test tests/projekty_js.test.js
