@@ -563,6 +563,47 @@ body {
     font-size: 18px;
 }
 
+/* Projekt s vlastním boxem přes celý řádek (Domácí server) */
+.projekty-samostatne:not(:empty) {
+    margin-top: 30px;
+}
+
+.projekty-box header {
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.projekty-box h3 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.projekty-aplikace {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px 30px;
+}
+
+.projekty-aplikace li {
+    border-top: 1px solid #e2e2e2;
+    padding-top: 12px;
+}
+
+.projekty-aplikace h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.projekty-aplikace p {
+    color: #333;
+    line-height: 1.5;
+    margin: 0;
+}
+
 .projekty-archiv {
     margin-top: 40px;
     border-top: 1px solid #e2e2e2;

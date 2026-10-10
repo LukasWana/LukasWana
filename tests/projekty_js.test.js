@@ -33,3 +33,16 @@ test('esc: HTML znaky z popisů', () => {
 test('datumCesky', () => {
   assert.strictEqual(p.datumCesky('2026-10-09'), '9. 10. 2026');
 });
+
+test('boxSamostatny: aplikace, graf jen při aktivitě', () => {
+  const b = { nazev: 'Domácí server', popis: 'služby', posledni: '2026-10-09', dni_prace: 3,
+    tydny: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 4],
+    aplikace: [{ nazev: 'Knihy', popis: 'e-knihy' }, { nazev: 'A<b>', popis: 'x' }] };
+  const html = p.boxSamostatny(b, DNES);
+  assert.strictEqual((html.match(/<li/g) || []).length, 2);
+  assert.match(html, /A&lt;b&gt;/);
+  assert.match(html, /<svg/);
+  assert.match(html, /naposledy včera/);
+  const bezAktivity = p.boxSamostatny({ nazev: 'S', posledni: '2025-03-01', aplikace: [] }, DNES);
+  assert.doesNotMatch(bezAktivity, /<svg|<ul/);
+});

@@ -20,6 +20,8 @@ TYDNU = 12
 HROMADNY_PRAH = 5
 POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url")
 POLE_ARCHIV = ("nazev", "jazyk", "posledni", "url")
+POLE_SAMOSTATNE = ("nazev", "popis", "posledni", "dni_prace", "tydny", "aplikace")
+POLE_APLIKACE = ("nazev", "popis")
 KOREN = Path(__file__).resolve().parent.parent
 VYSTUP = KOREN / "data" / "projekty.generated.json"
 NASTAVENI = KOREN / "projekty.json"
@@ -107,10 +109,13 @@ def sestav(repa, nastaveni, skryt, dnes):
         predpona = next((s for s in skupiny if r["nazev"].startswith(s)), None)
         karty.setdefault(predpona or r["nazev"], []).append(r)
 
-    aktivni, archiv = [], []
+    aktivni, archiv, samostatne = [], [], []
     for klic_karty, clenove in karty.items():
         skupina = klic_karty in skupiny
         info = skupiny[klic_karty] if skupina else popisy.get(klic_karty, {})
+        if info.get("samostatne"):
+            samostatne.append(box(info, klic_karty, clenove, automaty, hromadne, dnes))
+            continue
         jazyky = collections.Counter(r["jazyk"] for r in clenove if r["jazyk"])
         zaklad = {
             "nazev": info.get("nazev") or klic_karty.rstrip("-"),
@@ -138,7 +143,24 @@ def sestav(repa, nastaveni, skryt, dnes):
         # Nejstarší aktivní jsou pořád novější než celý archiv, proto jdou na jeho začátek.
         archiv[:0] = [jen_pole(k, POLE_ARCHIV) for k in aktivni[limit:]]
         del aktivni[limit:]
-    return {"aktivni": aktivni, "archiv": archiv}
+    return {"aktivni": aktivni, "archiv": archiv, "samostatne": samostatne}
+
+
+def box(info, klic_karty, clenove, automaty, hromadne, dnes):
+    """Projekt s vlastním boxem přes celý řádek: místo jmen repozitářů ukazuje vybrané aplikace."""
+    zaklad = {
+        "nazev": info.get("nazev") or klic_karty.rstrip("-"),
+        "popis": info.get("popis", ""),
+        "aplikace": [jen_pole(a, POLE_APLIKACE) for a in info.get("aplikace", [])],
+    }
+    okno = [c for r in clenove for c in ciste_commity(r["commity_okno"], automaty, hromadne)]
+    akt = aktivita(okno, dnes)
+    if akt:
+        zaklad["tydny"], zaklad["dni_prace"], zaklad["posledni"] = akt
+    else:
+        data = [posledni_prace(r["commity_okno"] + r["commity_hlavni"], automaty, hromadne) for r in clenove]
+        zaklad["posledni"] = max((d for d in data if d), default=None)
+    return jen_pole(zaklad, POLE_SAMOSTATNE)
 
 
 def dalsi_stranka(link):

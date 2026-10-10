@@ -64,6 +64,22 @@
       '</article>';
   }
 
+  // Projekt s vlastním boxem přes celý řádek (Domácí server): seznam vybraných aplikací.
+  function boxSamostatny(b, dnes) {
+    var aplikace = (b.aplikace || []).map(function (a) {
+      return '<li><h4>' + esc(a.nazev) + '</h4>' + (a.popis ? '<p>' + esc(a.popis) + '</p>' : '') + '</li>';
+    }).join('');
+    var aktivita = b.tydny ? '<div class="projekty-aktivita">' + graf(b.tydny) +
+      '<span>' + dniPrace(b.dni_prace) + '</span></div>' : '';
+    return '<article class="projekty-karta projekty-box">' +
+      '<header><div><h3>' + esc(b.nazev) + '</h3>' +
+      (b.popis ? '<p class="projekty-popis">' + esc(b.popis) + '</p>' : '') + '</div>' + aktivita + '</header>' +
+      (aplikace ? '<ul class="projekty-aplikace">' + aplikace + '</ul>' : '') +
+      (b.posledni ? '<footer><time datetime="' + esc(b.posledni) + '" title="' + datumCesky(b.posledni) +
+        '">naposledy ' + pred(b.posledni, dnes) + '</time></footer>' : '') +
+      '</article>';
+  }
+
   function polozkaArchivu(a) {
     var nazev = a.url ? '<a href="' + esc(a.url) + '" target="_blank" rel="noopener">' + esc(a.nazev) + '</a>' : esc(a.nazev);
     var c = a.posledni ? a.posledni.split('-') : null;
@@ -75,9 +91,12 @@
   function vykresli(data, dnes) {
     var aktivni = (data && data.aktivni) || [];
     var archiv = (data && data.archiv) || [];
-    if (!aktivni.length && !archiv.length) return;
+    var samostatne = (data && data.samostatne) || [];
+    if (!aktivni.length && !archiv.length && !samostatne.length) return;
     document.getElementById('projekty-grid').innerHTML =
       aktivni.map(function (k) { return karta(k, dnes); }).join('');
+    document.getElementById('projekty-samostatne').innerHTML =
+      samostatne.map(function (b) { return boxSamostatny(b, dnes); }).join('');
     if (archiv.length) {
       document.getElementById('projekty-archiv-pocet').textContent = archiv.length;
       document.getElementById('projekty-archiv-seznam').innerHTML = archiv.map(polozkaArchivu).join('');
@@ -90,7 +109,8 @@
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { pred: pred, dniPrace: dniPrace, esc: esc, datumCesky: datumCesky, graf: graf };
+    module.exports = { pred: pred, dniPrace: dniPrace, esc: esc, datumCesky: datumCesky, graf: graf,
+      boxSamostatny: boxSamostatny };
     return;
   }
 

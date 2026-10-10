@@ -106,7 +106,7 @@ class Sestav(unittest.TestCase):
         d = p.sestav(repa, self.NAST, set(), DNES)
         self.assertEqual([k["nazev"] for k in d["aktivni"]], ["Nove", "Stare"])
         self.assertEqual(d["archiv"][0]["posledni"], "2025-03-01")
-        self.assertEqual(set(d), {"aktivni", "archiv"})   # nic dalšího na nejvyšší úrovni
+        self.assertEqual(set(d), {"aktivni", "archiv", "samostatne"})   # nic dalšího na nejvyšší úrovni
 
     def test_prazdne_repo_se_neukaze(self):
         # PDFValidator, Projects: repo bez commitů (API 409) není projekt
@@ -125,6 +125,39 @@ class Sestav(unittest.TestCase):
         self.assertEqual([k["nazev"] for k in d["archiv"]], ["P1", "P0", "Archiv"])
         for k in d["archiv"]:
             self.assertLessEqual(set(k), set(p.POLE_ARCHIV))
+
+
+class Samostatne(unittest.TestCase):
+    NAST = {"skupiny": {"asus-server-": {
+        "nazev": "Domácí server", "popis": "služby", "samostatne": True,
+        "aplikace": [{"nazev": "Knihy", "popis": "e-knihy", "repo": "bookshelf", "port": 7787},
+                     {"nazev": "Zvuk", "popis": "hudba"}]}},
+        "max_aktivnich": 1}
+
+    def test_skupina_jde_do_vlastniho_boxu_mimo_prehled(self):
+        repa = [repo("asus-server-zvuk", okno=[c("a", "2026-10-09")]),
+                repo("asus-server-stav", okno=[c("b", "2026-10-02")]),
+                repo("Dychani", okno=[c("c", "2026-10-01")])]
+        d = p.sestav(repa, self.NAST, set(), DNES)
+        self.assertEqual([k["nazev"] for k in d["aktivni"]], ["Dychani"])   # limit se na box nevztahuje
+        self.assertEqual(d["archiv"], [])
+        box = d["samostatne"][0]
+        self.assertEqual(box["nazev"], "Domácí server")
+        self.assertEqual(box["dni_prace"], 2)
+        self.assertLessEqual(set(box), set(p.POLE_SAMOSTATNE))
+        self.assertNotIn("stitky", box)   # jména repozitářů na web nejdou, jen vybrané aplikace
+
+    def test_aplikace_jen_nazev_a_popis(self):
+        d = p.sestav([repo("asus-server-zvuk", okno=[c("a", "2026-10-09")])], self.NAST, set(), DNES)
+        self.assertEqual(d["samostatne"][0]["aplikace"],
+                         [{"nazev": "Knihy", "popis": "e-knihy"}, {"nazev": "Zvuk", "popis": "hudba"}])
+
+    def test_neaktivni_box_zustane_bez_grafu(self):
+        d = p.sestav([repo("asus-server-zvuk", hlavni=[c("x", "2025-03-01")])], self.NAST, set(), DNES)
+        box = d["samostatne"][0]
+        self.assertEqual(box["posledni"], "2025-03-01")
+        self.assertNotIn("tydny", box)
+        self.assertEqual(d["archiv"], [])
 
 
 class Strankovani(unittest.TestCase):
