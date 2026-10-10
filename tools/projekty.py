@@ -80,3 +80,57 @@ def aktivita(commity, dnes, tydnu=TYDNU):
     if not dny:
         return None
     return tydny, len(dny), max(dny).isoformat()
+
+
+def posledni_prace(commity, automaty, hromadne):
+    """Datum poslední skutečné práce; když je všechno automat/hromadné, datum nejnovějšího commitu."""
+    zdroj = ciste_commity(commity, automaty, hromadne) or commity
+    return max(c["datum"][:10] for c in zdroj) if zdroj else None
+
+
+def jen_pole(zaznam, pole):
+    """Seznam povolených polí: nic jiného do veřejného JSON nesmí projít."""
+    return {k: zaznam[k] for k in pole if zaznam.get(k) not in (None, "", [])}
+
+
+def sestav(repa, nastaveni, skryt, dnes):
+    """repa: [{nazev, soukrome, jazyk, url, commity_okno, commity_hlavni}] → data pro web."""
+    automaty = set(nastaveni.get("automaty", []))
+    skupiny = nastaveni.get("skupiny", {})
+    popisy = nastaveni.get("projekty", {})
+    skryte = set(nastaveni.get("skryt", [])) | set(skryt)
+    repa = [r for r in repa if r["nazev"] not in skryte]
+    hromadne = hromadne_zpravy({r["nazev"]: r["commity_okno"] for r in repa})
+
+    karty = {}
+    for r in repa:
+        predpona = next((s for s in skupiny if r["nazev"].startswith(s)), None)
+        karty.setdefault(predpona or r["nazev"], []).append(r)
+
+    aktivni, archiv = [], []
+    for klic_karty, clenove in karty.items():
+        skupina = klic_karty in skupiny
+        info = skupiny[klic_karty] if skupina else popisy.get(klic_karty, {})
+        jazyky = collections.Counter(r["jazyk"] for r in clenove if r["jazyk"])
+        zaklad = {
+            "nazev": info.get("nazev") or klic_karty.rstrip("-"),
+            "popis": info.get("popis", ""),
+            "jazyk": jazyky.most_common(1)[0][0] if jazyky else "",
+            "url": None if skupina or clenove[0]["soukrome"] else clenove[0]["url"],
+            "stitky": sorted(r["nazev"][len(klic_karty):] for r in clenove) if skupina else [],
+        }
+        okno = [c for r in clenove for c in ciste_commity(r["commity_okno"], automaty, hromadne)]
+        akt = aktivita(okno, dnes)
+        if akt:
+            zaklad["tydny"], zaklad["dni_prace"], zaklad["posledni"] = akt
+            aktivni.append(jen_pole(zaklad, POLE_KARTA))
+        else:
+            data = [posledni_prace(r["commity_okno"] + r["commity_hlavni"], automaty, hromadne) for r in clenove]
+            zaklad["posledni"] = max((d for d in data if d), default=None)
+            if zaklad["posledni"]:   # prázdné repo (žádný commit) není projekt
+                archiv.append(jen_pole(zaklad, POLE_ARCHIV))
+
+    for seznam in (aktivni, archiv):
+        seznam.sort(key=lambda k: k["nazev"].lower())
+        seznam.sort(key=lambda k: k.get("posledni", ""), reverse=True)
+    return {"aktivni": aktivni, "archiv": archiv}

@@ -62,5 +62,61 @@ class Aktivita(unittest.TestCase):
         self.assertEqual(p.aktivita(commity, dt.date(2026, 10, 5)), p.aktivita(commity, dt.date(2026, 10, 11)))
 
 
+class Sestav(unittest.TestCase):
+    NAST = {"skupiny": {"asus-server-": {"nazev": "Domácí server", "popis": "služby"}},
+            "automaty": ["ENT AutoBackup"], "skryt": ["web"],
+            "projekty": {"EmailRator": {"nazev": "EmailRator", "popis": "třídění e-mailů"}}}
+
+    def test_soukrome_repo_nema_url_a_ma_jen_povolena_pole(self):
+        d = p.sestav([repo("EmailRator", okno=[c("a", "2026-10-09")])], self.NAST, set(), DNES)
+        karta = d["aktivni"][0]
+        self.assertNotIn("url", karta)
+        self.assertLessEqual(set(karta), set(p.POLE_KARTA))
+        self.assertEqual(karta["popis"], "třídění e-mailů")
+
+    def test_verejne_repo_ma_url(self):
+        d = p.sestav([repo("Dychani", okno=[c("a", "2026-10-09")], soukrome=False)], self.NAST, set(), DNES)
+        self.assertEqual(d["aktivni"][0]["url"], "https://github.com/LukasWana/Dychani")
+
+    def test_skupina_slouci_repa_a_ukaze_stitky(self):
+        repa = [repo("asus-server-zvuk", okno=[c("a", "2026-10-09")]),
+                repo("asus-server-trezor", okno=[c("b", "2026-10-02")], jazyk="JavaScript", soukrome=False)]
+        d = p.sestav(repa, self.NAST, set(), DNES)
+        self.assertEqual(len(d["aktivni"]), 1)
+        karta = d["aktivni"][0]
+        self.assertEqual(karta["nazev"], "Domácí server")
+        self.assertEqual(karta["stitky"], ["trezor", "zvuk"])
+        self.assertEqual(karta["dni_prace"], 2)
+        self.assertNotIn("url", karta)   # skupina nikdy neodkazuje
+
+    def test_skryti_z_nastaveni_i_ze_souboru(self):
+        repa = [repo("web", okno=[c("a", "2026-10-09")]), repo("Tajne", okno=[c("b", "2026-10-09")])]
+        d = p.sestav(repa, self.NAST, {"Tajne"}, DNES)
+        self.assertEqual(d["aktivni"] + d["archiv"], [])
+
+    def test_repo_jen_s_automatem_jde_do_archivu(self):
+        r = repo("zaloha", okno=[c("a", "2026-10-09", autor="ENT AutoBackup")])
+        d = p.sestav([r], self.NAST, set(), DNES)
+        self.assertEqual(d["aktivni"], [])
+        self.assertEqual(d["archiv"][0]["nazev"], "zaloha")
+
+    def test_poradi_podle_posledni_prace(self):
+        repa = [repo("Stare", okno=[c("a", "2026-09-01")]), repo("Nove", okno=[c("b", "2026-10-09")]),
+                repo("Archiv", hlavni=[c("x", "2025-03-01")])]
+        d = p.sestav(repa, self.NAST, set(), DNES)
+        self.assertEqual([k["nazev"] for k in d["aktivni"]], ["Nove", "Stare"])
+        self.assertEqual(d["archiv"][0]["posledni"], "2025-03-01")
+        self.assertEqual(set(d), {"aktivni", "archiv"})   # nic dalšího na nejvyšší úrovni
+
+    def test_prazdne_repo_se_neukaze(self):
+        # PDFValidator, Projects: repo bez commitů (API 409) není projekt
+        d = p.sestav([repo("Prazdne")], self.NAST, set(), DNES)
+        self.assertEqual(d["aktivni"] + d["archiv"], [])
+
+    def test_archiv_ma_jen_povolena_pole(self):
+        d = p.sestav([repo("Archiv", hlavni=[c("x", "2025-03-01")])], self.NAST, set(), DNES)
+        self.assertLessEqual(set(d["archiv"][0]), set(p.POLE_ARCHIV))
+
+
 if __name__ == "__main__":
     unittest.main()
