@@ -17,14 +17,30 @@ def _f(x):
     return f"{x:.1f}".rstrip("0").rstrip(".")
 
 
+def _roh(a, b, c, prah=math.radians(50)):
+    """Je bod b ostrý roh (obrys v něm zatočí o víc než prah, nebo sousedí s nulovou délkou)?"""
+    v1, v2 = (b[0] - a[0], b[1] - a[1]), (c[0] - b[0], c[1] - b[1])
+    d1, d2 = math.hypot(*v1), math.hypot(*v2)
+    if d1 < 1e-6 or d2 < 1e-6:
+        return True
+    cos = (v1[0] * v2[0] + v1[1] * v2[1]) / (d1 * d2)
+    return math.acos(max(-1.0, min(1.0, cos))) > prah
+
+
 def _bezier(body):
-    """Uzavřená Catmull-Rom křivka přes body → SVG path z kubických Bézierových segmentů."""
+    """Uzavřená Catmull-Rom křivka přes body → SVG path z kubických Bézierových segmentů.
+
+    V ostrém rohu (useknutý konec tahu, začátek vlákna) je tečna nulová — jinak by křivka
+    přestřelila ven z tahu a na obrysu by vyčníval hrot.
+    """
     n = len(body)
+    rohy = [_roh(body[i - 1], body[i], body[(i + 1) % n]) for i in range(n)]
     d = [f"M{_f(body[0][0])} {_f(body[0][1])}"]
     for i in range(n):
-        p0, p1, p2, p3 = body[i - 1], body[i], body[(i + 1) % n], body[(i + 2) % n]
-        c1 = (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6)
-        c2 = (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
+        j = (i + 1) % n
+        p0, p1, p2, p3 = body[i - 1], body[i], body[j], body[(i + 2) % n]
+        c1 = p1 if rohy[i] else (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6)
+        c2 = p2 if rohy[j] else (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
         d.append(f"C{_f(c1[0])} {_f(c1[1])} {_f(c2[0])} {_f(c2[1])} {_f(p2[0])} {_f(p2[1])}")
     return "".join(d) + "Z"
 
@@ -85,7 +101,7 @@ def _vlakna(stred, sirka, zacatek, specifikace, vzorku):
             stred_pasu = m0 + (m - m0) * u
             pul = h0 + (h_konec / 2 - h0) * min(1.0, u * 1.6)
             pul *= 1 - u ** 3  # na konci se vlákno ztratí do nuly
-            return stred_pasu - pul, stred_pasu + pul
+            return max(0.0, stred_pasu - pul), min(1.0, stred_pasu + pul)  # nevyčnívat z těla
 
         cesty.append(obrys(stred, sirka, zacatek, konec, vzorku, pas))
     return cesty
@@ -106,13 +122,16 @@ def enso(velikost=400):
     def sirka(t):
         nasazeni = 0.75 + 0.55 * _hladka(t, 0.0, 0.05) - 0.3 * _hladka(t, 0.05, 0.22)
         dech = 1 + 0.1 * math.sin(2 * math.pi * (1.3 * t + 0.35))
-        dojezd = 1 - 0.35 * _hladka(t, 0.5, 0.95)
+        dojezd = 1 - 0.45 * _hladka(t, 0.5, 0.95)
         return W * nasazeni * dech * dojezd
 
-    zacatek_suche = 0.8
+    # hodně suchý konec (varianta C, rozhodnutí uživatele 10. 10.): štětec vysychá už od 0,6,
+    # 7 tenkých vláken končí na různých místech, takže tah se postupně rozpadá
+    zacatek_suche = 0.6
     cesty = [obrys(stred, sirka, 0.0, zacatek_suche + 0.01, 100, cepicka=True)]
     cesty += _vlakna(stred, sirka, zacatek_suche,
-                     [(0.08, 0.1, 0.99), (0.33, 0.16, 0.95), (0.55, 0.08, 1.0), (0.8, 0.14, 0.9)], 40)
+                     [(0.03, 0.06, 0.98), (0.17, 0.10, 0.80), (0.32, 0.05, 1.0), (0.48, 0.09, 0.74),
+                      (0.63, 0.05, 0.93), (0.79, 0.08, 0.84), (0.95, 0.06, 0.70)], 50)
     return cesty
 
 

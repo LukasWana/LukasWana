@@ -49,6 +49,18 @@ class TestEnso(unittest.TestCase):
             for p in cesty:
                 self.assertTrue(p.get("d").startswith("M") and p.get("d").endswith("Z"), cesta)
 
+    def test_roh_obrysu_neprestreli(self):
+        # rovně useknutý konec tahu (a začátek vlákna) je ostrý roh; Catmull-Rom v něm přestřelil
+        # ven z tahu a na ensō vznikl hrot (nalezeno 10. 10. ve 2× náhledu)
+        d = enso.obrys(lambda t: (100 + 100 * t, 50.0), lambda t: 20.0, 0.0, 1.0, 10)
+        y = [float(c) for c in re.findall(r"-?\d+(?:\.\d+)?", d)[1::2]]
+        self.assertGreaterEqual(min(y), 40.0)
+        self.assertLessEqual(max(y), 60.0)
+
+    def test_suchy_konec_varianta_c(self):
+        # rozhodnutí uživatele 10. 10. nad náhledy A/A2/B/C: C (hodně suchý) = tělo + 7 vláken
+        self.assertEqual(len(enso.enso(400)), 8)
+
     def test_bez_filtru(self):
         # návrh: tah je kreslený obrys, ne roztřesení filtrem
         for cesta in ("img/enso.svg", "img/tah.svg"):

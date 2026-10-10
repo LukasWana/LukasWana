@@ -44,7 +44,8 @@ k meditačním aplikacím v projektech.
 ### Banner (místo třpytivé fotky)
 - Bílá plocha, žádný rámeček boxu. Velké **ensō** jako inline SVG: jeden tah s proměnlivou šířkou
   (výplň obrysu, ne `stroke`), nasazení a „suchý“ konec štětce (2–3 tenké vlákna na konci, mezera
-  v kruhu), černá `#000` jako ikony.
+  v kruhu), černá `#000` jako ikony. *10. 10. večer uživatel vybral nad náhledy hodně suchý konec
+  (varianta C: štětec vysychá od 0,6 délky, 7 vláken), viz Stav plánu.*
 - Tah se kreslí ručně jako cesta (obrys z Bézierových křivek), **ne filtrem** `feTurbulence`/`feDisplacementMap`.
 - Text uvnitř nebo vedle kruhu, čistě vysázený: **Deep work creator**, pod ním „introvertní
   technicko-kreativní tvůrce“.
