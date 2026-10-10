@@ -1,6 +1,19 @@
 # Přehled projektů na webu — návrh
 
-Datum: 2026-10-10 · Stav: návrh schválen uživatelem, implementace nezačala
+Datum: 2026-10-10 · Stav: návrh schválen uživatelem, implementace nezačala · plán: `2026-10-10-projekty.md`
+
+> **Revize 2026-10-10 (kontrola před předáním; platí přednostně před textem níže):**
+> - Data `data/projekty.generated.json` žijí **jen v repu `web`** — server je pushuje tam (deploy key na `web`),
+>   zdroj LukasWana jen čte veřejným https klonem. Důvod: commity serveru do zdroje by odmítaly uživatelovy
+>   pushe z PC (non-fast-forward) a zanášely historii. Nasazovací Action si data před nasazením převezme z `web`.
+> - Na webu „Aktualizováno D. M. RRRR“ (den generování) místo „Data k“ (datum poslední práce) — jen den
+>   generování ukáže, že server stojí. Cena: nejvýš 1 commit denně do `web` navíc.
+> - Prázdná repa (bez commitů) se neukazují vůbec.
+> - Ověřeno během kontroly: kód plánu prošel testy (17 Python, 5 JS) a během nanečisto proti GitHubu (viz plán, Task 4).
+>
+> Známá omezení (vědomě přijatá): dny se počítají v UTC (commit v 0:30 SELČ spadne do předchozího dne);
+> hromadný commit = stejná první řádka týž den v ≥ 5 repech (skutečná práce se stejnou zprávou v 5 repech
+> se odfiltruje taky); závod Action × server se srovná dalším hodinovým během.
 
 ## Cíl
 
