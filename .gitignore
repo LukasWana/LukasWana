@@ -1,0 +1,3 @@
+# generovaná data žijí v repu web (tools/sync.sh na asus-server), ne ve zdroji
+data/
+__pycache__/

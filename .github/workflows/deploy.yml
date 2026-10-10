@@ -17,13 +17,21 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - name: Převzít data projektů z repa web
+        run: |
+          git clone --quiet --depth 1 https://github.com/LukasWana/web.git /tmp/web
+          if [ -f /tmp/web/data/projekty.generated.json ]; then
+            mkdir -p data
+            cp /tmp/web/data/projekty.generated.json data/
+          fi
+
       - uses: peaceiris/actions-gh-pages@v4
         with:
           deploy_key: ${{ secrets.WEB_DEPLOY_KEY }}
           external_repository: LukasWana/web
           publish_branch: main
           publish_dir: .
-          exclude_assets: '.github,README.md,.gitignore,docs,tools,tests,projekty.json'
+          exclude_assets: '.github,README.md,.gitignore,.gitattributes,docs,tools,tests,projekty.json'
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           full_commit_message: 'deploy: ${{ github.event.head_commit.message }} (LukasWana/LukasWana@${{ github.sha }})'
