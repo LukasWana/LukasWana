@@ -401,30 +401,26 @@ body {
 .social-icons {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 4px;
     flex-wrap: wrap;
 }
 
+/* SVG má kolem kolečka okraj na ručně kreslené čáry: 72px box ≈ 55px kolečko. */
 .social-icon {
-    width: 55px;
-    height: 55px;
-    background-color: #000;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid #000;
-    text-decoration: none;
+    width: 72px;
+    height: 72px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.social-icon img {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .social-icon:hover {
     transform: scale(1.15);
-    background-color: #333;
 }
 
 /* Bottom Hero */
@@ -478,13 +474,12 @@ body {
     }
 
     .social-icons {
-        gap: 10px;
+        gap: 2px;
     }
 
     .social-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 12px;
+        width: 60px;
+        height: 60px;
     }
 }
 
