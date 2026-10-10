@@ -16,10 +16,13 @@
 3. *Podtitul 22 px místo 18 px.* `nadpis.js` roztáhne jméno přesně na šířku inkoustu podtitulu. Zkrácený podtitul (~46 znaků místo ~80) by jméno zmenšil zhruba na polovinu, větší písmo podtitulu to částečně vyrovná. Konečnou velikost určí náhled.
 4. *Podtah pod nadpisem sekce jako `::after` s `background-image`.* HTML se tím nemění a podtah dostanou i nadpisy ve skrytém `div.stary-obsah` (je `hidden`, nevadí to).
 
-**Stav:** 2026-10-10 21:10 — **Tasky 1–5 hotové, lokální commity BEZ pushe:** `eaadd86` (generátor, `enso.svg` 18 453 B, `tah.svg` 9 755 B), `fae30db` (hlavička), `2d5c12e` (banner), `54f4a30` (čáry, podtah), `698cb80` (motto). Testy 42 Python + 9 JS zelených. Odchylka od Tasku 4: prázdné pravidlo `.projekty-aplikace li` (po odebrání `border-top` a `padding-top` nezbylo nic) smazáno celé. **Task 6:** snímky 1280 a 400 px (přes iframe) pořízeny 21:10, kontrolní seznam z kroku 4 prošel (písmo Inter Tight posouzeno jen okem ze snímku). **Čeká se na schválení uživatelem**, teprve pak push.
+**Stav:** 2026-10-10 22:26 — **HOTOVO, Tasky 1–7, web živě.** Commity: `eaadd86` (generátor, `enso.svg` 18 453 B, `tah.svg` 9 755 B), `fae30db` (hlavička), `2d5c12e` (banner), `54f4a30` (čáry, podtah), `698cb80` (motto), `286902f` (karty jako plochy). Push po výslovném „pushni to“, Action run 38083567970 `success`, živý web ověřen `curl` (`enso-banner` 1×, `img/enso.svg` i `img/tah.svg` 200, v CSS `#f6f5f2`). Testy 43 Python + 9 JS zelených.
+- Odchylka od Tasku 4: prázdné pravidlo `.projekty-aplikace li` (po odebrání `border-top` a `padding-top` nezbylo nic) smazáno celé.
+- **Task 6, rozhodnutí uživatele nad náhledem:** tenké šedé rámečky karet „hrozně ostré“. Ze tří náhledů (A jen mezera, B světlá plocha, C tah pod názvem; doporučoval jsem C) vybral **B s oblými rohy**: `#f6f5f2`, `border-radius: 16px`, hover `#efede8` místo stínu, archiv `#fafaf8`, `.projekty-web` dědí zaoblení kvůli fokusu z klávesnice (`286902f`, test `test_karta_je_plocha_ne_ramecek`). Ostatní (text banneru vedle kruhu, podtitul 22 px, suchý konec ensō) schválil tak, jak jsou. Moje nabídky „výraznější suchý konec“ a „text pod kruh i na desktopu“ nechtěl — neuděláno.
+- Písmo Inter Tight posouzeno jen okem ze snímku, ne měřením.
 
 **Otevřené:**
-- ~~Server asus-server je „asi bez internetu“ (uživatel 10. 10. před 19:26)~~ — **ověřeno logem cronu ve 20:59:** běh v 19:17 skončil chybou `fatal: unable to access 'https://github.com/LukasWana/LukasWana.git/': Could not resolve host: github.com`. Běh ve 20:17 už prošel („6 aktivních, 10 v archivu / pushnuto da767a0“). Výpadek DNS nebo sítě tedy trval nejvýš do 20:17 a cron se srovnal sám, bez zásahu. Před Taskem 6 stačí znovu pohled do logu (příkaz je v Předávce níže).
+- ~~Server asus-server je „asi bez internetu“ (uživatel 10. 10. před 19:26)~~ — **ověřeno logem cronu ve 20:59:** běh v 19:17 skončil chybou `fatal: unable to access 'https://github.com/LukasWana/LukasWana.git/': Could not resolve host: github.com`. Běh ve 20:17 už prošel („6 aktivních, 10 v archivu / pushnuto da767a0“). Výpadek DNS nebo sítě tedy trval nejvýš do 20:17 a cron se srovnal sám, bez zásahu. Před Taskem 6 stačí znovu pohled do logu (příkaz je v Předávce níže). **22:26: log ukázal běh 22:17 „pushnuto 7c28233“, cron jede.**
 - `W-ilustration-banner.png` (736 KB) zůstává v repu a dál se nasazuje, i když ho stránka nepoužívá. Smazat ho lze jen na pokyn uživatele (je mimo zadání).
 
 **Pravidla prostředí:** kód, testy a texty se zpětným lomítkem zapisuj jen přes Write/Edit, nikdy heredocem ani `sed` (`~/.claude/rules/bash-heredoc-omezeni.md`). `index.html` má CRLF, `style.css` LF; Edit konce řádků zachová. Zprávy commitů piš přes Write do souboru ve scratchpadu a commituj s `git commit -F`. **Push do `main` = okamžitě živý web.** Proto se pushuje až v Tasku 6 po schválení snímků. Do té doby jen lokální commity.
@@ -29,42 +32,40 @@ Testy (bez `-I`, s ním spadne import pygments):
 python -m pytest -q tests/
 node --test tests/projekty_js.test.js
 ```
-Výchozí stav: 28 Python + 9 JS zelených.
+Výchozí stav: 28 Python + 9 JS zelených. Po dokončení: 43 Python + 9 JS.
 
 ## Předávka
 
 Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.claude/rules/konec-session.md`. Historie je v gitu.
 
 ```
-Skills: superpowers:executing-plans (plán níže má Tasky 1–7 s testy), superpowers:test-driven-development (každý task začíná padajícím testem), superpowers:verification-before-completion (Task 6: snímky a schválení uživatelem před pushem).
+Skills: žádný konkrétní — plán je dokončený. Na novou úpravu vzhledu superpowers:brainstorming (náhledy variant na skutečné stránce), na rozbitou věc superpowers:systematic-debugging.
 
 Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main, vše pushnuté).
-Plán: docs/plans/2026-10-10-prezentace.md — Goal, odchylky od návrhu a Stav nahoře, Tasky 1–7 pod touto sekcí.
-Návrh: docs/plans/2026-10-10-prezentace-design.md (potvrzený).
+Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
+Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty).
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
-Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony) a ps-roura-ssh-bom.md.
+Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
 
-Stav k 10. 10. 2026, 20:59 (session skončila po napsání plánu; uživatel: „vše udělej v nové session“):
-- Uživatel potvrdil návrh webu jako prezentace („Ano, podle návrhu“) a jako kontakt v hlavičce zvolil qwanap@gmail.com.
-- Implementační plán je napsaný a NIC z něj není implementované. Poslední změna vzhledu webu je 9b84585 (commit 14:19), od té doby přibývají jen data z cronu.
-- Pozor na snímky mobilu: --window-size=400 v headless Chrome dá ve skutečnosti asi 500 px a snímek ořízne. Platí obal s iframe, viz Task 6 Step 3 (ověřeno 10. 10. na živém webu).
-- Kód plánu je ověřený ve scratchpadu. Generátor tools/enso.py (Task 1) je totožný s prototypem, který vyrobil enso.svg 18 453 B a tah.svg 9 755 B. Snímek ukázal kulaté nasazení a suchý konec ze 4 vláken.
-- Testy z plánu jsem pustil proti dnešní stránce: 4 testy generátoru prošly, 10 testů vzhledu padá ze správného důvodu (chybí e-mail, písmo, ensō; čáry, verzálky a třpytivá fotka jsou pořád na stránce).
-- Testy repa: 28 Python + 9 JS zelených (spuštěno ve 20:59 při kontrole session).
+Stav k 10. 10. 2026, 22:26:
+- Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce. Poslední commit vzhledu 286902f, Action success, ověřeno curl.
+- Karty projektů: rozhodnutí uživatele nad třemi náhledy = světlá plocha #f6f5f2 s oblými rohy 16 px, žádný rámeček (varianta B).
+- Testy: 43 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu (a že img/*.svg = výstup tools/enso.py).
+- Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
-Další krok: Task 1 až Task 5 s lokálními commity BEZ pushe, pak Task 6. Ten znamená náhled na portu 8790, snímky 1280 a 400 px, jejich ukázání uživateli a push AŽ po jeho výslovném schválení (push = hned živý web). Nakonec Task 7, dokumentace.
-
-Otevřené:
-- (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá s tracebackem a na webu stojí datum „Aktualizováno“. Tři varianty řešení jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“, nic nedělat bez jeho rozhodnutí.
-- asus-server byl 10. 10. večer bez internetu. Cron v 19:17 skončil chybou „Could not resolve host: github.com“, ve 20:17 už pushnul da767a0, takže se srovnal sám. Před Taskem 6 se znovu podívej do logu cronu. Případný další výpadek nasazení vzhledu neblokuje, to jde přes GitHub Action.
-- W-ilustration-banner.png po Tasku 5 nikdo nepoužívá, ale zůstává v repu i na webu. Smazat jen na pokyn uživatele.
+Otevřené (vše čeká na rozhodnutí uživatele):
+- (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá s tracebackem a na webu stojí datum „Aktualizováno“. Tři varianty řešení jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“.
+- W-ilustration-banner.png (736 KB) už stránka nepoužívá, ale zůstává v repu i na webu. Smazat jen na pokyn uživatele.
+- Nabídnuto a NEchtěno (10. 10.): výraznější suchý konec ensō, text banneru pod kruhem i na desktopu. Kdyby se k tomu vrátil: parametry v tools/enso.py, pak python tools/enso.py a testy.
 
 Užitečné příkazy:
 - Testy: python -m pytest -q tests/ (BEZ -I, s ním spadne na importu pygments) a node --test tests/projekty_js.test.js
 - Log cronu: ssh asus-server 'tail -n 12 ~/.local/state/lukaswana-web/sync.log | cut -c1-200'
-- Náhled a snímky: Task 6 v plánu (port 8790, ne 8765 — ten drží API EmailRatoru).
+- Náhled: data z webu do data/projekty.generated.json (gitignored), python -m http.server 8790 --bind 127.0.0.1 (ne 8765 — API EmailRatoru). Snímky headless Chromem, mobil přes iframe 400 px (Task 6 Step 3; --window-size=400 dá ve skutečnosti ~500 px).
+- Varianty vzhledu k porovnání: kopie index.html do data/var-X.html s <base href="/"> a přepisem CSS v <style> — repo zůstane čisté.
 
 Důležité:
+- Push do main = hned živý web. Pushovat jen po výslovném schválení uživatele.
 - Repo LukasWana/web je výstup nasazení. NEMAZAT, ručně neupravovat.
 - Token nikdy do chatu a nikdy do souboru rourou z PowerShellu.
 - Kód a texty se zpětným lomítkem piš jen přes Write/Edit. Zprávy commitů piš do souboru přes Write a commituj s git commit -F.

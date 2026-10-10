@@ -1,9 +1,11 @@
 # Web jako prezentace: ensō a jeden tah štětcem (návrh)
 
-Datum: 2026-10-10 · Stav: **potvrzeno, neimplementováno.** Uživatel 10. 10. večer na výslovnou otázku odpověděl
+Datum: 2026-10-10 · Stav: **implementováno 2026-10-10, živě od commitu `286902f`** (Action `success`, ověřeno
+`curl` na živém webu). Uživatel 10. 10. večer na výslovnou otázku odpověděl
 „Ano, podle návrhu“ a kontaktní e-mail v hlavičce zvolil **qwanap@gmail.com**. Implementační plán je
 `docs/plans/2026-10-10-prezentace.md`. Jsou v něm 4 odchylky od tohoto návrhu (ensō přes `<img>`, text vedle kruhu,
-podtitul 22 px, podtah jako `::after`) i s důvody.
+podtitul 22 px, podtah jako `::after`) i s důvody. Pátá odchylka vznikla nad náhledem: karty nemají rámeček, ale
+světlou plochu s oblými rohy (viz Karty níže).
 Repo: `c:/work/graphic/LukasWana` (zdroj webu https://lukaswana.github.io/web/, nasazení viz paměť `web-nasazeni.md`).
 
 ## Zadání uživatele
@@ -53,7 +55,10 @@ k meditačním aplikacím v projektech.
 ### Na čem pracuju
 - Nadpis bez silné černé čáry (`border-bottom: 2px` v `style.css` ~ř. 221). Místo ní krátký ručně
   kreslený podtah stejným štětcem (malé inline SVG).
-- Karty: rámeček tenčí a světlejší (nebo jen světlé pozadí — rozhodne se nanečisto podle náhledu).
+- Karty: ~~rámeček tenčí a světlejší (nebo jen světlé pozadí — rozhodne se nanečisto podle náhledu)~~.
+  **Rozhodnuto 10. 10. nad třemi náhledy** (A jen mezera, B plocha, C tah pod názvem): uživatel řekl, že tenký šedý
+  rámeček působí „hrozně ostře“, a vybral **B s oblými rohy**. Podklad `#f6f5f2`, `border-radius: 16px`, při najetí
+  myší `#efede8` (místo stínu), starší projekty `#fafaf8`. Commit `286902f`.
   Pryč šedá čára nad „naposledy …“. Grafy aktivity zůstávají.
 - Box Domácí server: pryč čáry mezi aplikacemi; oddělí je mezera.
 - Pryč šedá čára nad „Starší projekty (N)“.
