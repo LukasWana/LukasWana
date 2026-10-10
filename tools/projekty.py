@@ -53,3 +53,30 @@ def ciste_commity(commity, automaty, hromadne):
             continue
         vysledek.append(commit)
     return vysledek
+
+
+def pondeli(den):
+    return den - dt.timedelta(days=den.weekday())
+
+
+def zacatek_okna(dnes, tydnu=TYDNU):
+    return pondeli(dnes) - dt.timedelta(weeks=tydnu - 1)
+
+
+def aktivita(commity, dnes, tydnu=TYDNU):
+    """(tydny, dni_prace, posledni) za kalendářní týdny po–ne, nejstarší první; None = žádná práce.
+
+    Týdny jsou ukotvené na pondělí: bez nové práce se výstup mění nejvýš jednou týdně
+    (žádné zbytečné commity dat)."""
+    tento = pondeli(dnes)
+    tydny, dny = [0] * tydnu, set()
+    for commit in commity:
+        den = dt.date.fromisoformat(commit["datum"][:10])
+        index = tydnu - 1 - (tento - pondeli(den)).days // 7
+        if den > dnes or not 0 <= index < tydnu:
+            continue
+        tydny[index] += 1
+        dny.add(den)
+    if not dny:
+        return None
+    return tydny, len(dny), max(dny).isoformat()

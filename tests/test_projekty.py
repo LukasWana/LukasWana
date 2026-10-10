@@ -42,5 +42,25 @@ class Cisteni(unittest.TestCase):
         self.assertEqual(p.ciste_commity(commity, set(), hromadne), [])
 
 
+class Aktivita(unittest.TestCase):
+    def test_tydny_ukotvene_na_pondeli(self):
+        commity = [c("a", "2026-10-05"), c("b", "2026-10-04"), c("d", "2026-10-04")]
+        tydny, dni, posledni = p.aktivita(commity, DNES)
+        self.assertEqual(len(tydny), 12)
+        self.assertEqual(tydny[-1], 1)   # po 5. 10. = tento týden
+        self.assertEqual(tydny[-2], 2)   # ne 4. 10. = minulý týden
+        self.assertEqual(dni, 2)
+        self.assertEqual(posledni, "2026-10-05")
+
+    def test_mimo_okno_neni_aktivita(self):
+        # okno začíná po 20. 7. 2026 (12 týdnů včetně tohoto)
+        self.assertIsNone(p.aktivita([c("a", "2026-07-19")], DNES))
+        self.assertIsNotNone(p.aktivita([c("a", "2026-07-20")], DNES))
+
+    def test_bez_prace_se_vystup_v_ramci_tydne_nemeni(self):
+        commity = [c("a", "2026-09-30")]
+        self.assertEqual(p.aktivita(commity, dt.date(2026, 10, 5)), p.aktivita(commity, dt.date(2026, 10, 11)))
+
+
 if __name__ == "__main__":
     unittest.main()
