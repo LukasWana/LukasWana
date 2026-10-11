@@ -28,6 +28,7 @@
 - ~~`W-ilustration-banner.png` (736 KB) zůstává v repu a dál se nasazuje, i když ho stránka nepoužívá.~~ — **10. 10. 22:39: smazán na pokyn uživatele** („2 smazat“). Z webu zmizel s nasazením run 38085643598 (`peaceiris/actions-gh-pages` bez `keep_files` cílové repo přepíše), ověřeno `curl` → 404.
 - **10. 10. 23:42, pokyn uživatele „6 hlavních projektů rozděl na 3x3“:** `.projekty-grid` má nejvýš 3 sloupce (tentýž vzorec, který dosud měl jen archiv: `minmax(min(100%, max(340px, calc((100% - 60px) / 3))), 1fr)`). Předtím `minmax(260px, 1fr)` dávalo na desktopu 4 + 2. Archiv vzorec dědí. Test `test_hlavni_projekty_po_trech`, celkem 46 Python + 9 JS. Snímek 1400 px nad živými daty: 2 řady po 3. Výklad „3x3“ = 2 řady po 3 kartách (karet je 6). Commit `004090c` pushnut po „pushni“, Action run 38089255740 `success`, živé `style.css` ověřeno `curl` (`minmax(260px` 0×). Mobil po změně nesnímkován (vzorec je tentýž jako u archivu, `min(100%, …)` dává 1 sloupec).
 - **11. 10. 00:07, pokyn uživatele „místo videa dej projekt jednotné přihlášení“:** v boxu Domácí server (`projekty.json`, `skupiny.asus-server-.aplikace`) nahrazena položka „Videa“ položkou „Jednotné přihlášení“ — „Jedno přihlášení otiskem prstu pro všechny moje aplikace, funguje i bez internetu“. Popis podle repa `asus-server-prihlaseni` (`plan-prihlaseni.md`: Pocket ID + oauth2-proxy, jen passkey, funguje bez internetu; HANDOFF 10. 10.: nasazeno). Repo `asus-server-videoyou` dál patří do skupiny (počítá se do dní práce), jen se nevypisuje. Commit `4e96b24` pushnut po „pushni a pusť synchronizaci hned“: generátor nanečisto OK, Action run 38091874136 `success`, pak (až po deployi, kvůli souběhu) ruční `sync.sh` na asus-serveru v 00:33:47 → `pushnuto f51ba23`. Živé `data/projekty.generated.json` ověřeno `curl`: „Jednotné přihlášení“ 1×, „Videa“ 0×.
+- **11. 10. 07:16, pokyn uživatele „jeden responzivní režim na velké monitory, zvětší všechny prvky, od šířky 1920“:** na konci `style.css` `@media (min-width: 1920px) { html { zoom: 1.25; } }` — zvětší písmo, obrázky, mezery i mřížku najednou (kontejner 1200 → vizuálně 1500 px). Zvoleno místo přepočtu stovek px hodnot. `nadpis.js` beze změny: změřeno headless Chromem (stránka s měřicím skriptem, Range rects) — se zoomem nadpis 557 px na podtitul 553 px, bez zoomu 445 / 443, tedy stejný poměr, nadpis dál sedí. Vnitřní šířka 1888 → zoom 1, 1920 a 2560 → 1,25. Pozor při ověřování: headless `--window-size=1920` má uvnitř jen 1904 px (dotaz nesepne), na 1920 je třeba okno 1936. Test `test_zoom_od_1920`, 47 Python + 9 JS. Snímek 1920 px: 2 řady po 3, nic nepřetéká. Ověřeno jen v Chromu; Firefox `zoom` podporuje od verze 126, neověřováno.
 
 **Pravidla prostředí:** kód, testy a texty se zpětným lomítkem zapisuj jen přes Write/Edit, nikdy heredocem ani `sed` (`~/.claude/rules/bash-heredoc-omezeni.md`). `index.html` má CRLF, `style.css` LF; Edit konce řádků zachová. Zprávy commitů piš přes Write do souboru ve scratchpadu a commituj s `git commit -F`. **Push do `main` = okamžitě živý web.** Proto se pushuje až v Tasku 6 po schválení snímků. Do té doby jen lokální commity.
 
@@ -51,7 +52,7 @@ Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz s
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
 Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
 
-Stav k 11. 10. 2026, 00:35:
+Stav k 11. 10. 2026, 07:16:
 - Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
 - Ensō má od commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
 - W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
@@ -59,7 +60,8 @@ Stav k 11. 10. 2026, 00:35:
 - Karty projektů: světlá plocha #f6f5f2 s oblými rohy 16 px, bez rámečku (rozhodnutí uživatele).
 - Hlavní projekty (6 karet) jsou od 004090c nejvýš po 3 na řádek = 2 řady po 3 (pokyn „rozděl na 3x3“), dřív 4 + 2. Stejný vzorec jako archiv. Push po „pushni“, run 38089255740 success, živé CSS ověřeno curl.
 - Box Domácí server: místo „Videa“ je „Jednotné přihlášení“ (4e96b24, popis z repa asus-server-prihlaseni). Pushnuto, synchronizace puštěna ručně po deployi, živá data ověřena curl.
-- Testy: 46 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu, 8 cest ensō (tělo + 7 vláken) a mřížku po 3 (test_hlavni_projekty_po_trech).
+- Velké monitory: od šířky 1920 px zoom 1,25 na celé stránce (style.css na konci, pokyn uživatele 11. 10.). nadpis.js sedí i se zoomem (změřeno v Chromu). Commit zatím NEPUSHNUTÝ, čeká na „pushni“.
+- Testy: 47 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu, 8 cest ensō (tělo + 7 vláken), mřížku po 3 (test_hlavni_projekty_po_trech) a zoom od 1920 (test_zoom_od_1920).
 - Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
 Otevřené (čeká na rozhodnutí uživatele):

@@ -144,6 +144,14 @@ class TestMrizka(unittest.TestCase):
         self.assertIn("gap: 30px", tela[0])
 
 
+class TestVelkyMonitor(unittest.TestCase):
+    def test_zoom_od_1920(self):
+        # pokyn uživatele 2026-10-11: jeden režim pro velké monitory od šířky 1920, zvětší všechny prvky
+        css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
+        self.assertRegex(css, r"@media \(min-width: 1920px\)\s*\{\s*html\s*\{\s*zoom:\s*1\.25;\s*\}\s*\}")
+        self.assertEqual(css.count("zoom"), 1)
+
+
 class TestPaticka(unittest.TestCase):
     def test_veta_misto_banneru(self):
         html = text("index.html")
