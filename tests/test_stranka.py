@@ -346,16 +346,17 @@ class TestVeseleBarevne(unittest.TestCase):
         self.assertIn("background-color: rgb(var(--akcent));", pravidla(css, self.V + ".social-icon:nth-child(1) i")[0])
         self.assertIn("background-color: rgb(var(--akcent-3));", pravidla(css, self.V + ".social-icon:nth-child(8) i")[0])
 
-    def test_starsi_projekty_ve_trech_barvach(self):
+    def test_starsi_projekty_jeden_prechod_shora_dolu(self):
+        """Druhý pokyn téhož dne: místo tří barev po sloupcích jeden přechod shora dolů přes všechny karty;
+        výřez karty dává projekty.js prechodPresKarty() (--prechod-h, --prechod-y)."""
         css = text("skiny.css")
-        for sel, barva in ((":nth-child(3n+1)", "--akcent)"), (":nth-child(3n+2)", "--akcent-2)"),
-                           (":nth-child(3n)", "--akcent-3)")):
-            tela = pravidla(css, self.V + ".projekty-archiv .projekty-karta" + sel)
-            self.assertEqual(len(tela), 1, sel)
-            self.assertIn("background-color: rgb(var(" + barva, tela[0], sel)
-        # šedé popisky by na oranžové zanikly: odvozené z --inv-text
+        self.assertNotIn("nth-child(3n", css)
         tela = pravidla(css, self.V + ".projekty-archiv .projekty-karta")
         self.assertEqual(len(tela), 1)
+        self.assertIn("linear-gradient(180deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)))", tela[0])
+        self.assertIn("background-size: 100% var(--prechod-h, 100%);", tela[0])
+        self.assertIn("background-position: 0 calc(-1 * var(--prechod-y, 0px));", tela[0])
+        # šedé popisky by na oranžové zanikly: odvozené z --inv-text
         self.assertIn("--inv-text-2: color-mix(in srgb, var(--inv-text)", tela[0])
         self.assertIn("--inv-text-3: color-mix(in srgb, var(--inv-text)", tela[0])
 

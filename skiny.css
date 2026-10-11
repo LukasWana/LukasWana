@@ -70,7 +70,7 @@
 }
 
 /* Veselé: ikony a Starší projekty barevně jako ilustrace ensō (pokyn uživatele 2026-10-11, varianta A z náhledu):
-   plné barvy po krocích přechodu modrá → fialová → oranžová, ikony zleva doprava, karty po sloupcích. Z --akcent*,
+   ikony plnými barvami po krocích přechodu modrá → fialová → oranžová zleva doprava, karty přechodem níž. Z --akcent*,
    takže v obou režimech i se Základní barvou drží s ensō. Texty karet zůstávají --inv-*; šedé jsou odvozené
    z --inv-text, protože původní šedá na oranžové zanikla. */
 [data-skin="teple"] .social-icon:nth-child(1) i { background-color: rgb(var(--akcent)); }
@@ -82,14 +82,16 @@
 [data-skin="teple"] .social-icon:nth-child(7) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 71%, rgb(var(--akcent-2))); }
 [data-skin="teple"] .social-icon:nth-child(8) i { background-color: rgb(var(--akcent-3)); }
 
+/* Starší projekty: jeden přechod shora dolů přes všechny karty (druhý pokyn téhož dne, místo tří barev po sloupcích).
+   Přechod má výšku celé mřížky a každá karta ukazuje svůj výřez; čísla dává projekty.js prechodPresKarty(). */
 [data-skin="teple"] .projekty-archiv .projekty-karta {
     --inv-text-2: color-mix(in srgb, var(--inv-text) 90%, transparent);
     --inv-text-3: color-mix(in srgb, var(--inv-text) 75%, transparent);
+    background-image: linear-gradient(180deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)));
+    background-size: 100% var(--prechod-h, 100%);
+    background-position: 0 calc(-1 * var(--prechod-y, 0px));
+    background-repeat: no-repeat;
 }
-
-[data-skin="teple"] .projekty-archiv .projekty-karta:nth-child(3n+1) { background-color: rgb(var(--akcent)); }
-[data-skin="teple"] .projekty-archiv .projekty-karta:nth-child(3n+2) { background-color: rgb(var(--akcent-2)); }
-[data-skin="teple"] .projekty-archiv .projekty-karta:nth-child(3n) { background-color: rgb(var(--akcent-3)); }
 
 [data-skin="teple"] .projekty-archiv .projekty-karta:hover {
     filter: brightness(1.06);

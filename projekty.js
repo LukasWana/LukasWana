@@ -103,6 +103,17 @@
       '</article>';
   }
 
+  // Motiv Veselé (skiny.css): Starší projekty mají jeden přechod shora dolů přes celou mřížku (pokyn 2026-10-11).
+  // Karta neví, kde v mřížce leží, proto dostane výřez: --prechod-h = výška mřížky, --prechod-y = odsazení karty
+  // od vršku mřížky. Bez JS (nebo před prvním měřením) má každá karta celý přechod sama.
+  function prechodPresKarty(grid) {
+    var g = grid.getBoundingClientRect();
+    grid.style.setProperty('--prechod-h', g.height + 'px');
+    Array.prototype.forEach.call(grid.children, function (k) {
+      k.style.setProperty('--prechod-y', (k.getBoundingClientRect().top - g.top) + 'px');
+    });
+  }
+
   // Rozklikávací „Starší projekty“ ukazují jen vybrané starší aplikace (data.starsi) jako karty;
   // zbytek archivu (data.archiv) se na webu neukazuje.
   function vykresli(data, dnes) {
@@ -116,9 +127,11 @@
       samostatne.map(function (b) { return boxSamostatny(b, dnes); }).join('');
     if (starsi.length) {
       document.getElementById('projekty-archiv-pocet').textContent = starsi.length;
-      document.getElementById('projekty-starsi-grid').innerHTML =
-        starsi.map(function (k) { return karta(k, dnes); }).join('');
+      var mrizka = document.getElementById('projekty-starsi-grid');
+      mrizka.innerHTML = starsi.map(function (k) { return karta(k, dnes); }).join('');
       document.getElementById('projekty-archiv').hidden = false;
+      // změří se při rozbalení (mřížka dostane rozměr) i při každé změně šířky a počtu sloupců
+      if (window.ResizeObserver) new ResizeObserver(function () { prechodPresKarty(mrizka); }).observe(mrizka);
     }
     if (data.aktualizovano) {
       document.getElementById('projekty-data-k').textContent = 'Aktualizováno ' + aktualizovano(data.aktualizovano);
@@ -128,7 +141,7 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { pred: pred, dniPrace: dniPrace, esc: esc, datumCesky: datumCesky, aktualizovano: aktualizovano, graf: graf,
-      boxSamostatny: boxSamostatny, karta: karta };
+      boxSamostatny: boxSamostatny, karta: karta, prechodPresKarty: prechodPresKarty };
     return;
   }
 

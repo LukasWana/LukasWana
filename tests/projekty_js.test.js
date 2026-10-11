@@ -102,3 +102,18 @@ test('karta: barva z banneru jako třída (docs/plans/2026-10-11-barvy-design.md
   // box Domácí server barvu nikdy nemá
   assert.doesNotMatch(p.boxSamostatny({ nazev: 'S', posledni: '2025-03-01', aplikace: [], barva: 'zlata' }, DNES), /barv/);
 });
+
+test('prechodPresKarty: výška mřížky na mřížce, odsazení karty od vršku mřížky na kartě', () => {
+  const prvek = (top, height) => ({
+    vlastnosti: {},
+    getBoundingClientRect: () => ({ top, height }),
+    style: { setProperty(k, v) { this.owner.vlastnosti[k] = v; } },
+  });
+  const grid = prvek(500, 640);
+  const karty = [prvek(500, 200), prvek(500, 200), prvek(730, 180)];
+  [grid, ...karty].forEach((x) => { x.style.owner = x; });
+  grid.children = karty;
+  p.prechodPresKarty(grid);
+  assert.deepStrictEqual(grid.vlastnosti, { '--prechod-h': '640px' });
+  assert.deepStrictEqual(karty.map((k) => k.vlastnosti['--prechod-y']), ['0px', '0px', '230px']);
+});
