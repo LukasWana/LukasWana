@@ -131,7 +131,10 @@ Každý projekt má tak dál unikátní barvu. Inkoust bez zvolené barvy si nec
 Teplé světlo, Příroda tmavá, Hluboká práce a Inkoust + Malinová. Relativní barvy (`oklch(from …)`) umí Chrome 119+,
 Safari 16.4+ a Firefox 128+, ale ověřeno je to jen v Chromu. **Opar nahoře** přebarví motiv i Základní barva,
 tedy stejně jako karty (volba uživatele z nabídky „ať je přebarví i Základní barva“; zamítnuté možnosti byly
-„opar neměnit“ a „opar zrušit“). Ověřeno snímky Inkoust + Zelená a Příroda tmavá + Malinová. Dál 7 Základních barev (bez Zlaté a Azurové).
+„opar neměnit“ a „opar zrušit“). Ověřeno snímky Inkoust + Zelená a Příroda tmavá + Malinová. **Výchozí Inkoust
+bez zvolené barvy je čistě černobílý** (pokyn „defaultní motiv bude černobílý“, mění volbu z 11. 10. ráno, kdy měl
+Inkoust opar a karty v barvách banneru): `--opar-sila: 0`, `--bokeh-sila: 0`, grafy v inkoustu. Barvu dostane až po
+výběru Základní barvy. Ověřeno snímky Inkoust světlý i tmavý. Dál 7 Základních barev (bez Zlaté a Azurové).
 Jméno a podtitul jsou plnou barvou, ikony v inkoustu motivu, opar barevných motivů je z akcentů motivu (Inkoust si
 nechal barvy původního banneru) a v grafech chybějí čárky prázdných týdnů. Barvy projektů na kartách zůstaly
 (pokyn „každý projekt unikátní barvu“). Neřešeno: počet velikostí písma a `<title>`. Čeká se na verdikt uživatele.
