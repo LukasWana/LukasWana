@@ -145,10 +145,10 @@ class TestMrizka(unittest.TestCase):
 
 
 class TestVelkyMonitor(unittest.TestCase):
-    def test_zoom_od_1920(self):
-        # pokyn uživatele 2026-10-11: jeden režim pro velké monitory od šířky 1920, zvětší všechny prvky
+    def test_zoom_od_1800(self):
+        # pokyn uživatele 2026-10-11: jeden režim pro velké monitory, zvětší všechny prvky; hranice 1920 → 1800 téhož dne
         css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
-        self.assertRegex(css, r"@media \(min-width: 1920px\)\s*\{\s*html\s*\{\s*zoom:\s*1\.25;\s*\}\s*\}")
+        self.assertRegex(css, r"@media \(min-width: 1800px\)\s*\{\s*html\s*\{\s*zoom:\s*1\.25;\s*\}\s*\}")
         self.assertEqual(css.count("zoom"), 1)
 
 
