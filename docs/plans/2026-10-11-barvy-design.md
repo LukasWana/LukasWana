@@ -1,6 +1,6 @@
 # Barvy z původního banneru — návrh
 
-Datum: 2026-10-11 · Stav: **implementováno 11. 10. 09:02, testy 59 Python + 10 JS, snímky desktop a mobil ověřeny; na push čeká na „pushni“**
+Datum: 2026-10-11 · Stav: **implementováno a živě 11. 10.** (commit `5774f16`, testy 59 Python + 10 JS, snímky desktop a mobil ověřeny, živá data s barvami po ručním `sync.sh` 09:06, viz Stav v `2026-10-10-prezentace.md`)
 
 ## Proč
 

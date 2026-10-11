@@ -49,13 +49,13 @@ Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.
 ```
 Skills: žádný konkrétní — plán je dokončený. Na novou úpravu vzhledu superpowers:brainstorming (náhledy variant na skutečné stránce), na rozbitou věc superpowers:systematic-debugging.
 
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web. Zkontroluj git status -sb: barvy z banneru byly commitnuty a na push čekaly na „pushni“.
+Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Vše pushnuté, push = živý web.
 Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
 Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty). Barvy z původního banneru: docs/plans/2026-10-11-barvy-design.md.
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
 Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
 
-Stav k 11. 10. 2026, 09:02:
+Stav k 11. 10. 2026, 09:08:
 - Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
 - Ensō má od commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
 - W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
@@ -64,7 +64,7 @@ Stav k 11. 10. 2026, 09:02:
 - Hlavní projekty (6 karet) jsou od 004090c nejvýš po 3 na řádek = 2 řady po 3 (pokyn „rozděl na 3x3“), dřív 4 + 2. Stejný vzorec jako archiv. Push po „pushni“, run 38089255740 success, živé CSS ověřeno curl.
 - Box Domácí server: místo „Videa“ je „Jednotné přihlášení“ (4e96b24, popis z repa asus-server-prihlaseni). Pushnuto, synchronizace puštěna ručně po deployi, živá data ověřena curl.
 - Velké monitory (pokyny uživatele 11. 10.): na konci style.css 15 stupňů zoomu od 1540 do 7200 px, obsah drží 75–85 % šířky okna až po 8K. Hranice 1800 a 2800 zadal uživatel (dříve stupně 1800 / 1,25 a 2800 / 2), zoom na nich je teď 1,31 a 2,04. Změřeno snímky v Chromu na 12 šířkách. Detail a čísla jsou ve Stavu nahoře. nadpis.js změřen při zoomu 1,25, vyšší stupně jen snímkem. Pushnuto po „pushni“ (4e0b484..6f0b8a6), Action run 38118066585 success, Pages build hotový, živé style.css ověřeno curl (15 stupňů). Firefox neověřen.
-- Barvy z původního banneru (11. 10., docs/plans/2026-10-11-barvy-design.md): opar z rozostřených třpytek za ensō, hlavní karty mají každá jinou barvu (pole barva v projekty.json, PALETA a obarvi v tools/projekty.py). Domácí server zůstává černobílý, starší projekty šedé. Commitnuto, na push čeká na „pushni“. Po deployi pusť ručně sync.sh, aby živá data barvy dostala hned (jinak až v příštím běhu cronu v :17). Do té doby jsou karty šedé.
+- Barvy z původního banneru (11. 10., docs/plans/2026-10-11-barvy-design.md): opar z rozostřených třpytek za ensō, hlavní karty mají každá jinou barvu (pole barva v projekty.json, PALETA a obarvi v tools/projekty.py). Domácí server zůstává černobílý, starší projekty šedé. Pushnuto po „pushni“ (a2fcefd..5774f16), Action run 38120224099 success. Po deployi ručně sync.sh v 09:06:29 (pushnuto 81b69b4), Pages build 81b69b4 hotový. Živá data ověřena curl: 6 karet, 6 různých barev podle projekty.json; box, archiv ani starší barvu nemají. Snímek živé stránky v čistém headless Chromu: barvy na kartách. Uživatel mezitím viděl karty šedé: otevřel stránku mezi deployem kódu a syncem dat. Kód a data se nasazují zvlášť.
 - Testy: 59 Python + 10 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu, 8 cest ensō (tělo + 7 vláken), mřížku po 3 (test_hlavni_projekty_po_trech) a stupně zoomu 75–85 % (TestVelkyMonitor), barvy palety a opar (TestBarvyBanneru). tests/test_projekty.py třída Barvy hlídá unikátnost a přiřazení v projekty.json.
 - Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
