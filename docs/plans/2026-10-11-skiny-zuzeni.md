@@ -35,6 +35,7 @@ zásadám projektu“ (10 nálezů + odstavec „Náhled“). Tam je i důvod ka
 | 9 | „defaultní motiv bude černobílý“ → Inkoust bez zvolené barvy bez oparu, bokehu a barev | Task 6 |
 | 10 | Grafy bez čárek prázdných týdnů (nález 4 revize) | Task 7 |
 | 11 | Verzálky jména s kladným prostrkáním +0,02em (nález 5) | Task 8 |
+| 12 | „Teplé světlo přejmenuj na Veselé, Hluboká práce na Voda“ (během implementace) — jen `nazev`, id `teple`/`hluboka` zůstala kvůli uloženým volbám návštěvníků | mimo tasky, commit po Tasku 2 |
 
 **Mimo rozsah (vědomě):** počet velikostí písma (nález 5, ~7–8 velikostí místo 2–3) a starý anglický `<title>`
 (nález 10). Uživatel je zatím neřešil, zůstávají v Otevřeném.

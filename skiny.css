@@ -28,7 +28,7 @@
     --bokeh-sila: 1.4;
 }
 
-/* ===== Teplé světlo: krémová, námořnická modř, ensō modrá → fialová → oranžová ===== */
+/* ===== Veselé (id teple, dřív Teplé světlo): krémová, námořnická modř, ensō modrá → fialová → oranžová ===== */
 [data-skin="teple"][data-rezim="svetly"] {
     color-scheme: light;
     --pozadi: #faf6ef;
@@ -69,7 +69,7 @@
     --bokeh-sila: 1.4;
 }
 
-/* ===== Hluboká práce: břidlicová, tyrkys a modrá ===== */
+/* ===== Voda (id hluboka, dřív Hluboká práce): břidlicová, tyrkys a modrá ===== */
 [data-skin="hluboka"][data-rezim="svetly"] {
     color-scheme: light;
     --pozadi: #f3f5f7;

@@ -22,6 +22,8 @@ test('stav: hodnoty vyřazené zúžením (2026-10-11) uložené u návštěvní
 
 test('seznamy: zúžená nabídka (docs/plans/2026-10-11-skiny-zuzeni.md)', () => {
   assert.deepStrictEqual(k.SKINY.map((x) => x.id), ['inkoust', 'teple', 'hluboka', 'priroda']);
+  // názvy přejmenoval uživatel 2026-10-11; id zůstala, aby uložená volba návštěvníků platila dál
+  assert.deepStrictEqual(k.SKINY.map((x) => x.nazev), ['Inkoust', 'Veselé', 'Voda', 'Příroda']);
   assert.deepStrictEqual(k.POZADI.map((x) => x.id), ['papir', 'mrizka', 'tecky']);
   assert.deepStrictEqual(k.AKCENTY.map((x) => x.id), ['fialova', 'purpur', 'malina', 'oranzova', 'zelena', 'tyrkys', 'modra']);
 });

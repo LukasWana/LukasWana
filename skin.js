@@ -7,8 +7,8 @@
 
   var SKINY = [
     { id: 'inkoust', nazev: 'Inkoust' },
-    { id: 'teple', nazev: 'Teplé světlo' },
-    { id: 'hluboka', nazev: 'Hluboká práce' },
+    { id: 'teple', nazev: 'Veselé' },     // dřív „Teplé světlo“; id zůstalo kvůli uloženým volbám
+    { id: 'hluboka', nazev: 'Voda' },     // dřív „Hluboká práce“
     { id: 'priroda', nazev: 'Příroda' }
   ];
   var AKCENTY = [
