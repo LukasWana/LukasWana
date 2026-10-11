@@ -1,6 +1,6 @@
 # Skiny — návrh
 
-Datum: 2026-10-11 · Stav: **hotovo a živě.** Commit `7efd5e3` (push `9328901..7efd5e3` po „takhle to pushni“),
+Datum: 2026-10-11 · Stav: **živě 7 motivů; zúžení schválené v náhledu 11. 10., implementace podle `2026-10-11-skiny-zuzeni.md` (ještě neprovedena).** Původně: Commit `7efd5e3` (push `9328901..7efd5e3` po „takhle to pushni“),
 Action run 38125366926 `success`. Živý web ověřen: `skin.js`, `skiny.css` a `style.css` mají přes `curl` stejnou
 velikost jako v repu (8 142 / 13 860 / 26 827 B; po opravě miniatury motivu v `f8caa16`, run 38125535416
 `success`, má živý `style.css` 26 799 B = repo) a snímek živé stránky v čistém headless Chromu ukazuje tlačítko
@@ -134,47 +134,14 @@ tedy stejně jako karty (volba uživatele z nabídky „ať je přebarví i Zák
 „opar neměnit“ a „opar zrušit“). Ověřeno snímky Inkoust + Zelená a Příroda tmavá + Malinová. **Výchozí Inkoust
 bez zvolené barvy je čistě černobílý** (pokyn „defaultní motiv bude černobílý“, mění volbu z 11. 10. ráno, kdy měl
 Inkoust opar a karty v barvách banneru): `--opar-sila: 0`, `--bokeh-sila: 0`, grafy v inkoustu. Barvu dostane až po
-výběru Základní barvy. Ověřeno snímky Inkoust světlý i tmavý. Dál 7 Základních barev (bez Zlaté a Azurové).
+výběru Základní barvy. Ověřeno snímky Inkoust světlý i tmavý. **Ikony sociálních sítí**
+přecházejí zleva doprava akcenty motivu jako ensō (pokyn „motiv mění i ikony sociálních sítí“), ověřeno
+snímky Teplé světlo, Příroda tmavá a Inkoust + Modrá. Dál 7 Základních barev (bez Zlaté a Azurové).
 Jméno a podtitul jsou plnou barvou, ikony v inkoustu motivu, opar barevných motivů je z akcentů motivu (Inkoust si
 nechal barvy původního banneru) a v grafech chybějí čárky prázdných týdnů. Barvy projektů na kartách zůstaly
 (pokyn „každý projekt unikátní barvu“). Neřešeno: počet velikostí písma a `<title>`. Čeká se na verdikt uživatele.
 
-## Předávka
+## Další práce
 
-Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.claude/rules/konec-session.md`. Historie je v gitu.
-
-```
-Skills: žádný konkrétní — práce je dokončená. Na novou úpravu vzhledu superpowers:brainstorming, ale uživatel nechce textový návrh po částech: po krátké otázce na rozsah rovnou postav náhled (paměť navrh-nahled-ne-text). Na rozbitou věc superpowers:systematic-debugging.
-
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web. Při konci session bylo vše pushnuté. Na začátku zkontroluj git status -sb.
-Plán / návrh: docs/plans/2026-10-11-skiny-design.md (tento soubor, HOTOVO a živě, Stav nahoře).
-Předchozí: docs/plans/2026-10-10-prezentace.md (hotový, ve Stavu je historie vzhledu), docs/plans/2026-10-11-barvy-design.md, docs/plans/2026-10-10-projekty.md (otevřený bod 5).
-Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony jako maska s fill #000, ensō), ps-roura-ssh-bom.md, navrh-nahled-ne-text.md.
-
-Stav k 11. 10. 2026:
-- Živě od 7efd5e3: tlačítko „◐ Vzhled“ vpravo nahoře, panel „Vzhled a motivy“: Pozadí (7 vzorů), Základní barvy (9), režim Světlý / Tmavý / Systém (výchozí Systém), Motivy (7, každý světlý i tmavý). Výchozí motiv Inkoust = dosavadní vzhled. Volby v localStorage (skin, rezim, akcent, pozadi).
-- Kde co je: style.css = obecné skládání rolí + výchozí Inkoust světlý + komponenty a panel; skiny.css = ostatní motivy, tmavé verze, Základní barvy, Pozadí; skin.js = seznamy id (SKINY, AKCENTY, POZADI, REZIMY) a stavba panelu; skript v <head> index.html nastaví atributy před vykreslením. Nový motiv: postup v sekci Motivy výše.
-- Ensō, podtahy a ikony patičky jsou CSS maska. img/enso.svg a img/tah.svg dál generuje tools/enso.py (ručně neupravovat). Ikony img/social mají kořenový fill #000 (důvod v sekci Jak to funguje).
-- Obrysy karet a panelu jsou pryč (pokyn „ty outline dej všude pryč“). Zůstal jen prstenec vybrané volby a fokus.
-- Testy: 71 Python + 15 JS zelených. TestSkiny hlídá role, kontrast WCAG AA ve všech motivech a režimech, pravidla voleb, skript v hlavičce a obrysy. tests/skin_js.test.js hlídá stav, režim a panel.
-- Další práce není zadaná. Nic nedělat bez pokynu uživatele.
-
-Otevřené (čeká na rozhodnutí uživatele):
-- Revize skinů proti zásadám projektu (sekce „Revize proti zásadám projektu“ výše): 10 nálezů a návrh zúžení na Inkoust + 2–3 vybrané motivy. Nic neopraveno. Další krok je náhled, ne text.
-- Neověřeno ve Firefoxu a Safari (mask-composite, color-mix, background-clip: text). Ověřeno jen v Chromu.
-- (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá a na webu stojí datum „Aktualizováno“. Varianty jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“.
-- Text banneru pod kruhem i na desktopu: náhled ukázán 10. 10., uživatel nevybral.
-
-Užitečné příkazy:
-- Testy: python -m pytest -q tests/ (BEZ -I, s ním spadne import pygments) a node --test tests/projekty_js.test.js tests/skin_js.test.js
-- Náhled: data z webu do data/projekty.generated.json (gitignored): curl -s "https://lukaswana.github.io/web/data/projekty.generated.json?v=$RANDOM" -o data/projekty.generated.json, pak python -m http.server 8790 --bind 127.0.0.1 (ne 8765, tam je API EmailRatoru).
-- Snímky motivů: kopie index.html do data/ s <base href="/"> a skriptem, který před <head> nastaví localStorage (skin, rezim, akcent, pozadi). Headless Chrome s vlastním --user-data-dir, nejvýš 2 souběžně a --virtual-time-budget=6000. Při 4 souběžných se občas nenačetla data, maska nebo skiny.css; prázdné místo na snímku nejdřív zopakuj samostatně. Otevřený panel: skript, který po 400 ms klikne na .vzhled-tlacitko. Mobil přes <iframe width="400"> v okně 600 px. Headless Chrome přebírá tmavý režim Windows, takže režim „Systém“ vyjde tmavý.
-- Log cronu: ssh asus-server 'tail -n 12 ~/.local/state/lukaswana-web/sync.log | cut -c1-200'
-
-Důležité:
-- Push do main = hned živý web. Pushovat jen po výslovném schválení uživatele.
-- Po pushi změny tools/projekty.py nebo projekty.json: počkej na deploy, pusť ručně sync.sh (příkaz v paměti web-nasazeni), ověř živá data curl s ?v=$RANDOM.
-- Repo LukasWana/web je výstup nasazení. NEMAZAT, ručně neupravovat. Token nikdy do chatu a nikdy do souboru rourou z PowerShellu.
-- Kód a texty se zpětným lomítkem piš jen přes Write/Edit (python heredoc v této session srazil lomítka v testu, assert to chytil před zápisem). Zprávy commitů piš přes Write do souboru a commituj s git commit -F.
-- Pravidlo každé session (~/.claude/rules/konec-session.md): dokumentaci aktualizuj průběžně, na konci přepiš tuto sekci a commitni, před „hotovo“ udělej kontrolu do nuly.
-```
+Předávka se přesunula do implementačního plánu `docs/plans/2026-10-11-skiny-zuzeni.md`
+(sekce `## Předávka` tam). Tady je jen návrh a historie rozhodnutí.
