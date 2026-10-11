@@ -331,6 +331,35 @@ class TestInkoustKartyInverzne(unittest.TestCase):
             self.assertIn(deklarace, tela[0])
 
 
+class TestVeseleBarevne(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: v motivu Veselé ikony a Starší projekty barevně jako ilustrace (ensō modrá →
+    fialová → oranžová). Vybrána varianta A z náhledu: plné barvy po krocích přechodu, ne přechod v každé."""
+
+    V = '[data-skin="teple"] '
+
+    def test_ikony_po_krocich_prechodu(self):
+        css = text("skiny.css")
+        for n in range(1, 9):
+            tela = pravidla(css, self.V + ".social-icon:nth-child(%d) i" % n)
+            self.assertEqual(len(tela), 1, n)
+            self.assertIn("var(--akcent", tela[0], n)
+        self.assertIn("background-color: rgb(var(--akcent));", pravidla(css, self.V + ".social-icon:nth-child(1) i")[0])
+        self.assertIn("background-color: rgb(var(--akcent-3));", pravidla(css, self.V + ".social-icon:nth-child(8) i")[0])
+
+    def test_starsi_projekty_ve_trech_barvach(self):
+        css = text("skiny.css")
+        for sel, barva in ((":nth-child(3n+1)", "--akcent)"), (":nth-child(3n+2)", "--akcent-2)"),
+                           (":nth-child(3n)", "--akcent-3)")):
+            tela = pravidla(css, self.V + ".projekty-archiv .projekty-karta" + sel)
+            self.assertEqual(len(tela), 1, sel)
+            self.assertIn("background-color: rgb(var(" + barva, tela[0], sel)
+        # šedé popisky by na oranžové zanikly: odvozené z --inv-text
+        tela = pravidla(css, self.V + ".projekty-archiv .projekty-karta")
+        self.assertEqual(len(tela), 1)
+        self.assertIn("--inv-text-2: color-mix(in srgb, var(--inv-text)", tela[0])
+        self.assertIn("--inv-text-3: color-mix(in srgb, var(--inv-text)", tela[0])
+
+
 class TestVelkyMonitor(unittest.TestCase):
     """Pokyn uživatele 2026-10-11: na velkých monitorech až po 8K drží obsah 75–85 % šířky okna.
 
