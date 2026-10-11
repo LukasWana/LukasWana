@@ -122,7 +122,8 @@ barvy. Uživatel chce vidět náhled, ne text (paměť `navrh-nahled-ne-text`).
 **Náhled (11. 10., na „ano“ uživatele):** kopie webu ve scratchpadu session (ne v repu) s body 1–4, 6–9 a s jedinou
 změnou z bodu 5 (prostrkání jména +0,02em). Obsahuje motivy Inkoust, Teplé světlo, Hlubokou práci a Přírodu (Indigo
 vyřazeno, protože se fialovou kryje s Teplým světlem), pozadí Papír, Mřížka a Tečky (Mřížku vrátil uživatel:
-„dej tam i ty čtverečky“), 7 Základních barev (bez Zlaté a Azurové).
+„dej tam i ty čtverečky“). V panelu je Světlý / tmavý režim první volbou (pokyn „světlý / tmavý dej jako první
+volbu“), za ním Pozadí, Základní barvy a Motivy. Dál 7 Základních barev (bez Zlaté a Azurové).
 Jméno a podtitul jsou plnou barvou, ikony v inkoustu motivu, opar barevných motivů je z akcentů motivu (Inkoust si
 nechal barvy původního banneru) a v grafech chybějí čárky prázdných týdnů. Barvy projektů na kartách zůstaly
 (pokyn „každý projekt unikátní barvu“). Neřešeno: počet velikostí písma a `<title>`. Čeká se na verdikt uživatele.
