@@ -43,12 +43,14 @@ nevznikl vodorovný posuvník; náhled A měl `-8 %` do stran.
   změní podle aktivity, barvy se nepřehodí.
 - Přiřazení (uživatel, 11. 10.): EmailRator fialová, Gramps (Rodokmen) tyrkys, WanGP zlatá,
   whisper-sk-transcriber zelená, NakupUX malina, meditation-app (Meditácie) azur. Volné: modrá, purpur.
-- Unikátnost zaručuje `tools/projekty.py`: hlavní karta bez barvy z nastavení (aktivní repo, které
-  v `projekty` není) dostane první volnou barvu palety, kterou nemá žádná jiná hlavní karta.
+- Unikátnost hlídají dvě věci. Že se barvy v `projekty.json` neopakují, kontroluje test
+  (`test_skutecne_nastaveni`), generátor duplicitu v nastavení neopraví. Hlavní karta bez barvy z nastavení
+  (aktivní repo, které v `projekty` není) dostane v `tools/projekty.py` (`obarvi`) první volnou barvu palety,
+  kterou nemá žádná jiná hlavní karta.
   Hlavních karet je nejvýš `max_aktivnich` = 8 = počet barev. Skupina (Domácí server) barvu nedostane.
 - `projekty.js` přidá kartě s barvou třídy `projekty-barevna barva-<název>` (jen `[a-z]+`).
 - `style.css`: `.barva-<název> { --barva: R, G, B }` pro 8 barev; `.projekty-barevna` má bokeh
-  jako `background-image` (barva pozadí zůstává, hover funguje) a sloupce aktivity `fill: rgb(var(--barva))`.
+  jako `background-image` (barvu plochy i `:hover` dál určuje `.projekty-karta`; hover snímkem neověřen) a sloupce aktivity `fill: rgb(var(--barva))`.
 
 **Testy:** barva z nastavení projde na kartu; volné barvy pro karty bez barvy; 8 karet = 8 různých
 barev; skupina, archiv a starší barvu nemají; skutečné `projekty.json` má přiřazení výše a barvy
