@@ -38,6 +38,8 @@ k meditačním aplikacím v projektech.
   **11. 10. (pokyn uživatele): podtitul nahrazen řadou 8 ikon sítí** — stejné odkazy jako dole (ty zůstávají).
   Jméno zůstává stejně velké jako dřív (`min(72px, 12.5vw)`, dřív ho `nadpis.js` měřil podle podtitulu na ~72 px);
   `nadpis.js` teď naopak dopočte velikost ikon na šířku písmen jména (desktop ~62 px, mobil 400 px ~38 px).
+  Posun řady pod střed písmen počítá s CSS `zoom` na `<html>` (široké obrazovky): px z getBoundingClientRect dělí
+  zoomem (bb3c53a, dřív řada při zoomu > 1 ujížděla doleva).
 - **Pryč:** šedá čára `.divider`, tagline „KREATIVNÍ PROFESIONÁL, KTERÝ DĚLÁ KVALITNÍ A MODERNÍ PRÁCI“
   (výplň, opakuje banner).
 - **Kontakt:** profesionální prezentace potřebuje jasnou cestu, jak oslovit. E-mail je jediný výrazný odkaz
