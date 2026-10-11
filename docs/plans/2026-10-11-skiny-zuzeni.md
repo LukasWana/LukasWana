@@ -571,7 +571,8 @@ Stav k 11. 10. 2026:
 - 11. 10. večer (c6fd55c, push schválen „dej to na live“, Action success, živý style.css a skiny.css = repo): ve SVĚTLÉM Inkoustu projekty a Domácí server světlé s černým textem, inverzně jen Starší projekty a ikony; inverzní všechny karty jen v tmavém Inkoustu. Se Základní barvou ve světlém Inkoustu: světlé karty nádech akcentu, Starší projekty a ikony jako Veselé (selektory v skiny.css rozšířené). Panel Vzhled: Základní barvy i miniatury motivů kreslí skutečné ensō a podtah (masky img/enso.svg, img/tah.svg, přechod --enso/--tah). Detail ve Stavu nahoře, odstavec „Večer téhož dne“.
 - 11. 10. v noci (1917ec1, push schválen „ano“, Action success, živý style.css a skiny.css = repo): tmavý Inkoust = zrcadlo světlého — tmavé karty, inverzně jen Starší projekty a ikony; se Základní barvou podbarvení a barvy ensō v obou režimech (pravidlo `[data-skin="inkoust"][data-rezim="tmavy"] .projekty-karta` s přepnutím proměnných zrušeno).
 - Dopad na Task 3: Veselé a Inkoust (oba režimy) se Základní barvou mají vlastní ikony v skiny.css (specifičtější selektor) — Task 3 je nesmí přebít; jak je sladit s obecným přechodem, rozhodne uživatel.
-- Testy teď: 87 Python + 19 JS zelených (ověřeno 11. 10. v noci; 3 testy tmavého Inkoustu nahrazeny 2).
+- 11. 10. v noci (0f139fa, push na pokyn „a rovnou pushni“, Action success, živý style.css = repo): v nadpisu LUKÁŠ WANA byly čárka a háček seříznuté (background-clip: text kreslí jen v boxu, line-height 1.05) → `.main-title` padding-top 0.2em + margin-top -0.2em. Ověřeno 4× zvětšeným výřezem živého webu před a po (na zmenšeném celostránkovém snímku ořez okem poznat nejde).
+- Testy teď: 88 Python + 19 JS zelených (ověřeno 11. 10. v noci po 0f139fa).
 - Náhled z 11. 10. byl jen ve scratchpadu té session (neexistuje). Očekávaný vzhled popisuje Task 9, Step 4.
 
 Otevřené (mimo tento plán, čeká na uživatele):
