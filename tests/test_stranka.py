@@ -297,7 +297,9 @@ class TestStarsiInverzne(unittest.TestCase):
         tela = pravidla(css, ".projekty-archiv .projekty-karta")
         self.assertEqual(len(tela), 1)
         # „jen vzít stejnou barvu jako z ikon“: stejná proměnná jako kolečka ikon
-        self.assertIn("background-color: var(--inkoust);", tela[0])
+        # --ikony = --inkoust spočtený na :root (kolečka ikon); přepnutí --inkoust v kartě Inkoustu plochu nezmění
+        self.assertIn("background-color: var(--ikony);", tela[0])
+        self.assertTrue(any("--ikony: var(--inkoust);" in t for t in pravidla(css, ":root")))
         self.assertIn("var(--inkoust)) var(--znacky), var(--inkoust));", pravidla(css, ".social-icon i")[0])
         self.assertIn("color: var(--inv-text);", tela[0])
         hover = pravidla(css, ".projekty-archiv .projekty-karta:hover")
@@ -312,6 +314,21 @@ class TestStarsiInverzne(unittest.TestCase):
             tela = pravidla(css, selektor)
             self.assertEqual(len(tela), 1, selektor)
             self.assertIn("var(--inv-text", tela[0], selektor)
+
+
+class TestInkoustKartyInverzne(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: v profilu Inkoust (oba režimy, i se Základní barvou) jsou všechny karty obráceně
+    jako kolečka ikon — plocha v inkoustu, světlý text. Přepnutím proměnných v kartě, ne výčtem prvků."""
+
+    SEL = ':root:not([data-skin]:not([data-skin="inkoust"])) .projekty-karta'
+
+    def test_karta_prepne_promenne(self):
+        tela = pravidla(text("style.css"), self.SEL)
+        self.assertEqual(len(tela), 1)
+        for deklarace in ("--plocha: var(--ikony);", "--plocha-hover: var(--inv-plocha-hover);",
+                          "--text: var(--inv-text-2);", "--text-popisek: var(--inv-text-3);",
+                          "--inkoust: var(--inv-text);", "color: var(--inv-text);"):
+            self.assertIn(deklarace, tela[0])
 
 
 class TestVelkyMonitor(unittest.TestCase):

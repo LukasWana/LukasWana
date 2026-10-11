@@ -39,6 +39,21 @@
     --motiv-akcent: 26, 26, 26;
     --motiv-akcent-2: 26, 26, 26;
     --motiv-akcent-3: 26, 26, 26;
+    /* Barva koleček ikon dole pro plochy „jako ikony“: var() v custom property se spočte už tady na :root
+       z vítězného --inkoust (i tmavého a ostatních motivů), takže ji nezmění přepnutí --inkoust uvnitř karty. */
+    --ikony: var(--inkoust);
+}
+
+/* Profil Inkoust (oba režimy, i se Základní barvou): všechny karty obráceně jako kolečka ikon — plocha v inkoustu,
+   světlý text (pokyn uživatele 2026-10-11). Přepíná proměnné, které karta a její prvky čtou (popis, štítky,
+   patička, odkazy, graf), takže netřeba výčtu prvků. Starší projekty mají vlastní inverzní pravidla níž. */
+:root:not([data-skin]:not([data-skin="inkoust"])) .projekty-karta {
+    --plocha: var(--ikony);
+    --plocha-hover: var(--inv-plocha-hover);
+    --text: var(--inv-text-2);
+    --text-popisek: var(--inv-text-3);
+    --inkoust: var(--inv-text);
+    color: var(--inv-text);
 }
 
 /* Výchozí Inkoust bez zvolené Základní barvy je černobílý v obou režimech (pokyn uživatele 2026-10-11, plán
@@ -1041,7 +1056,7 @@ body {
    odliší starší práci od aktuální. Plocha má přímo barvu koleček ikon dole (pokyn „jen vzít stejnou barvu jako
    z ikon“): var(--inkoust) jako .social-icon i, ne vlastní --inv-plocha, aby se nemohly rozejít. */
 .projekty-archiv .projekty-karta {
-    background-color: var(--inkoust);
+    background-color: var(--ikony);
     color: var(--inv-text);
 }
 
