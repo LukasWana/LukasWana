@@ -102,7 +102,9 @@ class TestBanner(unittest.TestCase):
 
     def test_enso_v_banneru(self):
         banner = self.html.split('<section class="enso-banner">')[1].split("</section>")[0]
-        self.assertIn('src="img/enso.svg"', banner)
+        # ensō je maska (barvu dává skin), ne <img> (docs/plans/2026-10-11-skiny-design.md)
+        self.assertIn('<div class="enso" aria-hidden="true"></div>', banner)
+        self.assertIn("mask: url('img/enso.svg')", pravidla(self.css, ".enso")[0])
         self.assertIn("<h2>Deep work creator</h2>", banner)
         self.assertIn("introvertní technicko-kreativní tvůrce", banner)
 
@@ -120,7 +122,10 @@ class TestBezCar(unittest.TestCase):
         # rozhodnutí uživatele 2026-10-10: varianta B — světlý teplý podklad s oblými rohy, žádný rámeček
         telo = pravidla(self.css, ".projekty-karta")[0]
         self.assertNotRegex(telo, r"border\s*:")
-        self.assertIn("background-color: #f6f5f2", telo)
+        self.assertIn("background-color: var(--plocha);", telo)
+        self.assertIn("--plocha: #f6f5f2;", pravidla(self.css, ":root")[1])  # výchozí Inkoust
+        # pokyn 2026-10-11 nad náhledem skinů: obrysy všude pryč (ani barevný okraj, ani linka)
+        self.assertNotIn("box-shadow", telo)
         self.assertRegex(telo, r"border-radius:\s*\d+px")
         for sel in (".projekty-karta:hover", ".projekty-archiv .projekty-karta"):
             self.assertNotIn("border", pravidla(self.css, sel)[0], sel)
@@ -129,7 +134,7 @@ class TestBezCar(unittest.TestCase):
     def test_podtah_pod_nadpisem(self):
         tela = pravidla(self.css, ".section-title::after")
         self.assertEqual(len(tela), 1)
-        self.assertIn("url('img/tah.svg')", tela[0])
+        self.assertIn("mask: url('img/tah.svg')", tela[0])
 
     def test_nadpis_sekce_bez_verzalek(self):
         telo = pravidla(self.css, ".section-title")[0]
@@ -192,16 +197,17 @@ class TestInkoust(unittest.TestCase):
     """Pokyn uživatele 2026-10-11: všude místo čisté černé #000 o kousek stažená off-black (--inkoust)."""
 
     def test_jedna_hodnota_v_css_i_v_generatoru(self):
-        tela = pravidla(text("style.css"), ":root")
+        # výchozí skin Inkoust, světlý režim (style.css); img/*.svg jsou masky, ale hodnotu drží stejnou
+        tela = pravidla(text("style.css"), '[data-skin="inkoust"][data-rezim="svetly"]')
         self.assertEqual(len(tela), 1)
         self.assertIn(f"--inkoust: {enso.INKOUST};", tela[0])
         self.assertNotEqual(enso.INKOUST.lower(), "#000")
         self.assertNotEqual(enso.INKOUST.lower(), "#000000")
 
     def test_nikde_cista_cerna(self):
-        css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
-        # výjimka: maska oparu (#000 tam znamená neprůhlednost, ne barvu)
-        bez_masek = "\n".join(r for r in css.splitlines() if "mask-image" not in r)
+        css = re.sub(r"/\*.*?\*/", "", text("style.css") + text("skiny.css"), flags=re.S)
+        # výjimka: masky (#000 tam znamená neprůhlednost, ne barvu)
+        bez_masek = "\n".join(r for r in css.splitlines() if "mask" not in r)
         self.assertNotRegex(bez_masek, r"#000\b|#000000|\bblack\b")
         self.assertNotIn("#000", text("projekty.js"))
         self.assertNotIn("#000", text("index.html"))
@@ -209,13 +215,22 @@ class TestInkoust(unittest.TestCase):
         for cesta in ("img/enso.svg", "img/tah.svg"):
             self.assertNotIn('"#000"', text(cesta))
 
-    def test_ikony_paticky_v_inkoustu(self):
-        # ručně kreslené ikony: tmavé tahy nemají vlastní fill → dědí ho z kořenového <svg> (jinak výchozí #000)
+    def test_ikony_paticky_jako_maska(self):
+        # Skiny 2026-10-11: ikona = maska „tvar minus bílý symbol (luminance)“, barvu dává --inkoust nebo barva značky.
+        # Tahy proto musí být čistě černé: jas #1a1a1a (~10 %) by maska odečetla a inkoust by vyšel světlejší
+        # (změřeno: rgb(49,49,49) místo (26,26,26)).
         ikony = sorted((KOREN / "img" / "social").glob("*.svg"))
         self.assertEqual(len(ikony), 8)
+        html, css = text("index.html"), text("style.css")
         for cesta in ikony:
             koren = ET.fromstring(cesta.read_text(encoding="utf-8"))
-            self.assertEqual(koren.get("fill"), enso.INKOUST, cesta.name)
+            self.assertEqual(koren.get("fill"), "#000", cesta.name)
+            self.assertIn(f'<i class="ikona-{cesta.stem}"></i>', html)
+            self.assertIn(f"--ikona: url('img/social/{cesta.stem}.svg');", pravidla(css, f".ikona-{cesta.stem}")[0])
+        self.assertNotIn('src="img/social/', html)
+        telo = pravidla(css, ".social-icon i")[0]
+        self.assertIn("luminance", telo)
+        self.assertIn("mask-composite: subtract", telo)
 
     def test_body_a_graf_v_inkoustu(self):
         css = text("style.css")
@@ -229,11 +244,16 @@ class TestStarsiInverzne(unittest.TestCase):
     def test_karta_tmava_text_svetly(self):
         css = text("style.css")
         tela = pravidla(css, ".projekty-archiv .projekty-karta")
-        self.assertTrue(any("background-color: var(--inkoust);" in t for t in tela))
-        self.assertTrue(any("color: #f6f5f2;" in t for t in tela))
+        self.assertTrue(any("background-color: var(--inv-plocha);" in t for t in tela))
+        self.assertTrue(any("color: var(--inv-text);" in t for t in tela))
         hover = pravidla(css, ".projekty-archiv .projekty-karta:hover")
         self.assertEqual(len(hover), 1)
-        self.assertNotIn("var(--inkoust)", hover[0])   # hover viditelně posvětlí
+        self.assertIn("var(--inv-plocha-hover)", hover[0])
+        # výchozí Inkoust: plocha v inkoustu, světlý text; hover se od plochy liší
+        inkoust = pravidla(css, ":root")[1]
+        self.assertIn("--inv-plocha: #1a1a1a;", inkoust)
+        self.assertIn("--inv-text: #f6f5f2;", inkoust)
+        self.assertNotIn("--inv-plocha-hover: #1a1a1a;", inkoust)
 
     def test_sedy_text_a_odkazy_svetle(self):
         css = text("style.css")
@@ -296,6 +316,112 @@ class TestPaticka(unittest.TestCase):
         self.assertNotIn("glitter-overlay", html)
         for sel in (".hero-image", ".hero-image::before", ".glitter-overlay", ".hero-text", ".hero-subtext", ".bottom-hero"):
             self.assertEqual(pravidla(css, sel), [], sel)
+
+
+def ids(js, seznam):
+    """id položek pole `seznam` ve skin.js (var SKINY = [ { id: 'x', … }, … ];)."""
+    blok = js.split(f"var {seznam} = [")[1].split("];")[0]
+    return re.findall(r"\{ id: '([a-z]*)'", blok)
+
+
+def promenne(telo):
+    return dict(re.findall(r"(--[a-z0-9-]+):\s*([^;]+);", telo))
+
+
+def jas(hex_):
+    h = hex_.lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    kanaly = [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+    lin = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in kanaly]
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+
+def kontrast(a, b):
+    ja, jb = sorted((jas(a), jas(b)), reverse=True)
+    return (ja + 0.05) / (jb + 0.05)
+
+
+class TestSkiny(unittest.TestCase):
+    """Skiny 2026-10-11 (docs/plans/2026-10-11-skiny-design.md): tlačítko Vzhled s panelem, 7 motivů × světlý/tmavý,
+    Základní barvy a Pozadí jako volby nad motivem. Barvy jsou jen v CSS, skin.js nese seznamy id."""
+
+    ROLE = ("--pozadi", "--inkoust", "--text", "--text-tlumeny", "--text-popisek", "--plocha", "--plocha-hover",
+            "--inv-plocha", "--inv-plocha-hover", "--inv-text", "--inv-text-2", "--inv-text-3",
+            "--motiv-akcent", "--motiv-akcent-2", "--motiv-akcent-3")
+
+    def setUp(self):
+        self.js = text("skin.js")
+        self.css = text("style.css") + text("skiny.css")
+
+    def blok(self, skin, rezim):
+        tela = pravidla(self.css, f'[data-skin="{skin}"][data-rezim="{rezim}"]')
+        self.assertEqual(len(tela), 1, (skin, rezim))
+        return promenne(tela[0])
+
+    def test_kazdy_motiv_ma_svetly_i_tmavy_se_vsemi_rolemi(self):
+        skiny = ids(self.js, "SKINY")
+        self.assertEqual(skiny, ["inkoust", "teple", "hluboka", "indigo", "priroda", "kyberpunk", "minimal"])
+        for skin in skiny:
+            for rezim in ("svetly", "tmavy"):
+                p = self.blok(skin, rezim)
+                for role in self.ROLE:
+                    self.assertIn(role, p, (skin, rezim, role))
+                self.assertIn(f"color-scheme: {'light' if rezim == 'svetly' else 'dark'}",
+                              pravidla(self.css, f'[data-skin="{skin}"][data-rezim="{rezim}"]')[0], (skin, rezim))
+
+    def test_kontrast_textu_wcag_aa(self):
+        # text na pozadí i na ploše karty a světlý text na inverzní kartě: aspoň 4,5 : 1 (WCAG AA)
+        for skin in ids(self.js, "SKINY"):
+            for rezim in ("svetly", "tmavy"):
+                p = self.blok(skin, rezim)
+                for podklad in ("--pozadi", "--plocha", "--plocha-hover"):
+                    for popredi in ("--inkoust", "--text", "--text-tlumeny", "--text-popisek"):
+                        k = kontrast(p[popredi], p[podklad])
+                        self.assertGreaterEqual(k, 4.5, (skin, rezim, popredi, podklad, round(k, 2)))
+                inv = p["--inv-plocha"] if p["--inv-plocha"].startswith("#") else p["--inkoust"]
+                for popredi in ("--inv-text", "--inv-text-2", "--inv-text-3"):
+                    k = kontrast(p[popredi], inv)
+                    self.assertGreaterEqual(k, 4.5, (skin, rezim, popredi, round(k, 2)))
+
+    def test_vychozi_inkoust_ve_style_css(self):
+        # stránka se vykreslí i bez skiny.css: obecná pravidla a světlý Inkoust jsou ve style.css
+        styl = text("style.css")
+        self.assertEqual(len(pravidla(styl, '[data-skin="inkoust"][data-rezim="svetly"]')), 1)
+        self.assertTrue(any("--akcent: var(--volba-akcent, var(--motiv-akcent));" in t for t in pravidla(styl, "[data-skin]")))
+
+    def test_zakladni_barvy_a_pozadi_maji_pravidla(self):
+        for akcent in ids(self.js, "AKCENTY"):
+            telo = pravidla(self.css, f'[data-akcent="{akcent}"]')
+            self.assertEqual(len(telo), 1, akcent)
+            for v in ("--volba-akcent:", "--volba-akcent-2:", "--volba-akcent-3:"):
+                self.assertIn(v, telo[0], akcent)
+        for pozadi in ids(self.js, "POZADI"):
+            tela = (pravidla(self.css, f'[data-pozadi="{pozadi}"]')
+                    or pravidla(self.css, f'[data-pozadi="{pozadi}"][data-rezim="svetly"]')
+                    + pravidla(self.css, f'[data-pozadi="{pozadi}"][data-rezim="tmavy"]'))
+            self.assertIn(len(tela), (1, 2), pozadi)
+            self.assertTrue(all("--volba-vzor:" in t for t in tela), pozadi)
+
+    def test_skript_v_hlavicce_pred_styly(self):
+        html = text("index.html")
+        hlava = html.split("</head>")[0]
+        # atributy se nastaví dřív, než se načte CSS → tmavý režim nebliká světle
+        self.assertLess(hlava.index("localStorage.getItem"), hlava.index('href="style.css"'))
+        self.assertLess(hlava.index('href="style.css"'), hlava.index('href="skiny.css"'))
+        for klic in ("'skin'", "'rezim'", "'akcent'", "'pozadi'"):
+            self.assertIn(klic, hlava)
+        self.assertIn('<script src="skin.js" defer></script>', html)
+        self.assertIn('<div class="vzhled" hidden>', html)   # bez JS tlačítko nezobrazovat
+
+    def test_bez_obrysu(self):
+        # pokyn uživatele 2026-10-11: „ty outline dej všude pryč“ — karty bez okraje, panel a vzorníky bez linky;
+        # zůstává jen prstenec vybrané volby a obrys fokusu z klávesnice
+        for sel in (".projekty-karta", ".vzhled-ctverec", ".vzhled-motiv", ".vzhled-panel"):
+            for t in pravidla(self.css, sel):
+                self.assertNotRegex(t, r"border\s*:|inset 0 0 0 1px|0 0 0 1px", sel)
+        self.assertNotIn("--okraj-sila", self.css)
+        self.assertNotIn("--linka", self.css)
 
 
 if __name__ == "__main__":

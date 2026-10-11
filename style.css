@@ -1,6 +1,44 @@
-/* Inkoust: o kousek stažená černá místo #000 (pokyn 2026-10-11); stejnou hodnotu má tools/enso.py (INKOUST). */
-:root {
+/* Barvy jsou role v proměnných (--pozadi, --inkoust, --plocha, --akcent…), docs/plans/2026-10-11-skiny-design.md.
+   Tady je obecné skládání rolí a výchozí motiv Inkoust ve světlém režimu, aby se stránka vykreslila i bez skiny.css.
+   Ostatní motivy, tmavé verze, Základní barvy a Pozadí jsou ve skiny.css. */
+
+/* Obecné: výchozí hodnoty a odvozené role (motiv je přebíjí vyšší specificitou) */
+:root,
+[data-skin] {
+    --motiv-vzor: none;
+    --opar-sila: 1;
+    --bokeh-sila: 1;
+    --znacky: 0%;
+    --akcent: var(--volba-akcent, var(--motiv-akcent));
+    --akcent-2: var(--volba-akcent-2, var(--motiv-akcent-2));
+    --akcent-3: var(--volba-akcent-3, var(--motiv-akcent-3));
+    --vzor: var(--volba-vzor, var(--motiv-vzor));
+    --enso: conic-gradient(from 210deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)), rgb(var(--akcent)));
+    --tah: linear-gradient(90deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)));
+    --nadpis: linear-gradient(var(--inkoust), var(--inkoust));
+    --podtitul: linear-gradient(var(--text), var(--text));
+}
+
+/* ===== Inkoust (výchozí): černobílý, akcent = inkoust. Tmavá verze je ve skiny.css. =====
+   Inkoust: o kousek stažená černá místo #000 (pokyn 2026-10-11); stejnou hodnotu má tools/enso.py (INKOUST). */
+:root,
+[data-skin="inkoust"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #ffffff;
     --inkoust: #1a1a1a;
+    --text: #333;
+    --text-tlumeny: #555;
+    --text-popisek: #666;
+    --plocha: #f6f5f2;
+    --plocha-hover: #efede8;
+    --inv-plocha: #1a1a1a;
+    --inv-plocha-hover: #2b2b2b;
+    --inv-text: #f6f5f2;
+    --inv-text-2: #d9d6cf;
+    --inv-text-3: #a19e97;
+    --motiv-akcent: 26, 26, 26;
+    --motiv-akcent-2: 26, 26, 26;
+    --motiv-akcent-3: 26, 26, 26;
 }
 
 * {
@@ -11,15 +49,276 @@
 
 body {
     font-family: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-    background-color: #ffffff;
+    background: var(--vzor), var(--pozadi);
+    background-attachment: fixed;
     color: var(--inkoust);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
+    position: relative; /* kotva pro tlačítko Vzhled */
+}
+
+/* Tlačítko Vzhled a panel „Vzhled a motivy“ (skin.js): Pozadí, Základní barvy, Režim, Motivy.
+   Tlačítko sedí v horním paddingu kontejneru nad hlavičkou. Náhledy motivů a vzorníky obarví přímo bloky
+   ze skiny.css (prvek s data-skin / data-akcent / data-pozadi a data-rezim), barvy se nikde neopisují. */
+.vzhled {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+    z-index: 10;
+}
+
+.vzhled-tlacitko {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--inkoust);
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+.vzhled-tlacitko:hover,
+.vzhled-tlacitko[aria-expanded="true"] {
+    background-color: var(--plocha);
+}
+
+.vzhled-tlacitko:focus-visible,
+.vzhled-zavrit:focus-visible,
+.vzhled-panel input:focus-visible + * {
+    outline: 2px solid var(--inkoust);
+    outline-offset: 2px;
+}
+
+.vzhled-tlacitko svg {
+    width: 16px;
+    height: 16px;
+}
+
+.vzhled-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: min(320px, calc(100vw - 40px));
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding: 18px 20px 20px;
+    background-color: var(--plocha);
+    color: var(--inkoust);
+    border-radius: 18px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, .18);
+    font-size: 14px;
+}
+
+.vzhled-hlava {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.vzhled-hlava h2 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.vzhled-zavrit {
+    font: inherit;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--text-popisek);
+    background: none;
+    border: 0;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.vzhled-zavrit:hover {
+    background-color: var(--plocha-hover);
+    color: var(--inkoust);
+}
+
+.vzhled-panel fieldset {
+    border: 0;
+    margin-top: 16px;
+}
+
+.vzhled-panel legend {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.vzhled-panel input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.vzhled-panel label {
+    cursor: pointer;
+}
+
+.vzhled-mrizka {
+    display: grid;
+    gap: 10px;
+}
+
+/* Pozadí: čtverce se vzorem nad barvou aktuálního motivu */
+.vzhled-pozadi .vzhled-mrizka {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.vzhled-ctverec {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: var(--vzor), var(--pozadi);
+}
+
+.vzhled-ctverec[data-pozadi] {
+    background: var(--volba-vzor), var(--pozadi);
+}
+
+/* Základní barvy: kolečka v přechodu akcentu */
+.vzhled-barvy .vzhled-mrizka {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.vzhled-kolecko {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgb(var(--akcent)), rgb(var(--akcent-2)) 70%, rgb(var(--akcent-3)));
+}
+
+.vzhled-kolecko[data-akcent] {
+    background: linear-gradient(135deg, rgb(var(--volba-akcent)), rgb(var(--volba-akcent-2)) 70%, rgb(var(--volba-akcent-3)));
+}
+
+/* Vybraná volba: dvojitý prstenec (mezera v barvě panelu, pak inkoust). Jediný obrys v panelu, kromě fokusu. */
+.vzhled-panel input:checked + .vzhled-ctverec,
+.vzhled-panel input:checked + .vzhled-kolecko,
+.vzhled-panel input:checked + .vzhled-motiv {
+    box-shadow: 0 0 0 2px var(--plocha), 0 0 0 4px var(--inkoust);
+}
+
+/* „Podle motivu“: přeškrtnutí, ať je poznat, že nejde o vlastní volbu */
+.vzhled-podle-motivu {
+    position: relative;
+}
+
+.vzhled-podle-motivu::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, transparent 48.5%, var(--inkoust) 49%, var(--inkoust) 51%, transparent 51.5%);
+    opacity: .5;
+}
+
+/* Režim: tři segmenty s ikonami */
+.vzhled-segmenty {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background-color: var(--pozadi);
+    border-radius: 999px;
+    padding: 3px;
+}
+
+.vzhled-segmenty span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 4px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+.vzhled-segmenty svg {
+    width: 16px;
+    height: 16px;
+}
+
+.vzhled-segmenty input:checked + span {
+    background-color: var(--inkoust);
+    color: var(--pozadi);
+}
+
+/* Motivy: dlaždice s miniaturou stránky v barvách motivu (aktuální režim) */
+.vzhled-motivy .vzhled-mrizka {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.vzhled-motiv {
+    display: block;
+    border-radius: 12px;
+}
+
+.vzhled-mini {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 4px 8px;
+    height: 54px;
+    padding: 8px 10px;
+    border-radius: 12px 12px 0 0;
+    background: var(--vzor), var(--pozadi);
+    background-size: cover;
+}
+
+.vzhled-mini i {
+    grid-row: span 2;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--enso);
+    -webkit-mask: radial-gradient(circle, transparent 52%, #000 56%);
+            mask: radial-gradient(circle, transparent 52%, #000 56%);
+}
+
+.vzhled-mini b {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--nadpis);
+}
+
+.vzhled-mini b + b {
+    width: 70%;
+    height: 4px;
+    background: var(--tah);
+}
+
+.vzhled-motiv-nazev {
+    display: block;
+    padding: 6px 10px 7px;
+    font-size: 13px;
+    background-color: var(--plocha);
+    color: var(--inkoust);
+    border-radius: 0 0 12px 12px;
+}
+
+/* Náhled motivu ukazuje motiv, ne volby návštěvníka nad ním */
+.vzhled-cisty {
+    --volba-akcent: initial;
+    --volba-akcent-2: initial;
+    --volba-akcent-3: initial;
+    --volba-vzor: initial;
 }
 
 /* Header */
@@ -37,11 +336,18 @@ body {
     text-transform: uppercase;
     white-space: nowrap;
     position: relative;
+    background-image: var(--nadpis);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
 }
 
 .subtitle {
     font-size: 22px;
-    color: #333;
+    background-image: var(--podtitul);
+    -webkit-background-clip: text;
+            background-clip: text;
+    color: transparent;
     margin-bottom: 14px;
     font-weight: 300;
 }
@@ -76,6 +382,7 @@ body {
     position: absolute;
     inset: -60px 0;
     z-index: -1;
+    opacity: var(--opar-sila);
     background:
         radial-gradient(circle at 24% 30%, rgba(168, 34, 196, .30) 0, rgba(168, 34, 196, .30) 4%, transparent 9%),
         radial-gradient(circle at 40% 70%, rgba(60, 193, 154, .35) 0, rgba(60, 193, 154, .35) 3.2%, transparent 7%),
@@ -93,10 +400,16 @@ body {
             mask-image: radial-gradient(ellipse at center, #000 45%, transparent 75%);
 }
 
+/* Tahy štětcem (ensō, podtah) a ikony patičky jsou masky: tvar dává SVG, barvu var(--inkoust) skinu.
+   Soubory z tools/enso.py se nemění. */
 .enso {
     width: 300px;
     max-width: 70vw;
-    height: auto;
+    aspect-ratio: 1;
+    flex: none;
+    background: var(--enso);
+    -webkit-mask: url('img/enso.svg') center / contain no-repeat;
+            mask: url('img/enso.svg') center / contain no-repeat;
 }
 
 .enso-text h2 {
@@ -109,7 +422,7 @@ body {
 
 .enso-text p {
     font-size: 18px;
-    color: #555;
+    color: var(--text-tlumeny);
 }
 
 /* Skills Section */
@@ -226,7 +539,9 @@ body {
     width: 120px;
     height: 12px;
     margin: 10px auto 0;
-    background: url('img/tah.svg') center / contain no-repeat;
+    background: var(--tah);
+    -webkit-mask: url('img/tah.svg') center / contain no-repeat;
+            mask: url('img/tah.svg') center / contain no-repeat;
 }
 
 /* Featured Project Section */
@@ -420,11 +735,28 @@ body {
     transition: transform 0.3s ease;
 }
 
-.social-icon img {
+/* Barva ikony: inkoust, v barevných motivech barva značky (--znacky 0 % / 100 %).
+   Ikona = maska ze dvou vrstev téhož SVG: tvar (alpha) minus bílý symbol uvnitř kolečka (luminance).
+   Symbol je tak průhledný a prosvítá jím pozadí skinu. */
+.social-icon i {
     display: block;
     width: 100%;
     height: 100%;
+    background-color: color-mix(in srgb, var(--znacka, var(--inkoust)) var(--znacky), var(--inkoust));
+    -webkit-mask: var(--ikona) center / contain no-repeat, var(--ikona) center / contain no-repeat luminance;
+    -webkit-mask-composite: source-out;
+            mask: var(--ikona) center / contain no-repeat alpha, var(--ikona) center / contain no-repeat luminance;
+            mask-composite: subtract;
 }
+
+.ikona-bandcamp { --ikona: url('img/social/bandcamp.svg'); --znacka: #1da0c3; }
+.ikona-behance { --ikona: url('img/social/behance.svg'); --znacka: #1769ff; }
+.ikona-linkedin { --ikona: url('img/social/linkedin.svg'); --znacka: #0a66c2; }
+.ikona-facebook { --ikona: url('img/social/facebook.svg'); --znacka: #1877f2; }
+.ikona-youtube { --ikona: url('img/social/youtube.svg'); --znacka: #ff0033; }
+.ikona-soundcloud { --ikona: url('img/social/soundcloud.svg'); --znacka: #ff5500; }
+.ikona-github { --ikona: url('img/social/github.svg'); --znacka: var(--inkoust); }
+.ikona-instagram { --ikona: url('img/social/instagram.svg'); --znacka: #e1306c; }
 
 .social-icon:hover {
     transform: scale(1.15);
@@ -434,7 +766,7 @@ body {
 .motto {
     text-align: center;
     font-size: 18px;
-    color: #333;
+    color: var(--text);
     margin: 24px 0 40px;
 }
 
@@ -444,11 +776,17 @@ body {
     width: 72px;
     height: 8px;
     margin: 0 auto 14px;
-    background: url('img/tah.svg') center / contain no-repeat;
+    background: var(--tah);
+    -webkit-mask: url('img/tah.svg') center / contain no-repeat;
+            mask: url('img/tah.svg') center / contain no-repeat;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+    .container {
+        padding-top: 60px; /* tlačítko Vzhled nad nadpisem, ať se ho nedotýká */
+    }
+
     .main-title {
         font-size: 42px;
     }
@@ -517,7 +855,7 @@ body {
 /* Karta = světlá teplá plocha s oblými rohy, žádný rámeček (varianta B, rozhodnutí 2026-10-10) */
 .projekty-karta {
     padding: 25px;
-    background-color: #f6f5f2;
+    background-color: var(--plocha);
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -526,7 +864,7 @@ body {
 }
 
 .projekty-karta:hover {
-    background-color: #efede8;
+    background-color: var(--plocha-hover);
 }
 
 /* Karta se živým webem: celá plocha je odkaz (roztažený přes kartu), ↗ na GitHub zůstává nad ním */
@@ -594,11 +932,11 @@ body {
 .projekty-karta footer,
 .projekty-data-k {
     font-size: 13px;
-    color: #666;
+    color: var(--text-popisek);
 }
 
 .projekty-popis {
-    color: #333;
+    color: var(--text);
     line-height: 1.5;
     margin: 0;
 }
@@ -656,7 +994,7 @@ body {
 }
 
 .projekty-aplikace p {
-    color: #333;
+    color: var(--text);
     line-height: 1.5;
     margin: 0;
 }
@@ -677,30 +1015,30 @@ body {
 
 /* Inverzně (pokyn 2026-10-11): tmavá plocha v inkoustu, světlý text — odliší starší práci od aktuální */
 .projekty-archiv .projekty-karta {
-    background-color: var(--inkoust);
-    color: #f6f5f2;
+    background-color: var(--inv-plocha);
+    color: var(--inv-text);
 }
 
 .projekty-archiv .projekty-karta:hover {
-    background-color: #2b2b2b;
+    background-color: var(--inv-plocha-hover);
 }
 
 .projekty-archiv .projekty-popis {
-    color: #d9d6cf;
+    color: var(--inv-text-2);
 }
 
 .projekty-archiv .projekty-jazyk,
 .projekty-archiv .projekty-karta footer {
-    color: #a19e97;
+    color: var(--inv-text-3);
 }
 
 .projekty-archiv .projekty-odkaz,
 .projekty-archiv .projekty-dalsi {
-    color: #f6f5f2;
+    color: var(--inv-text);
 }
 
 .projekty-archiv .projekty-web:focus-visible {
-    outline-color: #f6f5f2;
+    outline-color: var(--inv-text);
 }
 
 .projekty-data-k {
@@ -721,8 +1059,8 @@ body {
 
 .projekty-barevna {
     background-image:
-        radial-gradient(circle at 92% 8%, rgba(var(--barva), .30) 0, rgba(var(--barva), .12) 70px, transparent 140px),
-        radial-gradient(circle at 78% 22%, rgba(var(--barva), .18) 0, transparent 30px);
+        radial-gradient(circle at 92% 8%, rgba(var(--barva), calc(.30 * var(--bokeh-sila))) 0, rgba(var(--barva), calc(.12 * var(--bokeh-sila))) 70px, transparent 140px),
+        radial-gradient(circle at 78% 22%, rgba(var(--barva), calc(.18 * var(--bokeh-sila))) 0, transparent 30px);
 }
 
 /* Sloupce s prací mají fill="currentColor" (projekty.js): barvu grafu dává color */

@@ -1,0 +1,359 @@
+/* Skiny (docs/plans/2026-10-11-skiny-design.md). Načítá se po style.css.
+   Motiv = dva bloky proměnných: [data-skin="id"][data-rezim="svetly"] a [data-skin="id"][data-rezim="tmavy"].
+   Selektory nejsou vázané na :root, takže stejné bloky obarví i náhled motivu v panelu (prvek s data-skin a data-rezim).
+   Volby návštěvníka nad motivem: data-akcent (Základní barvy) a data-pozadi (vzor pozadí). Nastavují --volba-*,
+   motiv dává --motiv-*; výsledné role (--akcent, --vzor…) skládá obecné pravidlo ve style.css. Tam je i výchozí
+   Inkoust ve světlém režimu, aby se stránka vykreslila i bez tohoto souboru. Skript v <head> nastaví atributy
+   na <html> ještě před vykreslením. */
+
+/* Barevné motivy: nadpis a podtitul v přechodu, ikony v barvách značek. Bez obrysů (pokyn 2026-10-11). */
+[data-skin="teple"],
+[data-skin="hluboka"],
+[data-skin="indigo"],
+[data-skin="priroda"],
+[data-skin="kyberpunk"] {
+    --nadpis: linear-gradient(90deg, var(--inkoust) 15%, rgb(var(--akcent-2)) 95%);
+    --podtitul: linear-gradient(90deg,
+        color-mix(in srgb, rgb(var(--akcent)) 70%, var(--inkoust)),
+        color-mix(in srgb, rgb(var(--akcent-2)) 70%, var(--inkoust)),
+        color-mix(in srgb, rgb(var(--akcent-3)) 70%, var(--inkoust)));
+    --znacky: 100%;
+}
+
+/* ===== Inkoust (výchozí), tmavý režim: teplá tmavá místo černé, inkoust jako papír; světlý je ve style.css ===== */
+[data-skin="inkoust"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #151413;
+    --inkoust: #ebe8e1;
+    --text: #c9c6bf;
+    --text-tlumeny: #b0ada6;
+    --text-popisek: #9a978f;
+    --plocha: #201f1d;
+    --plocha-hover: #292826;
+    --inv-plocha: #ebe8e1;
+    --inv-plocha-hover: #dedad2;
+    --inv-text: #1a1a1a;
+    --inv-text-2: #3a3835;
+    --inv-text-3: #66635d;
+    --motiv-akcent: 235, 232, 225;
+    --motiv-akcent-2: 235, 232, 225;
+    --motiv-akcent-3: 235, 232, 225;
+    --opar-sila: .85;
+    --bokeh-sila: 1.4;
+}
+
+/* ===== Teplé světlo: krémová, námořnická modř, ensō modrá → fialová → oranžová ===== */
+[data-skin="teple"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #faf6ef;
+    --inkoust: #1f2a44;
+    --text: #3b4560;
+    --text-tlumeny: #4f5873;
+    --text-popisek: #575e72;
+    --plocha: #f2ece2;
+    --plocha-hover: #ebe3d6;
+    --inv-plocha: #1f2a44;
+    --inv-plocha-hover: #2b3756;
+    --inv-text: #faf6ef;
+    --inv-text-2: #d5d9e4;
+    --inv-text-3: #a3abc0;
+    --motiv-akcent: 64, 104, 224;
+    --motiv-akcent-2: 150, 90, 220;
+    --motiv-akcent-3: 240, 140, 80;
+}
+
+[data-skin="teple"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #1d1a16;
+    --inkoust: #f3ead9;
+    --text: #d9cfbd;
+    --text-tlumeny: #c2b8a6;
+    --text-popisek: #a39a8a;
+    --plocha: #28241f;
+    --plocha-hover: #312c26;
+    --inv-plocha: #f3ead9;
+    --inv-plocha-hover: #e6dccb;
+    --inv-text: #1d1a16;
+    --inv-text-2: #3d372f;
+    --inv-text-3: #6b6256;
+    --motiv-akcent: 120, 150, 255;
+    --motiv-akcent-2: 190, 140, 255;
+    --motiv-akcent-3: 255, 170, 110;
+    --opar-sila: .85;
+    --bokeh-sila: 1.4;
+}
+
+/* ===== Hluboká práce: břidlicová, tyrkys a modrá ===== */
+[data-skin="hluboka"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #f3f5f7;
+    --inkoust: #15202b;
+    --text: #33414f;
+    --text-tlumeny: #4a5866;
+    --text-popisek: #56626f;
+    --plocha: #e8ecf0;
+    --plocha-hover: #dfe4ea;
+    --inv-plocha: #15202b;
+    --inv-plocha-hover: #22303e;
+    --inv-text: #eef2f5;
+    --inv-text-2: #c9d2db;
+    --inv-text-3: #95a2af;
+    --motiv-akcent: 20, 160, 150;
+    --motiv-akcent-2: 40, 120, 220;
+    --motiv-akcent-3: 90, 200, 170;
+}
+
+[data-skin="hluboka"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #121820;
+    --inkoust: #e6edf3;
+    --text: #c3ced8;
+    --text-tlumeny: #a9b5c1;
+    --text-popisek: #8d99a6;
+    --plocha: #1b2430;
+    --plocha-hover: #232e3c;
+    --inv-plocha: #e6edf3;
+    --inv-plocha-hover: #d6dfe7;
+    --inv-text: #121820;
+    --inv-text-2: #33404d;
+    --inv-text-3: #5d6b79;
+    --motiv-akcent: 45, 212, 191;
+    --motiv-akcent-2: 90, 160, 255;
+    --motiv-akcent-3: 140, 230, 200;
+    --opar-sila: .85;
+    --bokeh-sila: 1.4;
+}
+
+/* ===== Kreativní indigo: fialová, růžová ===== */
+[data-skin="indigo"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #f6f4fd;
+    --inkoust: #231a4f;
+    --text: #3d3566;
+    --text-tlumeny: #514978;
+    --text-popisek: #655e8b;
+    --plocha: #ece8fb;
+    --plocha-hover: #e3ddf8;
+    --inv-plocha: #231a4f;
+    --inv-plocha-hover: #31266a;
+    --inv-text: #f6f4fd;
+    --inv-text-2: #d6d0f0;
+    --inv-text-3: #a49cc8;
+    --motiv-akcent: 108, 72, 255;
+    --motiv-akcent-2: 214, 72, 196;
+    --motiv-akcent-3: 255, 128, 160;
+}
+
+[data-skin="indigo"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #14112a;
+    --inkoust: #ece8ff;
+    --text: #cdc6ee;
+    --text-tlumeny: #b5addb;
+    --text-popisek: #9a92c4;
+    --plocha: #1e1a3d;
+    --plocha-hover: #27224d;
+    --inv-plocha: #ece8ff;
+    --inv-plocha-hover: #ddd6fb;
+    --inv-text: #14112a;
+    --inv-text-2: #37306a;
+    --inv-text-3: #625a92;
+    --motiv-akcent: 150, 120, 255;
+    --motiv-akcent-2: 240, 110, 220;
+    --motiv-akcent-3: 255, 160, 190;
+    --opar-sila: .85;
+    --bokeh-sila: 1.4;
+}
+
+/* ===== Příroda: písková, olivová, zelená a jantar ===== */
+[data-skin="priroda"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #f4f1e8;
+    --inkoust: #2a3324;
+    --text: #444d3c;
+    --text-tlumeny: #555e4d;
+    --text-popisek: #535a49;
+    --plocha: #e9e5d6;
+    --plocha-hover: #e0dbc9;
+    --inv-plocha: #2a3324;
+    --inv-plocha-hover: #374230;
+    --inv-text: #f4f1e8;
+    --inv-text-2: #d6d8c8;
+    --inv-text-3: #a6ab96;
+    --motiv-akcent: 92, 140, 80;
+    --motiv-akcent-2: 200, 150, 70;
+    --motiv-akcent-3: 150, 170, 110;
+}
+
+[data-skin="priroda"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #171a14;
+    --inkoust: #ece8d8;
+    --text: #cfcbb9;
+    --text-tlumeny: #b7b3a1;
+    --text-popisek: #9c9886;
+    --plocha: #22261d;
+    --plocha-hover: #2b3025;
+    --inv-plocha: #ece8d8;
+    --inv-plocha-hover: #ded9c6;
+    --inv-text: #171a14;
+    --inv-text-2: #3b4033;
+    --inv-text-3: #5c6150;
+    --motiv-akcent: 140, 190, 110;
+    --motiv-akcent-2: 230, 180, 100;
+    --motiv-akcent-3: 180, 200, 140;
+    --opar-sila: .85;
+    --bokeh-sila: 1.4;
+}
+
+/* ===== Kyberpunk: neonová purpurová a azurová, jemná mřížka ===== */
+[data-skin="kyberpunk"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #f5f3fa;
+    --inkoust: #1b1030;
+    --text: #3a2f52;
+    --text-tlumeny: #4d4267;
+    --text-popisek: #62567b;
+    --plocha: #ebe7f5;
+    --plocha-hover: #e2dcf1;
+    --inv-plocha: #1b1030;
+    --inv-plocha-hover: #2a1a4a;
+    --inv-text: #f5f3fa;
+    --inv-text-2: #d8cff0;
+    --inv-text-3: #a698c8;
+    --motiv-akcent: 230, 0, 160;
+    --motiv-akcent-2: 0, 170, 230;
+    --motiv-akcent-3: 140, 60, 255;
+    --motiv-vzor:
+        linear-gradient(rgba(var(--akcent-3), .07) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(90deg, rgba(var(--akcent-3), .07) 1px, transparent 1px) 0 0 / 32px 32px;
+}
+
+[data-skin="kyberpunk"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #0b0b1a;
+    --inkoust: #f0eaff;
+    --text: #cfc6f0;
+    --text-tlumeny: #b3a9dc;
+    --text-popisek: #9a8fc8;
+    --plocha: #15142b;
+    --plocha-hover: #1e1c3b;
+    --inv-plocha: #f0eaff;
+    --inv-plocha-hover: #e0d6ff;
+    --inv-text: #0b0b1a;
+    --inv-text-2: #322a5c;
+    --inv-text-3: #5f558c;
+    --motiv-akcent: 255, 46, 196;
+    --motiv-akcent-2: 0, 229, 255;
+    --motiv-akcent-3: 160, 90, 255;
+    --motiv-vzor:
+        linear-gradient(rgba(var(--akcent-2), .07) 1px, transparent 1px) 0 0 / 32px 32px,
+        linear-gradient(90deg, rgba(var(--akcent-2), .07) 1px, transparent 1px) 0 0 / 32px 32px;
+    --opar-sila: 1;
+    --bokeh-sila: 1.6;
+}
+
+/* ===== Minimal: jen šedé, bez oparu a bokehu ===== */
+[data-skin="minimal"][data-rezim="svetly"] {
+    color-scheme: light;
+    --pozadi: #ffffff;
+    --inkoust: #111111;
+    --text: #444444;
+    --text-tlumeny: #555555;
+    --text-popisek: #6b6b6b;
+    --plocha: #f4f4f4;
+    --plocha-hover: #ececec;
+    --inv-plocha: #111111;
+    --inv-plocha-hover: #222222;
+    --inv-text: #f5f5f5;
+    --inv-text-2: #d4d4d4;
+    --inv-text-3: #9e9e9e;
+    --motiv-akcent: 17, 17, 17;
+    --motiv-akcent-2: 17, 17, 17;
+    --motiv-akcent-3: 17, 17, 17;
+    --opar-sila: 0;
+    --bokeh-sila: 0;
+}
+
+[data-skin="minimal"][data-rezim="tmavy"] {
+    color-scheme: dark;
+    --pozadi: #0f0f0f;
+    --inkoust: #eeeeee;
+    --text: #c8c8c8;
+    --text-tlumeny: #b0b0b0;
+    --text-popisek: #949494;
+    --plocha: #1b1b1b;
+    --plocha-hover: #232323;
+    --inv-plocha: #eeeeee;
+    --inv-plocha-hover: #dddddd;
+    --inv-text: #0f0f0f;
+    --inv-text-2: #333333;
+    --inv-text-3: #5c5c5c;
+    --motiv-akcent: 238, 238, 238;
+    --motiv-akcent-2: 238, 238, 238;
+    --motiv-akcent-3: 238, 238, 238;
+    --opar-sila: 0;
+    --bokeh-sila: 0;
+}
+
+/* ===== Základní barvy (volba návštěvníka): akcent + dvě sousední barvy pro přechod, z palety původního banneru ===== */
+[data-akcent="fialova"] { --volba-akcent: 168, 34, 196; --volba-akcent-2: 81, 135, 244; --volba-akcent-3: 205, 52, 91; }
+[data-akcent="purpur"] { --volba-akcent: 172, 50, 148; --volba-akcent-2: 205, 52, 91; --volba-akcent-3: 81, 135, 244; }
+[data-akcent="malina"] { --volba-akcent: 205, 52, 91; --volba-akcent-2: 240, 120, 60; --volba-akcent-3: 168, 34, 196; }
+[data-akcent="oranzova"] { --volba-akcent: 240, 120, 60; --volba-akcent-2: 224, 184, 58; --volba-akcent-3: 205, 52, 91; }
+[data-akcent="zlata"] { --volba-akcent: 224, 184, 58; --volba-akcent-2: 240, 120, 60; --volba-akcent-3: 54, 196, 102; }
+[data-akcent="zelena"] { --volba-akcent: 54, 196, 102; --volba-akcent-2: 60, 193, 154; --volba-akcent-3: 224, 184, 58; }
+[data-akcent="tyrkys"] { --volba-akcent: 60, 193, 154; --volba-akcent-2: 32, 152, 227; --volba-akcent-3: 54, 196, 102; }
+[data-akcent="azur"] { --volba-akcent: 32, 152, 227; --volba-akcent-2: 60, 193, 154; --volba-akcent-3: 81, 135, 244; }
+[data-akcent="modra"] { --volba-akcent: 81, 135, 244; --volba-akcent-2: 168, 34, 196; --volba-akcent-3: 32, 152, 227; }
+
+/* ===== Pozadí (volba návštěvníka): průsvitný vzor nad barvou motivu, takže čitelnost drží motiv a režim.
+   Čáry a tečky berou barvu z inkoustu motivu; zrno a krajina jsou SVG, proto mají světlou a tmavou verzi. ===== */
+[data-pozadi="mrizka"] {
+    --volba-vzor:
+        linear-gradient(color-mix(in srgb, var(--inkoust) 7%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+        linear-gradient(90deg, color-mix(in srgb, var(--inkoust) 7%, transparent) 1px, transparent 1px) 0 0 / 24px 24px;
+}
+
+[data-pozadi="tecky"] {
+    --volba-vzor: radial-gradient(color-mix(in srgb, var(--inkoust) 18%, transparent) 1px, transparent 1.6px) 0 0 / 18px 18px;
+}
+
+[data-pozadi="papir"][data-rezim="svetly"] {
+    --volba-vzor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .15 .55 0 0 0 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        linear-gradient(rgba(214, 190, 150, .16), rgba(214, 190, 150, .16));
+}
+
+[data-pozadi="papir"][data-rezim="tmavy"] {
+    --volba-vzor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .85 .45 0 0 0 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+        linear-gradient(rgba(120, 100, 70, .10), rgba(120, 100, 70, .10));
+}
+
+[data-pozadi="mech"] {
+    --volba-vzor:
+        radial-gradient(ellipse at 8% 18%, rgba(110, 140, 80, .20), transparent 40%),
+        radial-gradient(ellipse at 88% 62%, rgba(140, 160, 90, .18), transparent 45%),
+        radial-gradient(ellipse at 40% 100%, rgba(90, 120, 70, .16), transparent 50%),
+        radial-gradient(ellipse at 60% 30%, rgba(200, 170, 100, .10), transparent 40%);
+}
+
+[data-pozadi="soumrak"] {
+    --volba-vzor: linear-gradient(165deg, rgba(255, 170, 120, .16), rgba(214, 72, 196, .10) 50%, rgba(81, 135, 244, .14));
+}
+
+[data-pozadi="aurora"] {
+    --volba-vzor:
+        radial-gradient(ellipse at 12% 8%, rgba(60, 193, 154, .22), transparent 45%),
+        radial-gradient(ellipse at 88% 28%, rgba(168, 34, 196, .16), transparent 45%),
+        radial-gradient(ellipse at 50% 92%, rgba(32, 152, 227, .16), transparent 50%);
+}
+
+[data-pozadi="krajina"][data-rezim="svetly"] {
+    --volba-vzor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 600' preserveAspectRatio='none'%3E%3Cpath d='M0 330C300 250 600 300 900 250S1400 210 1600 270V600H0Z' fill='%23dfe3cf'/%3E%3Cpath d='M0 420C350 370 700 450 1050 390S1450 350 1600 400V600H0Z' fill='%23cdd5b6'/%3E%3Cpath d='M0 510C400 470 800 540 1200 490S1500 480 1600 500V600H0Z' fill='%23e8d9b8'/%3E%3C/svg%3E") center bottom / 100% 42vh no-repeat;
+}
+
+[data-pozadi="krajina"][data-rezim="tmavy"] {
+    --volba-vzor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 600' preserveAspectRatio='none'%3E%3Cpath d='M0 330C300 250 600 300 900 250S1400 210 1600 270V600H0Z' fill='%23202638'/%3E%3Cpath d='M0 420C350 370 700 450 1050 390S1450 350 1600 400V600H0Z' fill='%232a2440'/%3E%3Cpath d='M0 510C400 470 800 540 1200 490S1500 480 1600 500V600H0Z' fill='%23332a3a'/%3E%3C/svg%3E") center bottom / 100% 42vh no-repeat;
+}

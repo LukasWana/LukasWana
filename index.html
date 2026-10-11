@@ -7,10 +7,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;600;700&display=swap">
     <title>Lukáš - AI Micro-Tools & Digital Creator</title>
+    <!-- Motiv, režim, akcent a pozadí nastavit před vykreslením, jinak tmavý režim blikne světle.
+         Neplatné uložené hodnoty opraví skin.js (docs/plans/2026-10-11-skiny-design.md). -->
+    <script>
+        (function () {
+            var d = document.documentElement, u = {};
+            try { ['skin', 'rezim', 'akcent', 'pozadi'].forEach(function (k) { u[k] = localStorage.getItem(k); }); } catch (e) {}
+            var tmavy = u.rezim === 'tmavy' || (u.rezim !== 'svetly' && matchMedia('(prefers-color-scheme: dark)').matches);
+            d.dataset.skin = u.skin || 'inkoust';
+            d.dataset.rezim = tmavy ? 'tmavy' : 'svetly';
+            if (u.akcent) d.dataset.akcent = u.akcent;
+            if (u.pozadi) d.dataset.pozadi = u.pozadi;
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="skiny.css">
 </head>
 <body>
     <div class="container">
+        <!-- Vzhled: tlačítko s nabídkou skinů a režimu, panel vyplní skin.js (bez JS zůstane skryté) -->
+        <div class="vzhled" hidden>
+            <button class="vzhled-tlacitko" type="button" aria-expanded="false" aria-controls="vzhled-panel">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
+                Vzhled
+            </button>
+            <div class="vzhled-panel" id="vzhled-panel" hidden></div>
+        </div>
+
         <!-- Header -->
         <header class="header">
             <h1 class="main-title">Lukáš Wana</h1>
@@ -20,7 +43,7 @@
 
         <!-- Banner: ensō (img/enso.svg z tools/enso.py) -->
         <section class="enso-banner">
-            <img class="enso" src="img/enso.svg" alt="" width="400" height="400">
+            <div class="enso" aria-hidden="true"></div>
             <div class="enso-text">
                 <h2>Deep work creator</h2>
                 <p>introvertní technicko-kreativní tvůrce</p>
@@ -235,21 +258,22 @@
         <!-- Social Media Icons -->
         <section class="social-section">
             <div class="social-icons">
-                <!-- Ikony: img/social/*.svg, vyřezané z ručně kreslené sady social-icon-handdraw.svg. -->
-                <a class="social-icon" href="https://wana.bandcamp.com/album/ambient-journey" target="_blank" rel="noopener" aria-label="Bandcamp"><img src="img/social/bandcamp.svg" alt=""></a>
-                <a class="social-icon" href="https://www.behance.net/wanalukas" target="_blank" rel="noopener" aria-label="Behance"><img src="img/social/behance.svg" alt=""></a>
-                <a class="social-icon" href="https://www.linkedin.com/in/qwanap/" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="img/social/linkedin.svg" alt=""></a>
-                <a class="social-icon" href="https://www.facebook.com/qwanap/" target="_blank" rel="noopener" aria-label="Facebook"><img src="img/social/facebook.svg" alt=""></a>
-                <a class="social-icon" href="https://www.youtube.com/@qwanap" target="_blank" rel="noopener" aria-label="YouTube"><img src="img/social/youtube.svg" alt=""></a>
-                <a class="social-icon" href="https://soundcloud.com/qwanap-cz" target="_blank" rel="noopener" aria-label="SoundCloud"><img src="img/social/soundcloud.svg" alt=""></a>
-                <a class="social-icon" href="https://github.com/lukasWana" target="_blank" rel="noopener" aria-label="GitHub"><img src="img/social/github.svg" alt=""></a>
-                <a class="social-icon" href="https://www.instagram.com/qwanap/" target="_blank" rel="noopener" aria-label="Instagram"><img src="img/social/instagram.svg" alt=""></a>
+                <!-- Ikony: img/social/*.svg (ručně kreslená sada social-icon-handdraw.svg), vložené jako maska v barvě skinu (style.css .ikona-*). -->
+                <a class="social-icon" href="https://wana.bandcamp.com/album/ambient-journey" target="_blank" rel="noopener" aria-label="Bandcamp"><i class="ikona-bandcamp"></i></a>
+                <a class="social-icon" href="https://www.behance.net/wanalukas" target="_blank" rel="noopener" aria-label="Behance"><i class="ikona-behance"></i></a>
+                <a class="social-icon" href="https://www.linkedin.com/in/qwanap/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="ikona-linkedin"></i></a>
+                <a class="social-icon" href="https://www.facebook.com/qwanap/" target="_blank" rel="noopener" aria-label="Facebook"><i class="ikona-facebook"></i></a>
+                <a class="social-icon" href="https://www.youtube.com/@qwanap" target="_blank" rel="noopener" aria-label="YouTube"><i class="ikona-youtube"></i></a>
+                <a class="social-icon" href="https://soundcloud.com/qwanap-cz" target="_blank" rel="noopener" aria-label="SoundCloud"><i class="ikona-soundcloud"></i></a>
+                <a class="social-icon" href="https://github.com/lukasWana" target="_blank" rel="noopener" aria-label="GitHub"><i class="ikona-github"></i></a>
+                <a class="social-icon" href="https://www.instagram.com/qwanap/" target="_blank" rel="noopener" aria-label="Instagram"><i class="ikona-instagram"></i></a>
             </div>
         </section>
 
         <!-- Motto: jedna věta s malým tahem štětce (img/tah.svg) -->
         <p class="motto">Kvalitní práce v klidu — bez tlaku, bez stresu, bez přetvářky.</p>
     </div>
+    <script src="skin.js" defer></script>
     <script src="projekty.js" defer></script>
     <script src="nadpis.js" defer></script>
 </body>
