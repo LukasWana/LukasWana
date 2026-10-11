@@ -288,31 +288,24 @@ class TestInkoust(unittest.TestCase):
         self.assertIn("color: var(--inkoust);", pravidla(css, self.CB + " .projekty-graf")[0])
 
 
-class TestStarsiInverzne(unittest.TestCase):
-    """Pokyn uživatele 2026-10-11: karty starších projektů inverzně — tmavá plocha v inkoustu, světlý text."""
+class TestStarsiNaPozadi(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11 (mění dřívější „inverzně“ téhož dne): karty starších projektů mají podbarvení jako
+    ikony dole = pozadí stránky (papír, mřížka…), žádná vlastní plocha ani obrys (TestBezCar), text v běžných barvách."""
 
-    def test_karta_tmava_text_svetly(self):
+    def test_karta_bez_plochy(self):
         css = text("style.css")
         tela = pravidla(css, ".projekty-archiv .projekty-karta")
-        self.assertTrue(any("background-color: var(--inv-plocha);" in t for t in tela))
-        self.assertTrue(any("color: var(--inv-text);" in t for t in tela))
-        hover = pravidla(css, ".projekty-archiv .projekty-karta:hover")
-        self.assertEqual(len(hover), 1)
-        self.assertIn("var(--inv-plocha-hover)", hover[0])
-        # výchozí Inkoust: plocha v inkoustu, světlý text; hover se od plochy liší
-        inkoust = pravidla(css, ":root")[1]
-        self.assertIn("--inv-plocha: #1a1a1a;", inkoust)
-        self.assertIn("--inv-text: #f6f5f2;", inkoust)
-        self.assertNotIn("--inv-plocha-hover: #1a1a1a;", inkoust)
+        self.assertEqual(len(tela), 1)
+        self.assertIn("background-color: transparent;", tela[0])
+        self.assertIn("color-mix(in srgb, var(--inkoust)", pravidla(css, ".projekty-archiv .projekty-karta:hover")[0])
+        self.assertNotIn("inv-", css.split(".projekty-archiv {")[1].split("/* Patička")[0])
 
-    def test_sedy_text_a_odkazy_svetle(self):
+    def test_text_v_beznych_barvach(self):
         css = text("style.css")
         for selektor in (".projekty-archiv .projekty-popis", ".projekty-archiv .projekty-jazyk",
                          ".projekty-archiv .projekty-karta footer", ".projekty-archiv .projekty-odkaz",
                          ".projekty-archiv .projekty-dalsi", ".projekty-archiv .projekty-web:focus-visible"):
-            tela = pravidla(css, selektor)
-            self.assertEqual(len(tela), 1, selektor)
-            self.assertNotIn("inkoust", tela[0], selektor)
+            self.assertEqual(pravidla(css, selektor), [], selektor)
 
 
 class TestVelkyMonitor(unittest.TestCase):
@@ -400,13 +393,16 @@ class TestSkiny(unittest.TestCase):
             "--inv-plocha", "--inv-plocha-hover", "--inv-text", "--inv-text-2", "--inv-text-3",
             "--motiv-akcent", "--motiv-akcent-2", "--motiv-akcent-3")
 
-    def test_panel_roluje_se_strankou(self):
-        # pokyn uživatele 2026-10-11: panel Vzhled se roluje s celou stránkou, ne vlastním posuvníkem
-        # (dřív max-height 100vh − 80 px → v nízkém okně byly Motivy schované uvnitř panelu)
-        telo = pravidla(text("style.css"), ".vzhled-panel")[0]
-        self.assertIn("position: absolute;", telo)
-        self.assertNotIn("max-height", telo)
-        self.assertNotIn("overflow", telo)
+    def test_vzhled_jede_s_rolovanim(self):
+        # pokyn uživatele 2026-10-11 „ať se nastavení témat scroluje nahoře s celou stránkou“ + „Vzhled se nescroluje“:
+        # tlačítko zůstává při rolování nahoře (fixed); panel pak musí mít vlastní posuvník, jinak by se jeho
+        # spodek v nízkém okně nedal dočíst
+        css = text("style.css")
+        self.assertIn("position: fixed;", pravidla(css, ".vzhled")[0])
+        self.assertNotIn("background: none;", pravidla(css, ".vzhled-tlacitko")[0])  # nad obsahem musí mít podklad
+        panel = pravidla(css, ".vzhled-panel")[0]
+        self.assertIn("max-height: calc(100vh - 80px);", panel)
+        self.assertIn("overflow-y: auto;", panel)
 
     def setUp(self):
         self.js = text("skin.js")

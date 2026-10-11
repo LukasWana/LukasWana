@@ -78,10 +78,12 @@ body {
 /* Tlačítko Vzhled a panel „Vzhled a motivy“ (skin.js): Pozadí, Základní barvy, Režim, Motivy.
    Tlačítko sedí v horním paddingu kontejneru nad hlavičkou. Náhledy motivů a vzorníky obarví přímo bloky
    ze skiny.css (prvek s data-skin / data-akcent / data-pozadi a data-rezim), barvy se nikde neopisují. */
+/* fixed: při rolování zůstává nahoře na obrazovce (pokyn uživatele 2026-10-11); vpravo zarovnané s obsahem
+   (kontejner 1200 px, padding 20 px), na úzkém okně 20 px od okraje */
 .vzhled {
-    position: absolute;
-    top: 8px;
-    right: 20px;
+    position: fixed;
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    right: max(20px, calc((100vw - 1200px) / 2 + 20px));
     z-index: 10;
 }
 
@@ -92,7 +94,10 @@ body {
     font: inherit;
     font-size: 14px;
     color: var(--inkoust);
-    background: none;
+    /* fixed nad obsahem: vlastní podklad v barvě pozadí, ať text pod ním neprosvítá */
+    background: color-mix(in srgb, var(--pozadi) 88%, transparent);
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
     border: 0;
     border-radius: 999px;
     padding: 4px 10px;
@@ -121,7 +126,9 @@ body {
     top: calc(100% + 8px);
     right: 0;
     width: min(320px, calc(100vw - 40px));
-    /* bez max-height a vlastního posuvníku: roluje se s celou stránkou (pokyn uživatele 2026-10-11) */
+    /* tlačítko je fixed, takže panel se se stránkou neroluje: delší než okno → vlastní posuvník */
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
     padding: 18px 20px 20px;
     background-color: var(--plocha);
     color: var(--inkoust);
@@ -1025,37 +1032,20 @@ body {
     font-weight: 600;
 }
 
-/* Starší aplikace v rozklikávací sekci: stejná mřížka po 3 jako hlavní projekty, světlejší plocha */
+/* Starší aplikace v rozklikávací sekci: stejná mřížka po 3 jako hlavní projekty */
 .projekty-archiv .projekty-grid {
     margin-top: 20px;
 }
 
-/* Inverzně (pokyn 2026-10-11): tmavá plocha v inkoustu, světlý text — odliší starší práci od aktuální */
+/* Podbarvení jako ikony dole = pozadí stránky (pokyn uživatele 2026-10-11, mění dřívější „inverzně“): bez vlastní
+   plochy, papír / mřížka / tečky prosvítají; text v běžných barvách. Bez obrysu (pokyn 2026-10-11 „obrysy všude
+   pryč“, TestBezCar) — kartu ukáže jen jemné podbarvení při najetí */
 .projekty-archiv .projekty-karta {
-    background-color: var(--inv-plocha);
-    color: var(--inv-text);
+    background-color: transparent;
 }
 
 .projekty-archiv .projekty-karta:hover {
-    background-color: var(--inv-plocha-hover);
-}
-
-.projekty-archiv .projekty-popis {
-    color: var(--inv-text-2);
-}
-
-.projekty-archiv .projekty-jazyk,
-.projekty-archiv .projekty-karta footer {
-    color: var(--inv-text-3);
-}
-
-.projekty-archiv .projekty-odkaz,
-.projekty-archiv .projekty-dalsi {
-    color: var(--inv-text);
-}
-
-.projekty-archiv .projekty-web:focus-visible {
-    outline-color: var(--inv-text);
+    background-color: color-mix(in srgb, var(--inkoust) 5%, transparent);
 }
 
 /* Patička pod mottem: „Aktualizováno … · e-mail“ na střed (pokyn uživatele 2026-10-11); na mobilu pod sebou */
