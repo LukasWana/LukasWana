@@ -41,6 +41,18 @@
     --motiv-akcent-3: 26, 26, 26;
 }
 
+/* Výchozí Inkoust bez zvolené Základní barvy je černobílý v obou režimech (pokyn uživatele 2026-10-11, plán
+   skiny-zuzeni Task 6): bez oparu a bokehu, grafy v inkoustu. Platí i bez JS (html bez data-skin). Specificita
+   (0,4,0) přebije tmavý Inkoust ve skiny.css i barevné sloupce karet. Selektor je bez čárky kvůli funkci testů pravidla(). */
+:root:not([data-skin]:not([data-skin="inkoust"])):not([data-akcent]) {
+    --opar-sila: 0;
+    --bokeh-sila: 0;
+}
+
+:root:not([data-skin]:not([data-skin="inkoust"])):not([data-akcent]) .projekty-graf {
+    color: var(--inkoust);
+}
+
 * {
     margin: 0;
     padding: 0;

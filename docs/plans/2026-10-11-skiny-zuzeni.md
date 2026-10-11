@@ -3,7 +3,12 @@
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 Datum: 2026-10-11 · Stav: **Tasky 0–2 hotové (`2c1282f`, `10d848a`) + přejmenování motivů (`83736c6`), dál od
-Tasku 3. Pushnuto a živě (Action `394193a` success, velikosti skin.js/skiny.css/style.css = repo).** Testy po Tasku 2: 74 Python + 17 JS zelených. Náhled schválený uživatelem běžel jen
+Tasku 3. Pushnuto a živě (Action `394193a` success, velikosti skin.js/skiny.css/style.css = repo).** Testy po Tasku 2: 74 Python + 17 JS zelených.
+**2026-10-11 odp.: Task 6 udělán předem** na pokyn uživatele „když zvolím inkoust a černou, bude stránka plně černobílá“ —
+bez pravidla pro ikony (`--ikona-barva` přijde až s Taskem 3; ikony jsou v inkoustu i bez něj, až Task 3 zavede
+přechod akcentů, pravidlo ikon z Tasku 6 doplň). Test `TestInkoust.test_vychozi_inkoust_cernobily`, testy 77 Python + 17 JS.
+Ověřeno snímkem (Chrome headless `--disable-lcd-text`): Inkoust světlý i tmavý = 0 pixelů s rozdílem kanálů > 40;
+se Základní barvou (zelená) se opar a bokeh vrátí. Nepushnuto. Náhled schválený uživatelem běžel jen
 jako kopie webu ve scratchpadu session z 11. 10. (není v repu). Tento plán převádí totéž do repa, s testy.
 
 **Goal:** Zúžit skiny na vybranou nabídku a sjednotit barvy: motiv nebo Základní barva ladí opar, karty projektů
@@ -385,7 +390,7 @@ Funkčnost `var()` uvnitř `calc(h + …)` ověř snímkem v Tasku 9 (karty mus�
 
 ---
 
-### Task 6: Výchozí Inkoust černobílý (`style.css`)
+### Task 6: Výchozí Inkoust černobílý (`style.css`) — ✅ udělán předem 11. 10. odp., chybí jen pravidlo ikon (po Tasku 3)
 
 **Step 1: Test (červený)** do `TestBarvyZAkcentu`:
 
@@ -551,6 +556,7 @@ Paměť projektu: web-nasazeni.md, navrh-nahled-ne-text.md (uživatel chce vidě
 Stav k 11. 10. 2026:
 - Živě (push schválen uživatelem 11. 10., Action 394193a success, velikosti souborů = repo): Tasky 0–2 (2c1282f, 10d848a) a přejmenování motivů (83736c6) — 4 motivy, 3 pozadí, 7 barev, režim první v panelu. Mezistav: ikony patičky jsou v inkoustu (barvy značek zrušeny v Tasku 2, přechod akcentů přijde s Taskem 3), opar a karty mají dál barvy natvrdo. Další push zase až po schválení, nejlépe po Tasku 9 (snímky).
 - Živě také nový Papír (rozhodnutí 13, commit 5870fc2, push schválen „zapiš to do repa a pushni“; Action success, Pages build d41243f, velikosti skiny.css a img/papir-*.svg na webu = repo). SVG jsou bajtově shodné s odsouhlaseným náhledem (cmp); skiny.css se od náhledu liší jen opravou b9f9283 (síla tónu na motivu, aby čtvereček v panelu nebyl v Inkoustu šedý), ověřenou snímkem panelu z kopie repa. Na živém webu snímkem neověřeno (volbu pozadí nejde v headless Chromu na cizí doméně vnutit).
+- 11. 10. odp.: Task 6 udělán předem (bez pravidla ikon, viz Stav nahoře), commit nepushnut. Dřív téhož odpoledne „Aktualizováno“ přesunuto dospod stránky na střed (270775a) a PUSHNUTO bez výslovného schválení (chyba, uživateli oznámeno).
 - Uživatel během implementace přejmenoval Teplé světlo → Veselé, Hluboká práce → Voda (jen názvy, id teple/hluboka zůstala kvůli uloženým volbám; rozhodnutí 12 v tabulce).
 - Uživatel v náhledu schválil: 4 motivy (Inkoust, Veselé, Voda, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
 - Testy po Papíru: 76 Python + 17 JS zelených (Papír přidal TestPapir ×2; test_zakladni_barvy_a_pozadi_maji_pravidla upraven: pravidla po režimech mají přednost před holým [data-pozadi="<id>"], aby přidání holého pravidla k pozadí s režimy test nerozbilo).

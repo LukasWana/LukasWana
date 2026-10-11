@@ -261,6 +261,19 @@ class TestInkoust(unittest.TestCase):
         self.assertTrue(any("color: var(--inkoust);" in t for t in pravidla(css, "body")))
         self.assertTrue(any("color: var(--inkoust);" in t for t in pravidla(css, ".projekty-graf")))
 
+    CB = ':root:not([data-skin]:not([data-skin="inkoust"])):not([data-akcent])'
+
+    def test_vychozi_inkoust_cernobily(self):
+        # pokyn uživatele 2026-10-11 „defaultní motiv bude černobílý“ (plán skiny-zuzeni, Task 6) a „když zvolím
+        # inkoust a černou, bude stránka plně černobílá“: bez oparu a bokehu, grafy v inkoustu, v obou režimech;
+        # barvu dostane Inkoust až po výběru Základní barvy. Ikony patičky jsou v inkoustu už bez pravidla.
+        css = text("style.css")
+        koren = pravidla(css, self.CB)
+        self.assertEqual(len(koren), 1)
+        self.assertIn("--opar-sila: 0;", koren[0])
+        self.assertIn("--bokeh-sila: 0;", koren[0])
+        self.assertIn("color: var(--inkoust);", pravidla(css, self.CB + " .projekty-graf")[0])
+
 
 class TestStarsiInverzne(unittest.TestCase):
     """Pokyn uživatele 2026-10-11: karty starších projektů inverzně — tmavá plocha v inkoustu, světlý text."""
