@@ -69,22 +69,32 @@
     --bokeh-sila: 1.4;
 }
 
-/* Veselé: ikony a Starší projekty barevně jako ilustrace ensō (pokyn uživatele 2026-10-11, varianta A z náhledu):
+/* Veselé a světlý Inkoust se zvolenou Základní barvou (pokyn uživatele 2026-10-11 večer: „podbarvení se mění
+   podle zvolených barev“): ikony a Starší projekty barevně jako ilustrace ensō (pokyn uživatele 2026-10-11, varianta A z náhledu):
    ikony plnými barvami po krocích přechodu modrá → fialová → oranžová zleva doprava, karty přechodem níž. Z --akcent*,
    takže v obou režimech i se Základní barvou drží s ensō. Texty karet zůstávají --inv-*; šedé jsou odvozené
    z --inv-text, protože původní šedá na oranžové zanikla. */
-[data-skin="teple"] .social-icon:nth-child(1) i { background-color: rgb(var(--akcent)); }
-[data-skin="teple"] .social-icon:nth-child(2) i { background-color: color-mix(in oklab, rgb(var(--akcent-2)) 29%, rgb(var(--akcent))); }
-[data-skin="teple"] .social-icon:nth-child(3) i { background-color: color-mix(in oklab, rgb(var(--akcent-2)) 57%, rgb(var(--akcent))); }
-[data-skin="teple"] .social-icon:nth-child(4) i { background-color: color-mix(in oklab, rgb(var(--akcent-2)) 86%, rgb(var(--akcent))); }
-[data-skin="teple"] .social-icon:nth-child(5) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 14%, rgb(var(--akcent-2))); }
-[data-skin="teple"] .social-icon:nth-child(6) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 43%, rgb(var(--akcent-2))); }
-[data-skin="teple"] .social-icon:nth-child(7) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 71%, rgb(var(--akcent-2))); }
-[data-skin="teple"] .social-icon:nth-child(8) i { background-color: rgb(var(--akcent-3)); }
+[data-skin="teple"] .social-icon:nth-child(1) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(1) i { background-color: rgb(var(--akcent)); }
+[data-skin="teple"] .social-icon:nth-child(2) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(2) i { background-color: color-mix(in oklab, rgb(var(--akcent-2)) 29%, rgb(var(--akcent))); }
+[data-skin="teple"] .social-icon:nth-child(3) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(3) i { background-color: color-mix(in oklab, rgb(var(--akcent-2)) 57%, rgb(var(--akcent))); }
+[data-skin="teple"] .social-icon:nth-child(4) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(4) i { background-color: color-mix(in oklab, rgb(var(--akcent-2)) 86%, rgb(var(--akcent))); }
+[data-skin="teple"] .social-icon:nth-child(5) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(5) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 14%, rgb(var(--akcent-2))); }
+[data-skin="teple"] .social-icon:nth-child(6) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(6) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 43%, rgb(var(--akcent-2))); }
+[data-skin="teple"] .social-icon:nth-child(7) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(7) i { background-color: color-mix(in oklab, rgb(var(--akcent-3)) 71%, rgb(var(--akcent-2))); }
+[data-skin="teple"] .social-icon:nth-child(8) i,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .social-icon:nth-child(8) i { background-color: rgb(var(--akcent-3)); }
 
 /* Starší projekty: jeden přechod shora dolů přes všechny karty (druhý pokyn téhož dne, místo tří barev po sloupcích).
    Přechod má výšku celé mřížky a každá karta ukazuje svůj výřez; čísla dává projekty.js prechodPresKarty(). */
-[data-skin="teple"] .projekty-archiv .projekty-karta {
+[data-skin="teple"] .projekty-archiv .projekty-karta,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .projekty-archiv .projekty-karta {
     --inv-text-2: color-mix(in srgb, var(--inv-text) 90%, transparent);
     --inv-text-3: color-mix(in srgb, var(--inv-text) 75%, transparent);
     background-image: linear-gradient(180deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)));
@@ -93,7 +103,8 @@
     background-repeat: no-repeat;
 }
 
-[data-skin="teple"] .projekty-archiv .projekty-karta:hover {
+[data-skin="teple"] .projekty-archiv .projekty-karta:hover,
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .projekty-archiv .projekty-karta:hover {
     filter: brightness(1.06);
 }
 

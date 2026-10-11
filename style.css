@@ -44,10 +44,18 @@
     --ikony: var(--inkoust);
 }
 
-/* Profil Inkoust (oba režimy, i se Základní barvou): všechny karty obráceně jako kolečka ikon — plocha v inkoustu,
-   světlý text (pokyn uživatele 2026-10-11). Přepíná proměnné, které karta a její prvky čtou (popis, štítky,
-   patička, odkazy, graf), takže netřeba výčtu prvků. Starší projekty mají vlastní inverzní pravidla níž. */
-:root:not([data-skin]:not([data-skin="inkoust"])) .projekty-karta {
+/* Profil Inkoust ve světlém režimu (výchozí vzhled, pokyn uživatele 2026-10-11 večer): projekty a Domácí server
+   mají světlou plochu a černý text, obráceně (v inkoustu) jsou jen Starší projekty a ikony dole. Se Základní
+   barvou dostanou světlé karty nádech akcentu a Starší projekty s ikonami barvy ensō (skiny.css, jako Veselé). */
+[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .projekty-karta {
+    --plocha: color-mix(in oklab, rgb(var(--akcent)) 9%, #f6f5f2);
+    --plocha-hover: color-mix(in oklab, rgb(var(--akcent)) 15%, #f6f5f2);
+}
+
+/* Profil Inkoust v tmavém režimu: všechny karty obráceně jako kolečka ikon — plocha v inkoustu, tmavý text
+   (pokyn uživatele 2026-10-11). Přepíná proměnné, které karta a její prvky čtou (popis, štítky, patička,
+   odkazy, graf), takže netřeba výčtu prvků. Starší projekty mají vlastní inverzní pravidla níž. */
+[data-skin="inkoust"][data-rezim="tmavy"] .projekty-karta {
     --plocha: var(--ikony);
     --plocha-hover: var(--inv-plocha-hover);
     --text: var(--inv-text-2);
@@ -225,20 +233,32 @@ body {
     background: var(--volba-vzor), var(--pozadi);
 }
 
-/* Základní barvy: kolečka v přechodu akcentu */
+/* Základní barvy: malé ensō 1:1 jako ilustrace na stránce — stejná maska img/enso.svg a stejný kuželový přechod
+   jako --enso (pokyn uživatele 2026-10-11 večer „ať náhled odpovídá“). Ensō kreslí ::before, aby přeškrtnutí
+   „Podle motivu“ v ::after maska neořízla. */
 .vzhled-barvy .vzhled-mrizka {
     grid-template-columns: repeat(4, 1fr);
 }
 
 .vzhled-kolecko {
     display: block;
+    position: relative;
     aspect-ratio: 1;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgb(var(--akcent)), rgb(var(--akcent-2)) 70%, rgb(var(--akcent-3)));
+    --kolecko: var(--enso);
+}
+
+.vzhled-kolecko::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--kolecko);
+    -webkit-mask: url('img/enso.svg') center / contain no-repeat;
+            mask: url('img/enso.svg') center / contain no-repeat;
 }
 
 .vzhled-kolecko[data-akcent] {
-    background: linear-gradient(135deg, rgb(var(--volba-akcent)), rgb(var(--volba-akcent-2)) 70%, rgb(var(--volba-akcent-3)));
+    --kolecko: conic-gradient(from 210deg, rgb(var(--volba-akcent)), rgb(var(--volba-akcent-2)), rgb(var(--volba-akcent-3)), rgb(var(--volba-akcent)));
 }
 
 /* Vybraná volba: dvojitý prstenec (mezera v barvě panelu, pak inkoust). Jediný obrys v panelu, kromě fokusu. */
@@ -313,14 +333,14 @@ body {
     background: var(--vzor), var(--pozadi);
 }
 
+/* Miniatura motivu 1:1 jako stránka: ensō a podtah stejnými maskami (img/enso.svg, img/tah.svg) a přechody */
 .vzhled-mini i {
     grid-row: span 2;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
     background: var(--enso);
-    -webkit-mask: radial-gradient(circle, transparent 52%, #000 56%);
-            mask: radial-gradient(circle, transparent 52%, #000 56%);
+    -webkit-mask: url('img/enso.svg') center / contain no-repeat;
+            mask: url('img/enso.svg') center / contain no-repeat;
 }
 
 .vzhled-mini b {
@@ -332,8 +352,11 @@ body {
 
 .vzhled-mini b + b {
     width: 70%;
-    height: 4px;
+    height: 6px;
+    border-radius: 0;
     background: var(--tah);
+    -webkit-mask: url('img/tah.svg') left center / contain no-repeat;
+            mask: url('img/tah.svg') left center / contain no-repeat;
 }
 
 .vzhled-motiv-nazev {

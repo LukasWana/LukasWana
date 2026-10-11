@@ -317,10 +317,13 @@ class TestStarsiInverzne(unittest.TestCase):
 
 
 class TestInkoustKartyInverzne(unittest.TestCase):
-    """Pokyn uživatele 2026-10-11: v profilu Inkoust (oba režimy, i se Základní barvou) jsou všechny karty obráceně
-    jako kolečka ikon — plocha v inkoustu, světlý text. Přepnutím proměnných v kartě, ne výčtem prvků."""
+    """Pokyn uživatele 2026-10-11: v tmavém Inkoustu jsou všechny karty obráceně jako kolečka ikon — plocha
+    v inkoustu, světlý text. Přepnutím proměnných v kartě, ne výčtem prvků. Večer téhož dne: ve světlém Inkoustu
+    (výchozí vzhled) mají projekty a Domácí server světlou plochu a černý text, obráceně jsou jen Starší projekty
+    a ikony; se Základní barvou se podbarvení mění podle ní."""
 
-    SEL = ':root:not([data-skin]:not([data-skin="inkoust"])) .projekty-karta'
+    SEL = '[data-skin="inkoust"][data-rezim="tmavy"] .projekty-karta'
+    SVETLY = '[data-skin="inkoust"][data-rezim="svetly"]'
 
     def test_karta_prepne_promenne(self):
         tela = pravidla(text("style.css"), self.SEL)
@@ -329,6 +332,21 @@ class TestInkoustKartyInverzne(unittest.TestCase):
                           "--text: var(--inv-text-2);", "--text-popisek: var(--inv-text-3);",
                           "--inkoust: var(--inv-text);", "color: var(--inv-text);"):
             self.assertIn(deklarace, tela[0])
+
+    def test_svetly_karty_nejsou_inverzni(self):
+        css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
+        self.assertNotIn(':root:not([data-skin]:not([data-skin="inkoust"])) .projekty-karta', css)
+        self.assertNotIn("--plocha: var(--ikony)", "".join(pravidla(css, self.SVETLY + " .projekty-karta")))
+
+    def test_svetly_se_zakladni_barvou_podbarvi(self):
+        s = self.SVETLY + "[data-akcent]"
+        tela = pravidla(text("style.css"), s + " .projekty-karta")
+        self.assertEqual(len(tela), 1)
+        self.assertIn("rgb(var(--akcent))", tela[0])
+        skiny = text("skiny.css")
+        for n in range(1, 9):
+            self.assertEqual(len(pravidla(skiny, s + " .social-icon:nth-child(%d) i" % n)), 1, n)
+        self.assertEqual(len(pravidla(skiny, s + " .projekty-archiv .projekty-karta")), 1)
 
 
 class TestVeseleBarevne(unittest.TestCase):
