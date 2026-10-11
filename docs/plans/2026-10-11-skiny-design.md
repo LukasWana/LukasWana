@@ -123,7 +123,13 @@ barvy. Uživatel chce vidět náhled, ne text (paměť `navrh-nahled-ne-text`).
 změnou z bodu 5 (prostrkání jména +0,02em). Obsahuje motivy Inkoust, Teplé světlo, Hlubokou práci a Přírodu (Indigo
 vyřazeno, protože se fialovou kryje s Teplým světlem), pozadí Papír, Mřížka a Tečky (Mřížku vrátil uživatel:
 „dej tam i ty čtverečky“). V panelu je Světlý / tmavý režim první volbou (pokyn „světlý / tmavý dej jako první
-volbu“), za ním Pozadí, Základní barvy a Motivy. Dál 7 Základních barev (bez Zlaté a Azurové).
+volbu“), za ním Pozadí, Základní barvy a Motivy. **Barvy hlavních projektů ladí s volbou** (pokyn „přepínátkem chci
+ladit i barvy top projektů“). V barevném motivu nebo po výběru Základní barvy má každý projekt jiný odstín odvozený
+z akcentu: `oklch(from rgb(var(--akcent)) l c calc(h + posun))`, takže všechny mají stejný jas a sytost a odstíny
+jsou po 36° v rozpětí 180° (EmailRator −90°, Rodokmen −54°, WanGP −18°, whisper +18°, NakupUX +54°, Meditácie +90°).
+Každý projekt má tak dál unikátní barvu. Inkoust bez zvolené barvy si nechal barvy původního banneru. Ověřeno snímky
+Teplé světlo, Příroda tmavá, Hluboká práce a Inkoust + Malinová. Relativní barvy (`oklch(from …)`) umí Chrome 119+,
+Safari 16.4+ a Firefox 128+, ale ověřeno je to jen v Chromu. Dál 7 Základních barev (bez Zlaté a Azurové).
 Jméno a podtitul jsou plnou barvou, ikony v inkoustu motivu, opar barevných motivů je z akcentů motivu (Inkoust si
 nechal barvy původního banneru) a v grafech chybějí čárky prázdných týdnů. Barvy projektů na kartách zůstaly
 (pokyn „každý projekt unikátní barvu“). Neřešeno: počet velikostí písma a `<title>`. Čeká se na verdikt uživatele.
