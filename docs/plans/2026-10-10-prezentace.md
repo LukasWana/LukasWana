@@ -45,50 +45,8 @@ Výchozí stav: 28 Python + 9 JS zelených. Po dokončení: 43 Python + 9 JS.
 
 ## Předávka
 
-Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.claude/rules/konec-session.md`. Historie je v gitu.
-
-```
-Skills: žádný konkrétní — plán je dokončený. Na novou úpravu vzhledu superpowers:brainstorming (náhledy variant na skutečné stránce), na rozbitou věc superpowers:systematic-debugging.
-
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web. NEPUSHNUTÉ při konci session: commity od aea2d04 (inkoust + starší projekty inverzně, předávka, název testu). Na začátku zkontroluj git status -sb. Když je „ahead“, zeptej se uživatele, jestli pushnout (kód beze změny generátoru dat, sync po deployi není potřeba).
-Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
-Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty). Barvy z původního banneru: docs/plans/2026-10-11-barvy-design.md.
-Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
-Paměť projektu: web-nasazeni.md (server, cron, souběh, nové pole v datech, ikony, ensō) a ps-roura-ssh-bom.md.
-
-Stav k 11. 10. 2026, 09:45:
-- Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
-- Ensō má od commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
-- W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
-- Push po „pushni“, Action run 38085643598 success, živý web ověřen curl (enso.svg 31 967 B, tah.svg 9 772 B).
-- Karty projektů: světlá plocha #f6f5f2 s oblými rohy 16 px, bez rámečku (rozhodnutí uživatele). Starší projekty od aea2d04 inverzně (plocha v inkoustu, světlý text).
-- Hlavní projekty (6 karet) jsou od 004090c nejvýš po 3 na řádek = 2 řady po 3 (pokyn „rozděl na 3x3“), dřív 4 + 2. Stejný vzorec jako archiv. Push po „pushni“, run 38089255740 success, živé CSS ověřeno curl.
-- Box Domácí server: místo „Videa“ je „Jednotné přihlášení“ (4e96b24, popis z repa asus-server-prihlaseni). Pushnuto, synchronizace puštěna ručně po deployi, živá data ověřena curl.
-- Velké monitory (pokyny uživatele 11. 10.): na konci style.css 15 stupňů zoomu od 1540 do 7200 px, obsah drží 75–85 % šířky okna až po 8K. Hranice 1800 a 2800 zadal uživatel (dříve stupně 1800 / 1,25 a 2800 / 2), zoom na nich je teď 1,31 a 2,04. Změřeno snímky v Chromu na 12 šířkách. Detail a čísla jsou ve Stavu nahoře. nadpis.js změřen při zoomu 1,25, vyšší stupně jen snímkem. Pushnuto po „pushni“ (4e0b484..6f0b8a6), Action run 38118066585 success, Pages build hotový, živé style.css ověřeno curl (15 stupňů). Firefox neověřen.
-- Barvy z původního banneru (11. 10., docs/plans/2026-10-11-barvy-design.md): opar z rozostřených třpytek za ensō, hlavní karty mají každá jinou barvu (pole barva v projekty.json, PALETA a obarvi v tools/projekty.py). Domácí server a starší projekty barvu nemají. Pushnuto po „pushni“ (a2fcefd..5774f16), Action run 38120224099 success. Po deployi ručně sync.sh v 09:06:29 (pushnuto 81b69b4), Pages build 81b69b4 hotový. Živá data ověřena curl: 6 karet, 6 různých barev podle projekty.json; box, archiv ani starší barvu nemají. Snímek živé stránky v čistém headless Chromu: barvy na kartách. Uživatel mezitím viděl karty šedé: otevřel stránku mezi deployem kódu a syncem dat. Kód a data se nasazují zvlášť.
-- Inkoust (aea2d04, NEPUSHNUTO, pokyn uživatele 11. 10.): všude #1a1a1a místo čisté černé. V CSS proměnná --inkoust, v tools/enso.py INKOUST (přegenerované enso.svg a tah.svg), u 8 ikon img/social kořenový fill. Sloupce aktivity mají currentColor. Výjimky: maska oparu a stíny. Snímek 1440 × 3600: 0 pixelů #000. Detail je ve Stavu nahoře.
-- Testy: 65 Python + 11 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu, 8 cest ensō (tělo + 7 vláken), mřížku po 3 (test_hlavni_projekty_po_trech) a stupně zoomu 75–85 % (TestVelkyMonitor), barvy palety a opar (TestBarvyBanneru), inkoust (TestInkoust) a inverzní starší (TestStarsiInverzne). tests/test_projekty.py třída Barvy hlídá unikátnost a přiřazení v projekty.json.
-- Další práce není zadaná. Nic nedělat bez pokynu uživatele.
-
-Otevřené (čeká na rozhodnutí uživatele):
-- (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá s tracebackem a na webu stojí datum „Aktualizováno“. Tři varianty řešení jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“.
-- Text banneru pod kruhem i na desktopu: náhled ukázán 10. 10., uživatel nevybral. Kdyby chtěl: v .enso-banner flex-direction: column + text-align: center (jako v @media pro mobil).
-
-Užitečné příkazy:
-- Testy: python -m pytest -q tests/ (BEZ -I, s ním spadne na importu pygments) a node --test tests/projekty_js.test.js
-- Log cronu: ssh asus-server 'tail -n 12 ~/.local/state/lukaswana-web/sync.log | cut -c1-200'
-- Náhled: data z webu do data/projekty.generated.json (gitignored), python -m http.server 8790 --bind 127.0.0.1 (ne 8765 — API EmailRatoru). Snímky headless Chromem, mobil přes iframe 400 px (Task 6 Step 3; --window-size=400 dá ve skutečnosti ~500 px). Desktop: okno má uvnitř o 16 px méně (--window-size=1936 → 1920), na hranici zoomu 1800 tedy okno 1816. S --hide-scrollbars odečet neplatí (okno 2800 = uvnitř 2800). Podíl obsahu na šířce okna: snímek s výškou ~1100 × zoom, v dolních 40 % hledat krajní sloupce barvy karty (246, 245, 242) a vydělit šířkou okna. Měření nadpisu se zoomem: kopie index.html do data/ s <base href="/"> a skriptem, který po 1,5 s vypíše Range rects nadpisu a podtitulu, číst přes --dump-dom.
-- Varianty vzhledu k porovnání: kopie index.html do data/var-X.html s <base href="/"> a přepisem CSS v <style> — repo zůstane čisté. Varianty tahu: skript, který importuje tools/enso.py a zapíše SVG do data/. Detail tahu snímkuj s --force-device-scale-factor=2 (v 1× se hrot v rohu obrysu přehlédl).
-
-Důležité:
-- Push do main = hned živý web. Pushovat jen po výslovném schválení uživatele.
-- Po pushi změny tools/projekty.py nebo projekty.json: počkej na deploy, pusť ručně sync.sh (příkaz v paměti web-nasazeni), počkej na Pages build commitu ze syncu a ověř živá data curl s ?v=$RANDOM. Jinak je nový kód živě bez nových dat až do dalšího běhu cronu v :17 (11. 10. to uživatel nahlásil jako chybu).
-- Repo LukasWana/web je výstup nasazení. NEMAZAT, ručně neupravovat.
-- Token nikdy do chatu a nikdy do souboru rourou z PowerShellu.
-- Kód a texty se zpětným lomítkem piš jen přes Write/Edit. Zprávy commitů piš do souboru přes Write a commituj s git commit -F.
-- img/enso.svg a img/tah.svg se ručně neupravují, mění se parametry v tools/enso.py (test to hlídá).
-- Pravidlo každé session (~/.claude/rules/konec-session.md): dokumentaci aktualizuj průběžně, na konci přepiš tuto sekci a commitni, před „hotovo“ udělej kontrolu do nuly.
-```
+Předávka se 11. 10. přesunula do `docs/plans/2026-10-11-skiny-design.md` (sekce `## Předávka`), protože práce
+přešla na skiny. Tento plán je hotový, Tasky 1–7 níže jsou historie.
 
 ---
 

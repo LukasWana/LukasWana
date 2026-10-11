@@ -278,7 +278,6 @@ body {
     padding: 8px 10px;
     border-radius: 12px 12px 0 0;
     background: var(--vzor), var(--pozadi);
-    background-size: cover;
 }
 
 .vzhled-mini i {
