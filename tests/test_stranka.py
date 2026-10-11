@@ -209,7 +209,7 @@ class TestInkoust(unittest.TestCase):
         for cesta in ("img/enso.svg", "img/tah.svg"):
             self.assertNotIn('"#000"', text(cesta))
 
-    def test_ikony_patičky_v_inkoustu(self):
+    def test_ikony_paticky_v_inkoustu(self):
         # ručně kreslené ikony: tmavé tahy nemají vlastní fill → dědí ho z kořenového <svg> (jinak výchozí #000)
         ikony = sorted((KOREN / "img" / "social").glob("*.svg"))
         self.assertEqual(len(ikony), 8)
