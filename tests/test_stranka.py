@@ -122,8 +122,22 @@ class TestHlavicka(unittest.TestCase):
         self.assertIn("flex-direction: column;", pravidla(mobil, ".paticka-info")[0])
         self.assertIn("display: none;", pravidla(mobil, ".paticka-oddelovac")[0])
 
-    def test_podtitul_zkraceny(self):
-        self.assertIn('<p class="subtitle">vibecoder · rychlé prototypy · technická řešení</p>', self.html)
+    def test_ikony_pod_nadpisem_misto_podtitulu(self):
+        """Pokyn uživatele 2026-10-11: podtitul nahradit ikonami sítí, stejnými jako dole (dole zůstávají)."""
+        self.assertNotIn('class="subtitle"', self.html)
+        self.assertEqual(pravidla(self.css, ".subtitle"), [])
+        self.assertNotIn("--podtitul", self.css)
+        hlava = self.html.split('<header class="header">')[1].split("</header>")[0]
+        dole = self.html.split('<section class="social-section">')[1].split("</section>")[0]
+        odkazy = lambda kus: re.findall(r'<a class="social-icon"[^>]*>.*?</a>', kus)
+        self.assertEqual(len(odkazy(dole)), 8)
+        self.assertEqual(odkazy(hlava), odkazy(dole))
+        # nadpis je pořád stejně velký (dřív ho nadpis.js měřil podle podtitulu: ~72 px), ikony se mu přizpůsobí
+        self.assertIn("font-size: min(72px, 12.5vw);", pravidla(self.css, ".main-title")[0])
+        mobil = self.css.split("@media (max-width: 768px)")[1]
+        self.assertEqual(pravidla(mobil, ".main-title"), [])
+        self.assertIn("hlava-ikony", text("nadpis.js"))
+        self.assertNotIn("subtitle", text("nadpis.js"))
 
     def test_diakritika_nadpisu_neuriznuta(self):
         """Pokyn uživatele 2026-10-11 v noci: v LUKÁŠ WANA chyběla čárka a háček. background-clip: text kreslí
@@ -153,7 +167,8 @@ class TestBanner(unittest.TestCase):
         self.assertIn('<div class="enso" aria-hidden="true"></div>', banner)
         self.assertIn("mask: url('img/enso.svg')", pravidla(self.css, ".enso")[0])
         self.assertIn("<h2>Deep work creator</h2>", banner)
-        self.assertIn("introvertní technicko-kreativní tvůrce", banner)
+        self.assertIn("<p>multimédia · rychlé prototypy · technická řešení</p>", banner)
+        self.assertNotIn("introvertní", banner)
 
 
 class TestBezCar(unittest.TestCase):

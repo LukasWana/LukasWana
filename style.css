@@ -16,7 +16,6 @@
     --enso: conic-gradient(from 210deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)), rgb(var(--akcent)));
     --tah: linear-gradient(90deg, rgb(var(--akcent)), rgb(var(--akcent-2)), rgb(var(--akcent-3)));
     --nadpis: linear-gradient(var(--inkoust), var(--inkoust));
-    --podtitul: linear-gradient(var(--text), var(--text));
 }
 
 /* ===== Inkoust (výchozí): černobílý, akcent = inkoust. Tmavá verze je ve skiny.css. =====
@@ -378,8 +377,9 @@ body {
     margin-bottom: 40px;
 }
 
+/* Velikost jako dřív, když ji nadpis.js měřil podle podtitulu (~72 px); na úzkém displeji se zmenší. */
 .main-title {
-    font-size: 64px;
+    font-size: min(72px, 12.5vw);
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.05;
@@ -397,14 +397,18 @@ body {
     color: transparent;
 }
 
-.subtitle {
-    font-size: 22px;
-    background-image: var(--podtitul);
-    -webkit-background-clip: text;
-            background-clip: text;
-    color: transparent;
+/* Ikony sítí pod nadpisem (místo podtitulu): řada na šířku písmen nadpisu. Velikost --hlava-ikona
+   a posun left dopočte nadpis.js; bez JS zůstane 56px. */
+.social-icons.hlava-ikony {
+    flex-wrap: nowrap;
+    gap: 0;
+    position: relative;
     margin-bottom: 14px;
-    font-weight: 300;
+}
+
+.hlava-ikony .social-icon {
+    width: var(--hlava-ikona, 56px);
+    height: var(--hlava-ikona, 56px);
 }
 
 .kontakt {
@@ -847,10 +851,6 @@ body {
 
     .paticka-oddelovac {
         display: none;
-    }
-
-    .main-title {
-        font-size: 42px;
     }
 
     .skills-section,

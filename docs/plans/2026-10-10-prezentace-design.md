@@ -33,8 +33,11 @@ k meditačním aplikacím v projektech.
 ## Části stránky
 
 ### Hlavička
-- Jméno **Lukáš Wana** velké, jedním písmem (viz Typografie). `nadpis.js` (jméno na šířku podtitulu) zůstává.
-- Podtitul zkrácen: „vibecoder · rychlé prototypy · technická řešení“ (místo pomlček a „hezky a funkčně“).
+- Jméno **Lukáš Wana** velké, jedním písmem (viz Typografie). ~~`nadpis.js` (jméno na šířku podtitulu) zůstává.~~
+- ~~Podtitul zkrácen: „vibecoder · rychlé prototypy · technická řešení“ (místo pomlček a „hezky a funkčně“).~~
+  **11. 10. (pokyn uživatele): podtitul nahrazen řadou 8 ikon sítí** — stejné odkazy jako dole (ty zůstávají).
+  Jméno zůstává stejně velké jako dřív (`min(72px, 12.5vw)`, dřív ho `nadpis.js` měřil podle podtitulu na ~72 px);
+  `nadpis.js` teď naopak dopočte velikost ikon na šířku písmen jména (desktop ~62 px, mobil 400 px ~38 px).
 - **Pryč:** šedá čára `.divider`, tagline „KREATIVNÍ PROFESIONÁL, KTERÝ DĚLÁ KVALITNÍ A MODERNÍ PRÁCI“
   (výplň, opakuje banner).
 - **Kontakt:** profesionální prezentace potřebuje jasnou cestu, jak oslovit. E-mail je jediný výrazný odkaz
@@ -47,8 +50,8 @@ k meditačním aplikacím v projektech.
   v kruhu), černá `#000` jako ikony (*11. 10. nahrazeno inkoustem `#1a1a1a` všude, viz Stav plánu*). *10. 10. večer uživatel vybral nad náhledy hodně suchý konec
   (varianta C: štětec vysychá od 0,6 délky, 7 vláken), viz Stav plánu.*
 - Tah se kreslí ručně jako cesta (obrys z Bézierových křivek), **ne filtrem** `feTurbulence`/`feDisplacementMap`.
-- Text uvnitř nebo vedle kruhu, čistě vysázený: **Deep work creator**, pod ním „introvertní
-  technicko-kreativní tvůrce“.
+- Text uvnitř nebo vedle kruhu, čistě vysázený: **Deep work creator**, pod ním ~~„introvertní
+  technicko-kreativní tvůrce“~~ „multimédia · rychlé prototypy · technická řešení“ (změněno 11. 10. na pokyn uživatele).
 - `W-ilustration-banner.png` (třpytivá fotka) se přestane používat. Soubor zůstává v repu, dokud uživatel
   neřekne jinak (smazání je mimo zadání). *Smazán na pokyn uživatele 10. 10. (viz Stav plánu).*
 - Mobil: kruh se zmenší a text jde pod něj, kdyby se dovnitř nevešel.
