@@ -58,8 +58,10 @@ class TestPapir(unittest.TestCase):
         for telo in (svetly, tmavy):
             self.assertIn("linear-gradient(90deg", telo)  # ztmavené strany
             self.assertIn("var(--motiv-akcent)", telo)
-        self.assertIn("--papir-dotyk: 30%", pravidla(css, '[data-pozadi="papir"]')[0])
-        self.assertIn("--papir-dotyk: 0%", pravidla(css, '[data-skin="inkoust"][data-pozadi="papir"]')[0])
+        # síla tónu patří motivu a dědí se: čtvereček Papír v panelu nese jen data-pozadi a data-rezim
+        self.assertIn("--papir-dotyk: 0%", pravidla(css, ":root")[0])
+        self.assertIn("--papir-dotyk: 30%", pravidla(css, '[data-skin]:not([data-skin="inkoust"])')[0])
+        self.assertFalse(any("--papir-dotyk" in t for t in pravidla(css, '[data-pozadi="papir"]')))
 
     def test_platne_svg_cerny_inkoust(self):
         for cesta, viewbox in (("img/enso.svg", "0 0 400 400"), ("img/tah.svg", "0 0 240 24")):

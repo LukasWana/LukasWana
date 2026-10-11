@@ -172,9 +172,10 @@
     --volba-vzor: radial-gradient(color-mix(in srgb, var(--inkoust) 18%, transparent) 1px, transparent 1.6px) 0 0 / 18px 18px;
 }
 
-/* Papír: béžový tón lehce dotčený hlavní barvou motivu (Inkoust je černobílý, proto bez dotyku) */
-[data-pozadi="papir"] { --papir-dotyk: 30%; }
-[data-skin="inkoust"][data-pozadi="papir"] { --papir-dotyk: 0%; }
+/* Papír: béžový tón lehce dotčený hlavní barvou motivu (Inkoust je černobílý, proto bez dotyku).
+   Síla tónu patří motivu stránky a dědí se, takže platí i pro čtvereček Papír v panelu (nemá data-skin). */
+:root { --papir-dotyk: 0%; }
+[data-skin]:not([data-skin="inkoust"]) { --papir-dotyk: 30%; }
 
 [data-pozadi="papir"][data-rezim="svetly"] {
     --papir-ton: color-mix(in srgb, rgba(226, 210, 176, .55), rgba(var(--motiv-akcent), .55) var(--papir-dotyk));

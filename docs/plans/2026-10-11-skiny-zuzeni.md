@@ -43,7 +43,9 @@ zásadám projektu“ (10 nálezů + odstavec „Náhled“). Tam je i důvod ka
 vyrobené `tools/papir.py` (pevné semínko; test hlídá, že se soubory s generátorem shodují). V `skiny.css` nad ní
 leží ztmavené strany (`linear-gradient(90deg …)`, od 16 % šířky ke kraji), slabá vinětace a tón papíru: béžová
 smíchaná s `--motiv-akcent` na `--papir-dotyk` (30 % světlý, ×2 tmavý; Inkoust 0 %, protože jeho akcent je černá
-a papír by jen zašedil). Tón bere jen motiv, ne Základní barvu návštěvníka (nabídnuto, uživatel nežádal).
+a papír by jen zašedil). `--papir-dotyk` je na motivu (`:root` 0 %, `[data-skin]:not([data-skin="inkoust"])` 30 %)
+a dědí se — první verze ho dávala na `[data-pozadi="papir"]` a čtvereček Papír v panelu (nemá `data-skin`) byl
+v Inkoustu zašedlý; chyceno kontrolou do nuly, opraveno a ověřeno snímkem panelu. Tón bere jen motiv, ne Základní barvu návštěvníka (nabídnuto, uživatel nežádal).
 Zrno laděno dvakrát: v tmavém bylo „moc“, ve světlém „nevidím“ → obě stejně drobné (frekvence 1.6), tmavé slabší.
 Neplatné měření z náhledu: první srovnání běželo z `http.server` s cache, takže prohlížeč mohl ukazovat staré
 CSS — další náhledy už ze serveru s `Cache-Control: no-store`.
@@ -551,7 +553,7 @@ Stav k 11. 10. 2026:
 - Živě také nový Papír (rozhodnutí 13, commit 5870fc2, push schválen „zapiš to do repa a pushni“; Action success, Pages build d41243f, velikosti skiny.css a img/papir-*.svg na webu = repo). skiny.css a SVG jsou bajtově shodné s odsouhlaseným náhledem (cmp); na živém webu snímkem neověřeno (volbu pozadí nejde v headless Chromu na cizí doméně vnutit).
 - Uživatel během implementace přejmenoval Teplé světlo → Veselé, Hluboká práce → Voda (jen názvy, id teple/hluboka zůstala kvůli uloženým volbám; rozhodnutí 12 v tabulce).
 - Uživatel v náhledu schválil: 4 motivy (Inkoust, Veselé, Voda, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
-- Testy po Papíru: 76 Python + 17 JS zelených (Papír přidal TestPapir ×2; test_zakladni_barvy_a_pozadi_maji_pravidla upraven: pravidla po režimech mají přednost před holým [data-pozadi="papir"], které nese jen --papir-dotyk).
+- Testy po Papíru: 76 Python + 17 JS zelených (Papír přidal TestPapir ×2; test_zakladni_barvy_a_pozadi_maji_pravidla upraven: pravidla po režimech mají přednost před holým [data-pozadi="<id>"], aby přidání holého pravidla k pozadí s režimy test nerozbilo).
 - Náhled z 11. 10. byl jen ve scratchpadu té session (neexistuje). Očekávaný vzhled popisuje Task 9, Step 4.
 
 Otevřené (mimo tento plán, čeká na uživatele):
