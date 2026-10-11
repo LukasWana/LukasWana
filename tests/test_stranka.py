@@ -145,18 +145,41 @@ class TestMrizka(unittest.TestCase):
 
 
 class TestVelkyMonitor(unittest.TestCase):
-    def test_zoom_od_1800(self):
-        # pokyn uživatele 2026-10-11: jeden režim pro velké monitory, zvětší všechny prvky; hranice 1920 → 1800 téhož dne
-        css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
-        self.assertRegex(css, r"@media \(min-width: 1800px\)\s*\{\s*html\s*\{\s*zoom:\s*1\.25;\s*\}\s*\}")
+    """Pokyn uživatele 2026-10-11: na velkých monitorech až po 8K drží obsah 75–85 % šířky okna.
 
-    def test_zoom_4k_od_2800(self):
-        # pokyn uživatele 2026-10-11: další stupeň pro 4K, hranice 2800; zoom 2 (2,5 by od 2800 do 3000 vyplnil celou šířku)
+    Obsah = 1160 px × zoom: kontejner 1200 minus padding 2 × 20 (změřeno na snímcích z Chromu — model
+    s 1200 dával na konci stupňů ve skutečnosti 72,9 %). Stupně jsou `@media (min-width: N) { html { zoom: Z } }`.
+    """
+
+    OBSAH = 1160
+
+    def stupne(self):
         css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
-        self.assertRegex(css, r"@media \(min-width: 2800px\)\s*\{\s*html\s*\{\s*zoom:\s*2;\s*\}\s*\}")
-        # pořadí: stupeň 2800 až za stupněm 1800, jinak by ho při stejné specificitě přebil
-        self.assertLess(css.index("min-width: 1800px"), css.index("min-width: 2800px"))
-        self.assertEqual(css.count("zoom"), 2)
+        nalezy = re.findall(r"@media \(min-width: (\d+)px\)\s*\{\s*html\s*\{\s*zoom:\s*([\d.]+);\s*\}\s*\}", css)
+        self.assertEqual(len(nalezy), css.count("zoom"), "každý zoom musí být ve tvaru stupně")
+        return [(int(h), float(z)) for h, z in nalezy]
+
+    def test_stupne_vzestupne(self):
+        # stejná specificita → platí poslední pravidlo; širší stupeň musí stát níž
+        hranice = [h for h, _ in self.stupne()]
+        self.assertEqual(hranice, sorted(hranice))
+        self.assertEqual(len(hranice), len(set(hranice)))
+
+    def test_podil_75_az_85_procent(self):
+        stupne = self.stupne()
+        # pod první hranicí platí zoom 1; 1160 px je v pásmu jen do 1546 px okna
+        self.assertGreaterEqual(self.OBSAH / (stupne[0][0] - 1), 0.75)
+        konce = [h for h, _ in stupne[1:]] + [7681]  # poslední stupeň drží aspoň do 8K (7680 px)
+        for (hranice, zoom), konec in zip(stupne, konce):
+            obsah = self.OBSAH * zoom
+            self.assertLessEqual(obsah / hranice, 0.85, f"{hranice} px: {obsah / hranice:.3f}")
+            self.assertGreaterEqual(obsah / (konec - 1), 0.75, f"{konec - 1} px: {obsah / (konec - 1):.3f}")
+
+    def test_hranice_od_uzivatele(self):
+        # 1800 (velké monitory) a 2800 (4K) zadal uživatel; zůstávají hranicemi stupňů
+        hranice = [h for h, _ in self.stupne()]
+        self.assertIn(1800, hranice)
+        self.assertIn(2800, hranice)
 
 
 class TestPaticka(unittest.TestCase):

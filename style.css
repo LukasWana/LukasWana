@@ -653,20 +653,24 @@ body {
     text-align: right;
 }
 
-/* Velké monitory (pokyn 2026-10-11): od šířky 1800 se celá stránka zvětší o 25 % — písmo, obrázky,
-   mezery i mřížka. Hranice 1800, ne 1920: zapne se i v okně o něco užším než monitor (boční lišta, okraje).
-   Zoom místo přepočtu stovek px; nadpis.js měří v témže prostoru, sedí dál (ověřeno v Chromu). */
-@media (min-width: 1800px) {
-    html {
-        zoom: 1.25;
-    }
-}
-
-/* 4K (pokyn 2026-10-11): od šířky 2800 dvojnásobek. Obsah 1200 × 2 = 2400 px = 86 % okna 2800, 62 % okna 3840.
-   Zoom 2,5 by od 2800 do 3000 vyplnil celou šířku. Musí stát za pravidlem 1800, jinak ho přebije. */
-@media (min-width: 2800px) {
-    html {
-        zoom: 2;
-    }
-}
+/* Velké monitory až po 8K (pokyn 2026-10-11): obsah drží 75–85 % šířky okna. Zoom zvětší písmo, obrázky,
+   mezery i mřížku najednou; nadpis.js měří v témže prostoru (změřeno v Chromu při 1,25, vyšší stupně jen snímkem).
+   Obsah = 1160 px × zoom (kontejner 1200 minus padding 2 × 20). Na začátku stupně ≤ 85 %, těsně před dalším
+   ≥ 75 % → každý stupeň nejvýš o 13 % širší. Hranice 1800 a 2800 zadal uživatel. Pořadí vzestupně: při stejné
+   specificitě vyhraje poslední platné pravidlo. Hlídá tests/test_stranka.py (TestVelkyMonitor). */
+@media (min-width: 1540px) { html { zoom: 1.11; } }
+@media (min-width: 1680px) { html { zoom: 1.2; } }
+@media (min-width: 1800px) { html { zoom: 1.31; } }
+@media (min-width: 2000px) { html { zoom: 1.46; } }
+@media (min-width: 2240px) { html { zoom: 1.63; } }
+@media (min-width: 2500px) { html { zoom: 1.82; } }
+@media (min-width: 2800px) { html { zoom: 2.04; } }
+@media (min-width: 3150px) { html { zoom: 2.3; } }
+@media (min-width: 3550px) { html { zoom: 2.59; } }
+@media (min-width: 4000px) { html { zoom: 2.92; } }
+@media (min-width: 4500px) { html { zoom: 3.28; } }
+@media (min-width: 5050px) { html { zoom: 3.69; } }
+@media (min-width: 5700px) { html { zoom: 4.16; } }
+@media (min-width: 6400px) { html { zoom: 4.67; } }
+@media (min-width: 7200px) { html { zoom: 5.26; } }
 
