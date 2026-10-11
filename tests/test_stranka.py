@@ -307,7 +307,7 @@ class TestStarsiInverzne(unittest.TestCase):
         tela = pravidla(css, ".projekty-archiv .projekty-karta")
         self.assertEqual(len(tela), 1)
         # „jen vzít stejnou barvu jako z ikon“: stejná proměnná jako kolečka ikon
-        # --ikony = --inkoust spočtený na :root (kolečka ikon); přepnutí --inkoust v kartě Inkoustu plochu nezmění
+        # --ikony = --inkoust spočtený na :root (kolečka ikon); případné přepnutí --inkoust v kartě plochu nezmění
         self.assertIn("background-color: var(--ikony);", tela[0])
         self.assertTrue(any("--ikony: var(--inkoust);" in t for t in pravidla(css, ":root")))
         self.assertIn("var(--inkoust)) var(--znacky), var(--inkoust));", pravidla(css, ".social-icon i")[0])

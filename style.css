@@ -40,7 +40,8 @@
     --motiv-akcent-2: 26, 26, 26;
     --motiv-akcent-3: 26, 26, 26;
     /* Barva koleček ikon dole pro plochy „jako ikony“: var() v custom property se spočte už tady na :root
-       z vítězného --inkoust (i tmavého a ostatních motivů), takže ji nezmění přepnutí --inkoust uvnitř karty. */
+       z vítězného --inkoust (i tmavého a ostatních motivů), takže ji nezmění případné přepnutí --inkoust uvnitř
+       karty (tak to dělal tmavý Inkoust do 11. 10. v noci; teď karty --inkoust nepřepínají). */
     --ikony: var(--inkoust);
 }
 
