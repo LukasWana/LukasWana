@@ -1037,15 +1037,34 @@ body {
     margin-top: 20px;
 }
 
-/* Podbarvení jako ikony dole = pozadí stránky (pokyn uživatele 2026-10-11, mění dřívější „inverzně“): bez vlastní
-   plochy, papír / mřížka / tečky prosvítají; text v běžných barvách. Bez obrysu (pokyn 2026-10-11 „obrysy všude
-   pryč“, TestBezCar) — kartu ukáže jen jemné podbarvení při najetí */
+/* Inverzně (pokyn 2026-10-11, potvrzeno týž den „mělo to zůstat negativní“): tmavá plocha v inkoustu, světlý text —
+   odliší starší práci od aktuální. Plocha má přímo barvu koleček ikon dole (pokyn „jen vzít stejnou barvu jako
+   z ikon“): var(--inkoust) jako .social-icon i, ne vlastní --inv-plocha, aby se nemohly rozejít. */
 .projekty-archiv .projekty-karta {
-    background-color: transparent;
+    background-color: var(--inkoust);
+    color: var(--inv-text);
 }
 
 .projekty-archiv .projekty-karta:hover {
-    background-color: color-mix(in srgb, var(--inkoust) 5%, transparent);
+    background-color: var(--inv-plocha-hover);
+}
+
+.projekty-archiv .projekty-popis {
+    color: var(--inv-text-2);
+}
+
+.projekty-archiv .projekty-jazyk,
+.projekty-archiv .projekty-karta footer {
+    color: var(--inv-text-3);
+}
+
+.projekty-archiv .projekty-odkaz,
+.projekty-archiv .projekty-dalsi {
+    color: var(--inv-text);
+}
+
+.projekty-archiv .projekty-web:focus-visible {
+    outline-color: var(--inv-text);
 }
 
 /* Patička pod mottem: „Aktualizováno … · e-mail“ na střed (pokyn uživatele 2026-10-11); na mobilu pod sebou */

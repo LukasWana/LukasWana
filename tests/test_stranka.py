@@ -288,24 +288,30 @@ class TestInkoust(unittest.TestCase):
         self.assertIn("color: var(--inkoust);", pravidla(css, self.CB + " .projekty-graf")[0])
 
 
-class TestStarsiNaPozadi(unittest.TestCase):
-    """Pokyn uživatele 2026-10-11 (mění dřívější „inverzně“ téhož dne): karty starších projektů mají podbarvení jako
-    ikony dole = pozadí stránky (papír, mřížka…), žádná vlastní plocha ani obrys (TestBezCar), text v běžných barvách."""
+class TestStarsiInverzne(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: karty starších projektů inverzně (negativ) — plocha v barvě koleček ikon dole,
+    světlý text. Krátký pokus o průhledné karty téhož dne uživatel vrátil („mělo to zůstat negativní“)."""
 
-    def test_karta_bez_plochy(self):
+    def test_karta_v_barve_ikon_text_svetly(self):
         css = text("style.css")
         tela = pravidla(css, ".projekty-archiv .projekty-karta")
         self.assertEqual(len(tela), 1)
-        self.assertIn("background-color: transparent;", tela[0])
-        self.assertIn("color-mix(in srgb, var(--inkoust)", pravidla(css, ".projekty-archiv .projekty-karta:hover")[0])
-        self.assertNotIn("inv-", css.split(".projekty-archiv {")[1].split("/* Patička")[0])
+        # „jen vzít stejnou barvu jako z ikon“: stejná proměnná jako kolečka ikon
+        self.assertIn("background-color: var(--inkoust);", tela[0])
+        self.assertIn("var(--inkoust)) var(--znacky), var(--inkoust));", pravidla(css, ".social-icon i")[0])
+        self.assertIn("color: var(--inv-text);", tela[0])
+        hover = pravidla(css, ".projekty-archiv .projekty-karta:hover")
+        self.assertEqual(len(hover), 1)
+        self.assertIn("var(--inv-plocha-hover)", hover[0])
 
-    def test_text_v_beznych_barvach(self):
+    def test_sedy_text_a_odkazy_svetle(self):
         css = text("style.css")
         for selektor in (".projekty-archiv .projekty-popis", ".projekty-archiv .projekty-jazyk",
                          ".projekty-archiv .projekty-karta footer", ".projekty-archiv .projekty-odkaz",
                          ".projekty-archiv .projekty-dalsi", ".projekty-archiv .projekty-web:focus-visible"):
-            self.assertEqual(pravidla(css, selektor), [], selektor)
+            tela = pravidla(css, selektor)
+            self.assertEqual(len(tela), 1, selektor)
+            self.assertIn("var(--inv-text", tela[0], selektor)
 
 
 class TestVelkyMonitor(unittest.TestCase):
