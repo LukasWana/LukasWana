@@ -129,7 +129,9 @@ z akcentu: `oklch(from rgb(var(--akcent)) l c calc(h + posun))`, takže všechny
 jsou po 36° v rozpětí 180° (EmailRator −90°, Rodokmen −54°, WanGP −18°, whisper +18°, NakupUX +54°, Meditácie +90°).
 Každý projekt má tak dál unikátní barvu. Inkoust bez zvolené barvy si nechal barvy původního banneru. Ověřeno snímky
 Teplé světlo, Příroda tmavá, Hluboká práce a Inkoust + Malinová. Relativní barvy (`oklch(from …)`) umí Chrome 119+,
-Safari 16.4+ a Firefox 128+, ale ověřeno je to jen v Chromu. Dál 7 Základních barev (bez Zlaté a Azurové).
+Safari 16.4+ a Firefox 128+, ale ověřeno je to jen v Chromu. **Opar nahoře** přebarví motiv i Základní barva,
+tedy stejně jako karty (volba uživatele z nabídky „ať je přebarví i Základní barva“; zamítnuté možnosti byly
+„opar neměnit“ a „opar zrušit“). Ověřeno snímky Inkoust + Zelená a Příroda tmavá + Malinová. Dál 7 Základních barev (bez Zlaté a Azurové).
 Jméno a podtitul jsou plnou barvou, ikony v inkoustu motivu, opar barevných motivů je z akcentů motivu (Inkoust si
 nechal barvy původního banneru) a v grafech chybějí čárky prázdných týdnů. Barvy projektů na kartách zůstaly
 (pokyn „každý projekt unikátní barvu“). Neřešeno: počet velikostí písma a `<title>`. Čeká se na verdikt uživatele.
