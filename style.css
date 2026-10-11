@@ -382,6 +382,10 @@ body {
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.05;
+    /* background-clip: text kreslí písmo jen v boxu; při line-height 1.05 by čárka a háček nad verzálkami
+       vypadly. Padding box zvětší, záporný margin vrátí rozvržení (pokyn uživatele 2026-10-11). */
+    padding-top: 0.2em;
+    margin-top: -0.2em;
     margin-bottom: 10px;
     text-transform: uppercase;
     white-space: nowrap;

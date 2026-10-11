@@ -125,6 +125,16 @@ class TestHlavicka(unittest.TestCase):
     def test_podtitul_zkraceny(self):
         self.assertIn('<p class="subtitle">vibecoder · rychlé prototypy · technická řešení</p>', self.html)
 
+    def test_diakritika_nadpisu_neuriznuta(self):
+        """Pokyn uživatele 2026-10-11 v noci: v LUKÁŠ WANA chyběla čárka a háček. background-clip: text kreslí
+        písmo jen v boxu prvku a ten má line-height 1.05, takže diakritika nad verzálkami byla mimo. Horní padding
+        box zvětší, stejně velký záporný margin vrátí rozvržení."""
+        telo = pravidla(self.css, ".main-title")[0]
+        m = re.search(r"padding-top: ([\d.]+)em;", telo)
+        self.assertIsNotNone(m)
+        self.assertGreaterEqual(float(m.group(1)), 0.2)
+        self.assertIn("margin-top: -%sem;" % m.group(1), telo)
+
     def test_pryc_cara_a_tagline(self):
         self.assertNotIn('class="divider"', self.html)
         self.assertNotIn('class="tagline"', self.html)
