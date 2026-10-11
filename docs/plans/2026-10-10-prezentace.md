@@ -50,7 +50,7 @@ Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.
 ```
 Skills: žádný konkrétní — plán je dokončený. Na novou úpravu vzhledu superpowers:brainstorming (náhledy variant na skutečné stránce), na rozbitou věc superpowers:systematic-debugging.
 
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web. NEPUSHNUTÉ při konci session: aea2d04 (inkoust + starší projekty inverzně) a commit s touto předávkou. Na začátku zkontroluj git status -sb. Když je „ahead“, zeptej se uživatele, jestli pushnout (kód beze změny generátoru dat, sync po deployi není potřeba).
+Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web. NEPUSHNUTÉ při konci session: commity od aea2d04 (inkoust + starší projekty inverzně, předávka, název testu). Na začátku zkontroluj git status -sb. Když je „ahead“, zeptej se uživatele, jestli pushnout (kód beze změny generátoru dat, sync po deployi není potřeba).
 Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
 Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty). Barvy z původního banneru: docs/plans/2026-10-11-barvy-design.md.
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
