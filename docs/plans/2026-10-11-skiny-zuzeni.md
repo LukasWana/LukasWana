@@ -8,7 +8,9 @@ Tasku 3. Pushnuto a živě (Action `394193a` success, velikosti skin.js/skiny.cs
 bez pravidla pro ikony (`--ikona-barva` přijde až s Taskem 3; ikony jsou v inkoustu i bez něj, až Task 3 zavede
 přechod akcentů, pravidlo ikon z Tasku 6 doplň). Test `TestInkoust.test_vychozi_inkoust_cernobily`, testy 77 Python + 17 JS.
 Ověřeno snímkem (Chrome headless `--disable-lcd-text`): Inkoust světlý i tmavý = 0 pixelů s rozdílem kanálů > 40;
-se Základní barvou (zelená) se opar a bokeh vrátí. Pushnuto se schválením („pushni“): `f609d1e`, Action success, živý style.css pravidlo obsahuje. Náhled schválený uživatelem běžel jen
+se Základní barvou (zelená) se opar a bokeh vrátí. Pushnuto se schválením („pushni“): `f609d1e`, Action success, živý style.css pravidlo obsahuje.
+**Téhož dne (uživatel):** panel Vzhled bez `max-height`/`overflow-y` → roluje se s celou stránkou místo vlastního posuvníku (v okně 1280×600 byly Motivy schované uvnitř panelu, ověřeno snímkem před i po). Test `TestSkiny.test_panel_roluje_se_strankou`; pushnuto s pokynem „rovnou to pushni“.
+Náhled schválený uživatelem běžel jen
 jako kopie webu ve scratchpadu session z 11. 10. (není v repu). Tento plán převádí totéž do repa, s testy.
 
 **Goal:** Zúžit skiny na vybranou nabídku a sjednotit barvy: motiv nebo Základní barva ladí opar, karty projektů

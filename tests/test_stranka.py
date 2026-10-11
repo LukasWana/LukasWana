@@ -400,6 +400,14 @@ class TestSkiny(unittest.TestCase):
             "--inv-plocha", "--inv-plocha-hover", "--inv-text", "--inv-text-2", "--inv-text-3",
             "--motiv-akcent", "--motiv-akcent-2", "--motiv-akcent-3")
 
+    def test_panel_roluje_se_strankou(self):
+        # pokyn uživatele 2026-10-11: panel Vzhled se roluje s celou stránkou, ne vlastním posuvníkem
+        # (dřív max-height 100vh − 80 px → v nízkém okně byly Motivy schované uvnitř panelu)
+        telo = pravidla(text("style.css"), ".vzhled-panel")[0]
+        self.assertIn("position: absolute;", telo)
+        self.assertNotIn("max-height", telo)
+        self.assertNotIn("overflow", telo)
+
     def setUp(self):
         self.js = text("skin.js")
         self.css = text("style.css") + text("skiny.css")

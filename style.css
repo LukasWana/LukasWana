@@ -121,8 +121,7 @@ body {
     top: calc(100% + 8px);
     right: 0;
     width: min(320px, calc(100vw - 40px));
-    max-height: calc(100vh - 80px);
-    overflow-y: auto;
+    /* bez max-height a vlastního posuvníku: roluje se s celou stránkou (pokyn uživatele 2026-10-11) */
     padding: 18px 20px 20px;
     background-color: var(--plocha);
     color: var(--inkoust);
