@@ -30,8 +30,11 @@
     var mezera = parseFloat(getComputedStyle(ikony).columnGap) || 0;
     ikony.style.setProperty('--hlava-ikona', (ink.sirka - (pocet - 1) * mezera) / pocet + 'px');
     // Řada je na středu (flex center): posunout její střed pod střed písmen, ne boxu nadpisu.
+    // getBoundingClientRect vrací px po CSS zoomu na <html> (style.css, široké obrazovky), canvas a left
+    // jsou v px před zoomem → převést, jinak se řada s rostoucím zoomem posouvá doleva.
+    var zoom = ikony.currentCSSZoom || parseFloat(getComputedStyle(document.documentElement).zoom) || 1;
     var radek = ikony.getBoundingClientRect();
-    ikony.style.left = (box.left + ink.vlevo + ink.sirka / 2 - (radek.left + radek.width / 2)) + 'px';
+    ikony.style.left = ((box.left - radek.left - radek.width / 2) / zoom + ink.vlevo + ink.sirka / 2) + 'px';
   }
 
   prizpusob();
