@@ -53,7 +53,7 @@ Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev
 Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
 Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty). Barvy z původního banneru: docs/plans/2026-10-11-barvy-design.md.
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
-Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
+Paměť projektu: web-nasazeni.md (server, cron, souběh, nové pole v datech, ikony, ensō) a ps-roura-ssh-bom.md.
 
 Stav k 11. 10. 2026, 09:08:
 - Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
@@ -80,6 +80,7 @@ Užitečné příkazy:
 
 Důležité:
 - Push do main = hned živý web. Pushovat jen po výslovném schválení uživatele.
+- Po pushi změny tools/projekty.py nebo projekty.json: počkej na deploy, pusť ručně sync.sh (příkaz v paměti web-nasazeni), počkej na Pages build commitu ze syncu a ověř živá data curl s ?v=$RANDOM. Jinak je nový kód živě bez nových dat až do dalšího běhu cronu v :17 (11. 10. to uživatel nahlásil jako chybu).
 - Repo LukasWana/web je výstup nasazení. NEMAZAT, ručně neupravovat.
 - Token nikdy do chatu a nikdy do souboru rourou z PowerShellu.
 - Kód a texty se zpětným lomítkem piš jen přes Write/Edit. Zprávy commitů piš do souboru přes Write a commituj s git commit -F.
