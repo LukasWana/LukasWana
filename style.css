@@ -654,7 +654,7 @@ body {
 }
 
 /* Velké monitory (pokyn 2026-10-11): od šířky 1800 se celá stránka zvětší o 25 % — písmo, obrázky,
-   mezery i mřížka. Hranice 1800, ne 1920: zapne se i v nemaximalizovaném okně nebo s boční lištou.
+   mezery i mřížka. Hranice 1800, ne 1920: zapne se i v okně o něco užším než monitor (boční lišta, okraje).
    Zoom místo přepočtu stovek px; nadpis.js měří v témže prostoru, sedí dál (ověřeno v Chromu). */
 @media (min-width: 1800px) {
     html {
