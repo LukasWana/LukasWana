@@ -3,7 +3,7 @@
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 Datum: 2026-10-11 · Stav: **Tasky 0–2 hotové (`2c1282f`, `10d848a`) + přejmenování motivů (`83736c6`), dál od
-Tasku 3. Nepushnuto.** Testy po Tasku 2: 74 Python + 17 JS zelených. Náhled schválený uživatelem běžel jen
+Tasku 3. Pushnuto a živě (Action `394193a` success, velikosti skin.js/skiny.css/style.css = repo).** Testy po Tasku 2: 74 Python + 17 JS zelených. Náhled schválený uživatelem běžel jen
 jako kopie webu ve scratchpadu session z 11. 10. (není v repu). Tento plán převádí totéž do repa, s testy.
 
 **Goal:** Zúžit skiny na vybranou nabídku a sjednotit barvy: motiv nebo Základní barva ladí opar, karty projektů
@@ -537,7 +537,7 @@ Návrh a důvody: docs/plans/2026-10-11-skiny-design.md, sekce „Revize proti z
 Paměť projektu: web-nasazeni.md, navrh-nahled-ne-text.md (uživatel chce vidět náhled, ne text).
 
 Stav k 11. 10. 2026:
-- Živě je pořád 7 motivů (7efd5e3). Lokálně hotové Tasky 0–2 (2c1282f, 10d848a) a přejmenování motivů (83736c6); main je ahead origin/main, NIC nepushnuto — push nebyl schválen, zeptej se po Tasku 9 (snímky).
+- Živě (push schválen uživatelem 11. 10., Action 394193a success, velikosti souborů = repo): Tasky 0–2 (2c1282f, 10d848a) a přejmenování motivů (83736c6) — 4 motivy, 3 pozadí, 7 barev, režim první v panelu. Mezistav: ikony patičky jsou v inkoustu (barvy značek zrušeny v Tasku 2, přechod akcentů přijde s Taskem 3), opar a karty mají dál barvy natvrdo. Další push zase až po schválení, nejlépe po Tasku 9 (snímky).
 - Uživatel během implementace přejmenoval Teplé světlo → Veselé, Hluboká práce → Voda (jen názvy, id teple/hluboka zůstala kvůli uloženým volbám; rozhodnutí 12 v tabulce).
 - Uživatel v náhledu schválil: 4 motivy (Inkoust, Veselé, Voda, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
 - Testy po Tasku 2: 74 Python + 17 JS zelených.
