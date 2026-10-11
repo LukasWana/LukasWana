@@ -2,7 +2,8 @@
 
 Datum: 2026-10-11 · Stav: **hotovo a živě.** Commit `7efd5e3` (push `9328901..7efd5e3` po „takhle to pushni“),
 Action run 38125366926 `success`. Živý web ověřen: `skin.js`, `skiny.css` a `style.css` mají přes `curl` stejnou
-velikost jako v repu (8 142 / 13 860 / 26 827 B) a snímek živé stránky v čistém headless Chromu ukazuje tlačítko
+velikost jako v repu (8 142 / 13 860 / 26 827 B; po opravě miniatury motivu v `f8caa16`, run 38125535416
+`success`, má živý `style.css` 26 799 B = repo) a snímek živé stránky v čistém headless Chromu ukazuje tlačítko
 Vzhled. Stránka se vykreslila v tmavém Inkoustu, protože se řídí systémem a Windows je v tmavém režimu.
 Testy: 71 Python + 15 JS (11 `projekty_js` + 4 `skin_js`).
 
