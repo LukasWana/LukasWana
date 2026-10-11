@@ -46,13 +46,13 @@ Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.
 ```
 Skills: žádný konkrétní — plán je dokončený. Na novou úpravu vzhledu superpowers:brainstorming (náhledy variant na skutečné stránce), na rozbitou věc superpowers:systematic-debugging.
 
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). NEPUSHNUTÉ: commity od ab20d36 (zoom pro velké monitory + dokumentace). Na začátku se uživatele zeptej, jestli pushnout; push = živý web.
+Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Vše pushnuté, push = živý web.
 Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
 Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty).
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
 Paměť projektu: web-nasazeni.md (server, cron, souběh, ikony, ensō) a ps-roura-ssh-bom.md.
 
-Stav k 11. 10. 2026, 07:19:
+Stav k 11. 10. 2026, 07:59:
 - Web https://lukaswana.github.io/web/ je živě ve vzhledu „prezentace“: hlavička Inter Tight + qwanap@gmail.com, banner s ensō, podtah štětcem pod nadpisem sekce, motto v patičce.
 - Ensō má od commitu d158405 hodně suchý konec (varianta C, vybral uživatel nad náhledy A/A2/B/C). Opravený je i hrot v rozích obrysu (_bezier, nulová tečna v rozích), který měly ensō i podtah. Text banneru zůstal vedle kruhu (uživatel nerozhodl, ponechána doporučená varianta).
 - W-ilustration-banner.png smazán (d965581, pokyn uživatele), na webu 404.
@@ -60,7 +60,7 @@ Stav k 11. 10. 2026, 07:19:
 - Karty projektů: světlá plocha #f6f5f2 s oblými rohy 16 px, bez rámečku (rozhodnutí uživatele).
 - Hlavní projekty (6 karet) jsou od 004090c nejvýš po 3 na řádek = 2 řady po 3 (pokyn „rozděl na 3x3“), dřív 4 + 2. Stejný vzorec jako archiv. Push po „pushni“, run 38089255740 success, živé CSS ověřeno curl.
 - Box Domácí server: místo „Videa“ je „Jednotné přihlášení“ (4e96b24, popis z repa asus-server-prihlaseni). Pushnuto, synchronizace puštěna ručně po deployi, živá data ověřena curl.
-- Velké monitory: od šířky 1800 px (původně 1920, snížil uživatel) zoom 1,25 na celé stránce (style.css na konci, pokyn uživatele 11. 10.). nadpis.js sedí i se zoomem (změřeno v Chromu). Všechny commity od ab20d36 (zoom, hranice 1800, opravy z kontroly) zatím NEPUSHNUTÉ, čekají na „pushni“ (git status ukáže „ahead N“). Firefox neověřen.
+- Velké monitory: od šířky 1800 px (původně 1920, snížil uživatel) zoom 1,25 na celé stránce (style.css na konci, pokyn uživatele 11. 10.). nadpis.js sedí i se zoomem (změřeno v Chromu). Pushnuto 11. 10. po „pushni“ (18aa907..db16ec2), Action run 38116543443 success, Pages build hotový, živé style.css ověřeno curl (pravidlo @media min-width 1800px se zoom 1.25). Firefox neověřen.
 - Testy: 47 Python + 9 JS zelených. tests/test_stranka.py hlídá kontrakt vzhledu, že img/*.svg = výstup tools/enso.py, roh obrysu bez přestřelu, 8 cest ensō (tělo + 7 vláken), mřížku po 3 (test_hlavni_projekty_po_trech) a zoom od 1800 (test_zoom_od_1800).
 - Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
