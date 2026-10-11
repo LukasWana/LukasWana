@@ -44,7 +44,7 @@ k meditačním aplikacím v projektech.
 ### Banner (místo třpytivé fotky)
 - Bílá plocha, žádný rámeček boxu. Velké **ensō** jako inline SVG: jeden tah s proměnlivou šířkou
   (výplň obrysu, ne `stroke`), nasazení a „suchý“ konec štětce (2–3 tenké vlákna na konci, mezera
-  v kruhu), černá `#000` jako ikony. *10. 10. večer uživatel vybral nad náhledy hodně suchý konec
+  v kruhu), černá `#000` jako ikony (*11. 10. nahrazeno inkoustem `#1a1a1a` všude, viz Stav plánu*). *10. 10. večer uživatel vybral nad náhledy hodně suchý konec
   (varianta C: štětec vysychá od 0,6 délky, 7 vláken), viz Stav plánu.*
 - Tah se kreslí ručně jako cesta (obrys z Bézierových křivek), **ne filtrem** `feTurbulence`/`feDisplacementMap`.
 - Text uvnitř nebo vedle kruhu, čistě vysázený: **Deep work creator**, pod ním „introvertní
@@ -59,7 +59,7 @@ k meditačním aplikacím v projektech.
 - Karty: ~~rámeček tenčí a světlejší (nebo jen světlé pozadí — rozhodne se nanečisto podle náhledu)~~.
   **Rozhodnuto 10. 10. nad třemi náhledy** (A jen mezera, B plocha, C tah pod názvem): uživatel řekl, že tenký šedý
   rámeček působí „hrozně ostře“, a vybral **B s oblými rohy**. Podklad `#f6f5f2`, `border-radius: 16px`, při najetí
-  myší `#efede8` (místo stínu), starší projekty `#fafaf8`. Commit `286902f`.
+  myší `#efede8` (místo stínu), starší projekty `#fafaf8` (*11. 10. inverzně: plocha v inkoustu `#1a1a1a`, světlý text, viz Stav plánu*). Commit `286902f`.
   Pryč šedá čára nad „naposledy …“. Grafy aktivity zůstávají.
 - Box Domácí server: pryč čáry mezi aplikacemi; oddělí je mezera.
 - Pryč šedá čára nad „Starší projekty (N)“.

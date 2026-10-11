@@ -78,6 +78,13 @@ test('karta: další odkazy (obchody, nápověda) v patičce vedle webu', () => 
   assert.doesNotMatch(bez, /projekty-dalsi/);
 });
 
+test('graf: sloupce s prací v currentColor (barvu dává CSS), prázdné týdny šedě', () => {
+  const svg = p.graf([0, 3]);
+  assert.match(svg, /<rect x="0" [^>]*fill="#e2e2e2"\/>/);
+  assert.match(svg, /<rect x="8" [^>]*fill="currentColor"\/>/);
+  assert.doesNotMatch(svg, /#000/);
+});
+
 test('karta: barva z banneru jako třída (docs/plans/2026-10-11-barvy-design.md)', () => {
   const html = p.karta({ nazev: 'EmailRator', posledni: '2026-10-09', barva: 'fialova' }, DNES);
   assert.match(html, /^<article class="projekty-karta projekty-barevna barva-fialova">/);

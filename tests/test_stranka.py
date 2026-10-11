@@ -44,7 +44,7 @@ class TestEnso(unittest.TestCase):
             koren = ET.fromstring(text(cesta))
             self.assertEqual(koren.get("viewBox"), viewbox, cesta)
             ns = "{http://www.w3.org/2000/svg}"
-            self.assertEqual(koren.find(ns + "g").get("fill"), "#000", cesta)
+            self.assertEqual(koren.find(ns + "g").get("fill"), enso.INKOUST, cesta)
             cesty = koren.findall(f".//{ns}path")
             self.assertGreaterEqual(len(cesty), 4, cesta)  # tělo + aspoň 3 vlákna suchého konce
             for p in cesty:
@@ -169,9 +169,10 @@ class TestBarvyBanneru(unittest.TestCase):
         # jen background-image: barva pozadí karty a její :hover zůstanou
         self.assertIn("background-image:", tela[0])
         self.assertNotRegex(tela[0], r"background\s*:")
-        sloupce = pravidla(css, '.projekty-barevna .projekty-graf rect[fill="#000"]')
+        # sloupce mají fill="currentColor" (projekty.js), barvu dává color grafu
+        sloupce = pravidla(css, ".projekty-barevna .projekty-graf")
         self.assertEqual(len(sloupce), 1)
-        self.assertIn("fill: rgb(var(--barva));", sloupce[0])
+        self.assertIn("color: rgb(var(--barva));", sloupce[0])
 
     def test_opar_za_enso(self):
         css = text("style.css")
@@ -185,6 +186,63 @@ class TestBarvyBanneru(unittest.TestCase):
         self.assertIn("mask-image: radial-gradient(", opar[0])
         self.assertIn("z-index: -1", opar[0])
         self.assertIn("inset: -60px 0;", opar[0])   # do stran nepřesahuje → na mobilu žádný vodorovný posuvník
+
+
+class TestInkoust(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: všude místo čisté černé #000 o kousek stažená off-black (--inkoust)."""
+
+    def test_jedna_hodnota_v_css_i_v_generatoru(self):
+        tela = pravidla(text("style.css"), ":root")
+        self.assertEqual(len(tela), 1)
+        self.assertIn(f"--inkoust: {enso.INKOUST};", tela[0])
+        self.assertNotEqual(enso.INKOUST.lower(), "#000")
+        self.assertNotEqual(enso.INKOUST.lower(), "#000000")
+
+    def test_nikde_cista_cerna(self):
+        css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
+        # výjimka: maska oparu (#000 tam znamená neprůhlednost, ne barvu)
+        bez_masek = "\n".join(r for r in css.splitlines() if "mask-image" not in r)
+        self.assertNotRegex(bez_masek, r"#000\b|#000000|\bblack\b")
+        self.assertNotIn("#000", text("projekty.js"))
+        self.assertNotIn("#000", text("index.html"))
+        self.assertNotIn("#000", text("nadpis.js"))
+        for cesta in ("img/enso.svg", "img/tah.svg"):
+            self.assertNotIn('"#000"', text(cesta))
+
+    def test_ikony_patičky_v_inkoustu(self):
+        # ručně kreslené ikony: tmavé tahy nemají vlastní fill → dědí ho z kořenového <svg> (jinak výchozí #000)
+        ikony = sorted((KOREN / "img" / "social").glob("*.svg"))
+        self.assertEqual(len(ikony), 8)
+        for cesta in ikony:
+            koren = ET.fromstring(cesta.read_text(encoding="utf-8"))
+            self.assertEqual(koren.get("fill"), enso.INKOUST, cesta.name)
+
+    def test_body_a_graf_v_inkoustu(self):
+        css = text("style.css")
+        self.assertTrue(any("color: var(--inkoust);" in t for t in pravidla(css, "body")))
+        self.assertTrue(any("color: var(--inkoust);" in t for t in pravidla(css, ".projekty-graf")))
+
+
+class TestStarsiInverzne(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: karty starších projektů inverzně — tmavá plocha v inkoustu, světlý text."""
+
+    def test_karta_tmava_text_svetly(self):
+        css = text("style.css")
+        tela = pravidla(css, ".projekty-archiv .projekty-karta")
+        self.assertTrue(any("background-color: var(--inkoust);" in t for t in tela))
+        self.assertTrue(any("color: #f6f5f2;" in t for t in tela))
+        hover = pravidla(css, ".projekty-archiv .projekty-karta:hover")
+        self.assertEqual(len(hover), 1)
+        self.assertNotIn("var(--inkoust)", hover[0])   # hover viditelně posvětlí
+
+    def test_sedy_text_a_odkazy_svetle(self):
+        css = text("style.css")
+        for selektor in (".projekty-archiv .projekty-popis", ".projekty-archiv .projekty-jazyk",
+                         ".projekty-archiv .projekty-karta footer", ".projekty-archiv .projekty-odkaz",
+                         ".projekty-archiv .projekty-dalsi", ".projekty-archiv .projekty-web:focus-visible"):
+            tela = pravidla(css, selektor)
+            self.assertEqual(len(tela), 1, selektor)
+            self.assertNotIn("inkoust", tela[0], selektor)
 
 
 class TestVelkyMonitor(unittest.TestCase):

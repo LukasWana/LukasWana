@@ -44,7 +44,7 @@
     var sloupky = tydny.map(function (n, i) {
       var v = n ? Math.max(3, Math.round(n / max * 24)) : 1;
       return '<rect x="' + i * 8 + '" y="' + (24 - v) + '" width="6" height="' + v +
-        '" fill="' + (n ? '#000' : '#e2e2e2') + '"/>';
+        '" fill="' + (n ? 'currentColor' : '#e2e2e2') + '"/>';
     }).join('');
     return '<svg class="projekty-graf" viewBox="0 0 ' + sirka + ' 24" width="' + sirka + '" height="24" role="img"' +
       ' aria-label="Commity po týdnech, nejstarší první: ' + tydny.join(', ') + '">' + sloupky + '</svg>';

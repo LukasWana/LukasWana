@@ -1,3 +1,8 @@
+/* Inkoust: o kousek stažená černá místo #000 (pokyn 2026-10-11); stejnou hodnotu má tools/enso.py (INKOUST). */
+:root {
+    --inkoust: #1a1a1a;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,7 +12,7 @@
 body {
     font-family: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
     background-color: #ffffff;
-    color: #000000;
+    color: var(--inkoust);
     line-height: 1.6;
 }
 
@@ -43,7 +48,7 @@ body {
 
 .kontakt {
     font-size: 16px;
-    color: #000;
+    color: var(--inkoust);
     text-decoration: none;
     border-bottom: 1px solid currentColor;
     padding-bottom: 1px;
@@ -116,7 +121,7 @@ body {
 }
 
 .skill-frame {
-    border: 1px solid #000;
+    border: 1px solid var(--inkoust);
     padding: 40px 25px;
     text-align: center;
     background-color: #fff;
@@ -145,7 +150,7 @@ body {
 .icon {
     width: 60px;
     height: 60px;
-    background-color: #000;
+    background-color: var(--inkoust);
     color: #fff;
     display: flex;
     align-items: center;
@@ -181,7 +186,7 @@ body {
     margin-bottom: 25px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--inkoust);
     padding-bottom: 10px;
 }
 
@@ -228,8 +233,8 @@ body {
 .featured-project {
     margin: 100px 0;
     padding: 50px 0;
-    border-top: 2px solid #000;
-    border-bottom: 2px solid #000;
+    border-top: 2px solid var(--inkoust);
+    border-bottom: 2px solid var(--inkoust);
 }
 
 .featured-project:first-of-type {
@@ -267,7 +272,7 @@ body {
 }
 
 .feature-item {
-    border: 1px solid #000;
+    border: 1px solid var(--inkoust);
     padding: 30px 25px;
     background-color: #fff;
     transition: all 0.3s ease;
@@ -283,7 +288,7 @@ body {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 12px;
-    color: #000;
+    color: var(--inkoust);
 }
 
 .feature-item p {
@@ -296,7 +301,7 @@ body {
     margin-top: 40px;
     padding: 30px;
     background-color: #fafafa;
-    border-left: 3px solid #000;
+    border-left: 3px solid var(--inkoust);
 }
 
 .project-description p {
@@ -307,7 +312,7 @@ body {
 
 .project-description strong {
     font-weight: 700;
-    color: #000;
+    color: var(--inkoust);
 }
 
 /* Products Section */
@@ -322,7 +327,7 @@ body {
     margin-bottom: 50px;
     text-transform: uppercase;
     letter-spacing: 3px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--inkoust);
     padding-bottom: 15px;
     display: inline-block;
 }
@@ -334,7 +339,7 @@ body {
 }
 
 .product-item {
-    border: 1px solid #000;
+    border: 1px solid var(--inkoust);
     padding: 35px 25px;
     background-color: #fff;
     transition: all 0.3s ease;
@@ -371,7 +376,7 @@ body {
     margin-bottom: 25px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--inkoust);
     padding-bottom: 10px;
 }
 
@@ -537,7 +542,7 @@ body {
 }
 
 .projekty-web:focus-visible {
-    outline: 2px solid #000;
+    outline: 2px solid var(--inkoust);
     outline-offset: 2px;
 }
 
@@ -560,7 +565,7 @@ body {
 }
 
 .projekty-dalsi {
-    color: #000;
+    color: var(--inkoust);
     font-size: 13px;
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -615,7 +620,7 @@ body {
 }
 
 .projekty-odkaz {
-    color: #000;
+    color: var(--inkoust);
     text-decoration: none;
     font-size: 18px;
 }
@@ -670,8 +675,32 @@ body {
     margin-top: 20px;
 }
 
+/* Inverzně (pokyn 2026-10-11): tmavá plocha v inkoustu, světlý text — odliší starší práci od aktuální */
 .projekty-archiv .projekty-karta {
-    background-color: #fafaf8;
+    background-color: var(--inkoust);
+    color: #f6f5f2;
+}
+
+.projekty-archiv .projekty-karta:hover {
+    background-color: #2b2b2b;
+}
+
+.projekty-archiv .projekty-popis {
+    color: #d9d6cf;
+}
+
+.projekty-archiv .projekty-jazyk,
+.projekty-archiv .projekty-karta footer {
+    color: #a19e97;
+}
+
+.projekty-archiv .projekty-odkaz,
+.projekty-archiv .projekty-dalsi {
+    color: #f6f5f2;
+}
+
+.projekty-archiv .projekty-web:focus-visible {
+    outline-color: #f6f5f2;
 }
 
 .projekty-data-k {
@@ -696,8 +725,13 @@ body {
         radial-gradient(circle at 78% 22%, rgba(var(--barva), .18) 0, transparent 30px);
 }
 
-.projekty-barevna .projekty-graf rect[fill="#000"] {
-    fill: rgb(var(--barva));
+/* Sloupce s prací mají fill="currentColor" (projekty.js): barvu grafu dává color */
+.projekty-graf {
+    color: var(--inkoust);
+}
+
+.projekty-barevna .projekty-graf {
+    color: rgb(var(--barva));
 }
 
 /* Velké monitory až po 8K (pokyn 2026-10-11): obsah drží 75–85 % šířky okna. Zoom zvětší písmo, obrázky,

@@ -11,6 +11,9 @@ import math
 from pathlib import Path
 
 KOREN = Path(__file__).resolve().parent.parent
+# Inkoust celé stránky: o kousek stažená černá místo #000 (pokyn uživatele 2026-10-11). Stejná hodnota
+# je v style.css jako --inkoust; test tests/test_stranka.py hlídá, že se shodují.
+INKOUST = "#1a1a1a"
 
 
 def _f(x):
@@ -153,7 +156,7 @@ def podtah(sirka_px=240, vyska_px=24):
 def svg(cesty, sirka_px, vyska_px):
     d = "".join(f'<path d="{c}"/>' for c in cesty)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {sirka_px} {vyska_px}">'
-            f'<g fill="#000">{d}</g></svg>\n')
+            f'<g fill="{INKOUST}">{d}</g></svg>\n')
 
 
 def main():
