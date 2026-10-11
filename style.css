@@ -44,24 +44,19 @@
     --ikony: var(--inkoust);
 }
 
-/* Profil Inkoust ve světlém režimu (výchozí vzhled, pokyn uživatele 2026-10-11 večer): projekty a Domácí server
-   mají světlou plochu a černý text, obráceně (v inkoustu) jsou jen Starší projekty a ikony dole. Se Základní
-   barvou dostanou světlé karty nádech akcentu a Starší projekty s ikonami barvy ensō (skiny.css, jako Veselé). */
+/* Profil Inkoust (výchozí vzhled, pokyn uživatele 2026-10-11 večer): projekty a Domácí server mají plochu motivu
+   a text v inkoustu, obráceně (v inkoustu) jsou jen Starší projekty a ikony dole. Tmavý režim je totéž inverzně
+   (pokyn v noci téhož dne): tmavé karty se světlým textem, světlé Starší projekty a ikony. Se Základní barvou
+   dostanou karty nádech akcentu do plochy svého režimu (#f6f5f2 / #201f1d ze skiny.css) a Starší projekty
+   s ikonami barvy ensō (skiny.css, jako Veselé). */
 [data-skin="inkoust"][data-rezim="svetly"][data-akcent] .projekty-karta {
     --plocha: color-mix(in oklab, rgb(var(--akcent)) 9%, #f6f5f2);
     --plocha-hover: color-mix(in oklab, rgb(var(--akcent)) 15%, #f6f5f2);
 }
 
-/* Profil Inkoust v tmavém režimu: všechny karty obráceně jako kolečka ikon — plocha v inkoustu, tmavý text
-   (pokyn uživatele 2026-10-11). Přepíná proměnné, které karta a její prvky čtou (popis, štítky, patička,
-   odkazy, graf), takže netřeba výčtu prvků. Starší projekty mají vlastní inverzní pravidla níž. */
-[data-skin="inkoust"][data-rezim="tmavy"] .projekty-karta {
-    --plocha: var(--ikony);
-    --plocha-hover: var(--inv-plocha-hover);
-    --text: var(--inv-text-2);
-    --text-popisek: var(--inv-text-3);
-    --inkoust: var(--inv-text);
-    color: var(--inv-text);
+[data-skin="inkoust"][data-rezim="tmavy"][data-akcent] .projekty-karta {
+    --plocha: color-mix(in oklab, rgb(var(--akcent)) 9%, #201f1d);
+    --plocha-hover: color-mix(in oklab, rgb(var(--akcent)) 15%, #201f1d);
 }
 
 /* Výchozí Inkoust bez zvolené Základní barvy je černobílý v obou režimech (pokyn uživatele 2026-10-11, plán

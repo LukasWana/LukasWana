@@ -320,33 +320,36 @@ class TestInkoustKartyInverzne(unittest.TestCase):
     """Pokyn uživatele 2026-10-11: v tmavém Inkoustu jsou všechny karty obráceně jako kolečka ikon — plocha
     v (světlém) inkoustu, tmavý text. Přepnutím proměnných v kartě, ne výčtem prvků. Večer téhož dne: ve světlém Inkoustu
     (výchozí vzhled) mají projekty a Domácí server světlou plochu a černý text, obráceně jsou jen Starší projekty
-    a ikony; se Základní barvou se podbarvení mění podle ní."""
+    a ikony; se Základní barvou se podbarvení mění podle ní. V noci téhož dne: tmavý vzhled stejný jako světlý,
+    jen inverzní — tmavé karty, obráceně (světle) jen Starší projekty a ikony; přepnutí proměnných v kartě zmizelo."""
 
-    SEL = '[data-skin="inkoust"][data-rezim="tmavy"] .projekty-karta'
     SVETLY = '[data-skin="inkoust"][data-rezim="svetly"]'
+    TMAVY = '[data-skin="inkoust"][data-rezim="tmavy"]'
 
-    def test_karta_prepne_promenne(self):
-        tela = pravidla(text("style.css"), self.SEL)
-        self.assertEqual(len(tela), 1)
-        for deklarace in ("--plocha: var(--ikony);", "--plocha-hover: var(--inv-plocha-hover);",
-                          "--text: var(--inv-text-2);", "--text-popisek: var(--inv-text-3);",
-                          "--inkoust: var(--inv-text);", "color: var(--inv-text);"):
-            self.assertIn(deklarace, tela[0])
-
-    def test_svetly_karty_nejsou_inverzni(self):
+    def test_karty_nejsou_inverzni_v_zadnem_rezimu(self):
         css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
         self.assertNotIn(':root:not([data-skin]:not([data-skin="inkoust"])) .projekty-karta', css)
-        self.assertNotIn("--plocha: var(--ikony)", "".join(pravidla(css, self.SVETLY + " .projekty-karta")))
+        for rezim in (self.SVETLY, self.TMAVY):
+            tela = "".join(pravidla(css, rezim + " .projekty-karta"))
+            for zakaz in ("--plocha: var(--ikony)", "--inkoust: var(--inv-text)", "color: var(--inv-text)"):
+                self.assertNotIn(zakaz, tela, rezim)
 
-    def test_svetly_se_zakladni_barvou_podbarvi(self):
-        s = self.SVETLY + "[data-akcent]"
-        tela = pravidla(text("style.css"), s + " .projekty-karta")
-        self.assertEqual(len(tela), 1)
-        self.assertIn("rgb(var(--akcent))", tela[0])
+    def test_se_zakladni_barvou_podbarvi_v_obou_rezimech(self):
+        """Podbarvení karet akcentem do plochy svého režimu; ikony a Starší projekty barvami ensō v obou režimech."""
+        styl = text("style.css")
+        for rezim, plocha in ((self.SVETLY, "#f6f5f2"), (self.TMAVY, "#201f1d")):
+            tela = pravidla(styl, rezim + "[data-akcent] .projekty-karta")
+            self.assertEqual(len(tela), 1, rezim)
+            self.assertIn("rgb(var(--akcent))", tela[0])
+            self.assertIn(plocha, tela[0])
         skiny = text("skiny.css")
+        self.assertIn("--plocha: #201f1d;", pravidla(skiny, self.TMAVY)[0])
+        self.assertNotIn('[data-skin="inkoust"][data-rezim="svetly"][data-akcent] .', skiny)
+        s = '[data-skin="inkoust"][data-akcent]'
         for n in range(1, 9):
             self.assertEqual(len(pravidla(skiny, s + " .social-icon:nth-child(%d) i" % n)), 1, n)
         self.assertEqual(len(pravidla(skiny, s + " .projekty-archiv .projekty-karta")), 1)
+        self.assertEqual(len(pravidla(skiny, s + " .projekty-archiv .projekty-karta:hover")), 1)
 
 
 class TestVeseleBarevne(unittest.TestCase):
