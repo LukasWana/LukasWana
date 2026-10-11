@@ -149,7 +149,14 @@ class TestVelkyMonitor(unittest.TestCase):
         # pokyn uživatele 2026-10-11: jeden režim pro velké monitory, zvětší všechny prvky; hranice 1920 → 1800 téhož dne
         css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
         self.assertRegex(css, r"@media \(min-width: 1800px\)\s*\{\s*html\s*\{\s*zoom:\s*1\.25;\s*\}\s*\}")
-        self.assertEqual(css.count("zoom"), 1)
+
+    def test_zoom_4k_od_2800(self):
+        # pokyn uživatele 2026-10-11: další stupeň pro 4K, hranice 2800; zoom 2 (2,5 by od 2800 do 3000 vyplnil celou šířku)
+        css = re.sub(r"/\*.*?\*/", "", text("style.css"), flags=re.S)
+        self.assertRegex(css, r"@media \(min-width: 2800px\)\s*\{\s*html\s*\{\s*zoom:\s*2;\s*\}\s*\}")
+        # pořadí: stupeň 2800 až za stupněm 1800, jinak by ho při stejné specificitě přebil
+        self.assertLess(css.index("min-width: 1800px"), css.index("min-width: 2800px"))
+        self.assertEqual(css.count("zoom"), 2)
 
 
 class TestPaticka(unittest.TestCase):

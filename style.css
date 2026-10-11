@@ -662,3 +662,11 @@ body {
     }
 }
 
+/* 4K (pokyn 2026-10-11): od šířky 2800 dvojnásobek. Obsah 1200 × 2 = 2400 px = 86 % okna 2800, 62 % okna 3840.
+   Zoom 2,5 by od 2800 do 3000 vyplnil celou šířku. Musí stát za pravidlem 1800, jinak ho přebije. */
+@media (min-width: 2800px) {
+    html {
+        zoom: 2;
+    }
+}
+
