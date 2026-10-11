@@ -84,6 +84,41 @@ Pozadí: papír, mřížka, tečky, mech, soumrak, polární záře, krajina.
 - Neověřeno: Firefox a Safari (`mask-composite: subtract`, `color-mix`, `background-clip: text` mají
   podporu v aktuálních verzích; starší Safari potřebuje `-webkit-` prefixy, které jsou uvedené).
 
+## Revize proti zásadám projektu (11. 10., na otázku uživatele)
+
+Otázka: „jsou všechny skiny nejlepší možné a ctí nejvyšší estetické, typografické a grafické standardy ze
+začátku projektu?“ Zásady jsou zadání z 10. 10. („profesionální prezentace, drž se jednoduchosti, odstraň zbytečné
+linky, … jednoduše a profesionálně“, laťka „nejlepší top designéři“) a `2026-10-10-prezentace-design.md`
+(ručně kreslený je jen inkoust, jinak čistá typografie, jedno písmo ve 2–3 velikostech, méně verzálek, mezery
+místo čar). Podklad: 14 snímků (7 motivů × 2 režimy) + panel + pozadí Krajina z headless Chromu.
+
+**Verdikt: ne všechny.** Inkoust (světlý i tmavý) zásady drží. Systém rolí, kontrast AA a panel jsou v pořádku.
+Nálezy (nic zatím neopraveno, čeká na rozhodnutí uživatele):
+1. **Počet voleb:** 7 motivů × 9 barev × 7 pozadí × 2 režimy = 882 kombinací. Odporuje to zásadě „drž se
+   jednoduchosti“: dobrý design nabídku vybírá, ne sčítá. Většina kombinací se nikdy neviděla.
+   Uživatel ale 11. 10. vybral všechny čtyři rozšíření sám, takže jde o konflikt zásad, ne o chybu provedení.
+2. **Opar v banneru má v každém motivu stejnou duhovou paletu** a nebere barvy motivu. V Přírodě a Kyberpunku
+   se proto růžové, modré a zelené skvrny tlučou s paletou.
+3. **Ikony v barvách značek:** v barevných motivech stojí vedle sebe 8 sytých barev, které s paletou motivu
+   nesouvisí (nejvíc to bije do očí v Přírodě a v Teplém světle). Navíc tím ikony přestávají působit jako inkoust.
+4. **Prázdné dny v grafech aktivity jsou v tmavých režimech vidět jako čárkovaná linka** („_ _ _“), takže se tam
+   vrací čára, kterou zadání rušilo. Ve světlých režimech je skoro neviditelná, takže režimy nejsou konzistentní.
+5. **Typografie:** jméno je ve verzálkách s prostrkáním −0,03em (`style.css` `.main-title`). Verzálky potřebují
+   kladné prostrkání a návrh chtěl verzálek méně. Na stránce je vidět ~7–8 velikostí písma, návrh chtěl 2–3
+   (`style.css` jich deklaruje 13, část patří skrytému starému obsahu). Jméno a podtitul mají v barevných motivech
+   text vyplněný přechodem; podtitul je tím slabší na čtení a kontrast přechodu test nehlídá.
+6. **Pozadí Krajina** (kopce přes střed stránky za kartami), **Soumrak** a **Polární záře** působí jako ilustrace
+   z fotobanky. Odporují zásadě „ručně kreslený je jen inkoust“.
+7. **Kyberpunk** (neonová mřížka) jde proti celé myšlence ensō a klidu.
+8. **Minimal** se od Inkoustu skoro neliší a grafy aktivity v něm zůstávají barevné, i když motiv má být „jen šedý“.
+9. **Základní barvy:** dvojice skoro stejných vzorníků (dvě oranžové a azur/tyrkys vedle sebe).
+10. Mimo skiny: `<title>` je pořád starý anglický „Lukáš - AI Micro-Tools & Digital Creator“ a s obsahem nesedí.
+
+Návrh (neschválený): méně, ale vybraně. Inkoust jako výchozí a 2–3 barevné motivy, u kterých opar i ikony
+převezmou barvy motivu. Kyberpunk a Minimal vyřadit. Z pozadí ponechat Papír, případně Tečky. Prostrkání
+verzálek změnit na kladné nebo jméno sázet bez verzálek. V grafech zrušit čárky prázdných dnů. Sloučit zdvojené
+barvy. Uživatel chce vidět náhled, ne text (paměť `navrh-nahled-ne-text`).
+
 ## Předávka
 
 Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.claude/rules/konec-session.md`. Historie je v gitu.
@@ -105,6 +140,7 @@ Stav k 11. 10. 2026:
 - Další práce není zadaná. Nic nedělat bez pokynu uživatele.
 
 Otevřené (čeká na rozhodnutí uživatele):
+- Revize skinů proti zásadám projektu (sekce „Revize proti zásadám projektu“ výše): 10 nálezů a návrh zúžení na Inkoust + 2–3 vybrané motivy. Nic neopraveno. Další krok je náhled, ne text.
 - Neověřeno ve Firefoxu a Safari (mask-composite, color-mix, background-clip: text). Ověřeno jen v Chromu.
 - (5) Token na GitHub API (~/.config/lukaswana-web/token na asus-server) platí do 2027-01-08. Po vypršení cron padá a na webu stojí datum „Aktualizováno“. Varianty jsou v docs/plans/2026-10-10-projekty.md, bod (5). Uživatel: „zatím neřeším“.
 - Text banneru pod kruhem i na desktopu: náhled ukázán 10. 10., uživatel nevybral.
