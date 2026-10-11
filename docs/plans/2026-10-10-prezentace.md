@@ -46,7 +46,7 @@ Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.
 ```
 Skills: žádný konkrétní — plán je dokončený. Na novou úpravu vzhledu superpowers:brainstorming (náhledy variant na skutečné stránce), na rozbitou věc superpowers:systematic-debugging.
 
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main, vše pushnuté).
+Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). NEPUSHNUTÉ: commity od ab20d36 (zoom pro velké monitory + dokumentace). Na začátku se uživatele zeptej, jestli pushnout; push = živý web.
 Plán: docs/plans/2026-10-10-prezentace.md — HOTOVÝ (Stav nahoře), Tasky 1–7 pod touto sekcí jsou historie.
 Návrh: docs/plans/2026-10-10-prezentace-design.md (implementováno, karty viz sekce Karty).
 Předchozí plán (přehled projektů, hotový): docs/plans/2026-10-10-projekty.md. Jeho otevřený bod (5) je níže.
