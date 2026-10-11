@@ -9,30 +9,21 @@
     { id: 'inkoust', nazev: 'Inkoust' },
     { id: 'teple', nazev: 'Teplé světlo' },
     { id: 'hluboka', nazev: 'Hluboká práce' },
-    { id: 'indigo', nazev: 'Kreativní indigo' },
-    { id: 'priroda', nazev: 'Příroda' },
-    { id: 'kyberpunk', nazev: 'Kyberpunk' },
-    { id: 'minimal', nazev: 'Minimal' }
+    { id: 'priroda', nazev: 'Příroda' }
   ];
   var AKCENTY = [
     { id: 'fialova', nazev: 'Fialová' },
     { id: 'purpur', nazev: 'Purpurová' },
     { id: 'malina', nazev: 'Malinová' },
     { id: 'oranzova', nazev: 'Oranžová' },
-    { id: 'zlata', nazev: 'Zlatá' },
     { id: 'zelena', nazev: 'Zelená' },
     { id: 'tyrkys', nazev: 'Tyrkysová' },
-    { id: 'azur', nazev: 'Azurová' },
     { id: 'modra', nazev: 'Modrá' }
   ];
   var POZADI = [
     { id: 'papir', nazev: 'Papír' },
     { id: 'mrizka', nazev: 'Mřížka' },
-    { id: 'tecky', nazev: 'Tečky' },
-    { id: 'mech', nazev: 'Mech' },
-    { id: 'soumrak', nazev: 'Soumrak' },
-    { id: 'aurora', nazev: 'Polární záře' },
-    { id: 'krajina', nazev: 'Krajina' }
+    { id: 'tecky', nazev: 'Tečky' }
   ];
   var REZIMY = [
     { id: 'svetly', nazev: 'Světlý', ikona: '<circle cx="8" cy="8" r="3" fill="currentColor"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>' },
@@ -74,7 +65,12 @@
     var h = '<div class="vzhled-hlava"><h2>Vzhled a motivy</h2>'
       + '<button class="vzhled-zavrit" type="button" aria-label="Zavřít">×</button></div>';
 
-    h += '<fieldset class="vzhled-pozadi"><legend>Pozadí</legend><div class="vzhled-mrizka">'
+    h += '<fieldset class="vzhled-rezim"><legend>Světlý / tmavý režim</legend><div class="vzhled-segmenty">';
+    REZIMY.forEach(function (m) {
+      h += moznost('rezim', m.id, s, '<span><svg viewBox="0 0 16 16" aria-hidden="true">' + m.ikona + '</svg>' + m.nazev + '</span>', m.nazev);
+    });
+
+    h += '</div></fieldset><fieldset class="vzhled-pozadi"><legend>Pozadí</legend><div class="vzhled-mrizka">'
       + moznost('pozadi', '', s, '<span class="vzhled-ctverec vzhled-cisty vzhled-podle-motivu"' + motiv + '></span>', 'Podle motivu');
     POZADI.forEach(function (p) {
       h += moznost('pozadi', p.id, s, '<span class="vzhled-ctverec" data-pozadi="' + p.id + '" data-rezim="' + r + '"></span>', p.nazev);
@@ -84,11 +80,6 @@
       + moznost('akcent', '', s, '<span class="vzhled-kolecko vzhled-cisty vzhled-podle-motivu"' + motiv + '></span>', 'Podle motivu');
     AKCENTY.forEach(function (a) {
       h += moznost('akcent', a.id, s, '<span class="vzhled-kolecko" data-akcent="' + a.id + '"></span>', a.nazev);
-    });
-
-    h += '</div></fieldset><fieldset class="vzhled-rezim"><legend>Světlý / tmavý režim</legend><div class="vzhled-segmenty">';
-    REZIMY.forEach(function (m) {
-      h += moznost('rezim', m.id, s, '<span><svg viewBox="0 0 16 16" aria-hidden="true">' + m.ikona + '</svg>' + m.nazev + '</span>', m.nazev);
     });
 
     h += '</div></fieldset><fieldset class="vzhled-motivy"><legend>Motivy</legend><div class="vzhled-mrizka">';
