@@ -2,7 +2,8 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-Datum: 2026-10-11 · Stav: **plán hotový, implementace v příští session.** Náhled schválený uživatelem běžel jen
+Datum: 2026-10-11 · Stav: **Tasky 0–2 hotové (`2c1282f`, `10d848a`) + přejmenování motivů (`83736c6`), dál od
+Tasku 3. Nepushnuto.** Testy po Tasku 2: 74 Python + 17 JS zelených. Náhled schválený uživatelem běžel jen
 jako kopie webu ve scratchpadu session z 11. 10. (není v repu). Tento plán převádí totéž do repa, s testy.
 
 **Goal:** Zúžit skiny na vybranou nabídku a sjednotit barvy: motiv nebo Základní barva ladí opar, karty projektů
@@ -45,7 +46,7 @@ zásadám projektu“ (10 nálezů + odstavec „Náhled“). Tam je i důvod ka
 
 ---
 
-### Task 0: Výchozí stav
+### ~~Task 0: Výchozí stav~~ ✅ 71 + 15 zelených
 
 **Step 1:** `cd /c/work/graphic/LukasWana && git status -sb && git log --oneline -3`
 Expected: čistý strom. Commity s tímto plánem jsou buď pushnuté, nebo `ahead` (push plánu čeká na uživatele).
@@ -58,7 +59,7 @@ Expected: `tests 15`, `pass 15`, `fail 0`
 
 ---
 
-### Task 1: Zúžené seznamy a pořadí panelu (`skin.js`)
+### ~~Task 1: Zúžené seznamy a pořadí panelu (`skin.js`)~~ ✅ `2c1282f`, JS 17 zelených
 
 **Files:**
 - Modify: `skin.js` (pole `SKINY`, `AKCENTY`, `POZADI`; funkce `panel`)
@@ -130,7 +131,10 @@ Potom `node --check skin.js`.
 
 ---
 
-### Task 2: CSS bez vyřazených motivů, barev, pozadí a přechodů v textu (`skiny.css`)
+### ~~Task 2: CSS bez vyřazených motivů, barev, pozadí a přechodů v textu (`skiny.css`)~~ ✅ `10d848a`, 74 zelených
+
+**Odchylka od kódu níž:** `test_bez_osirelych_pravidel` v repu nejdřív odstraní komentáře CSS
+(`re.sub(r"/\*.*?\*/", …)`) — v podobě z plánu chytal hlavičku `skiny.css`, kde je ukázka `[data-skin="id"]`.
 
 **Files:**
 - Modify: `skiny.css`, `style.css` (sloupce Základních barev)
@@ -504,7 +508,8 @@ a mobil (`<iframe width="400">` v okně 600 px).
 ### Task 10: Dokumentace, kontrola do nuly, push po schválení
 
 **Step 1:** `docs/plans/2026-10-11-skiny-design.md`: Stav nahoře (zúženo, commity), tabulka Motivy (4 řádky,
-u Inkoustu „černobílý, barvu dostane až se Základní barvou“), odstavec Základní barvy a Pozadí (7 a 3), „Jak to
+u Inkoustu „černobílý, barvu dostane až se Základní barvou“; názvy **Veselé** (id `teple`) a **Voda** (id `hluboka`),
+rozhodnutí 12), odstavec Základní barvy a Pozadí (7 a 3), „Jak to
 funguje“ (opar, karty a ikony z akcentu; `--znacky`/`--znacka` zrušeny; pravidlo černobílého Inkoustu), postup
 „Nový motiv“ (už bez seznamu „Barevné motivy“ ve skiny.css), Ověření (nové testy). Revizi označ jako provedenou
 s odkazem na commity.
@@ -524,20 +529,22 @@ backspace/CR v měněných souborech skriptem `bytes([8])`/`bytes([13])` (`index
 Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.claude/rules/konec-session.md`. Historie je v gitu.
 
 ```
-Skills: superpowers:executing-plans (plán s tasky 0–10 a kontrolními body), superpowers:test-driven-development (Tasky 1–8: test → červená → kód → zelená), superpowers:verification-before-completion (Task 9 snímky a Task 10 push s ověřením živého webu).
+Skills: superpowers:executing-plans (plán s tasky 0–10 a kontrolními body), superpowers:test-driven-development (Tasky 3–8: test → červená → kód → zelená), superpowers:verification-before-completion (Task 9 snímky a Task 10 push s ověřením živého webu).
 
 Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web, jen po výslovném schválení uživatele.
-Plán: docs/plans/2026-10-11-skiny-zuzeni.md (tento soubor) — začni Taskem 0, tasky odškrtávej průběžně.
+Plán: docs/plans/2026-10-11-skiny-zuzeni.md (tento soubor) — Tasky 0–2 hotové, pokračuj Taskem 3; tasky odškrtávej průběžně.
 Návrh a důvody: docs/plans/2026-10-11-skiny-design.md, sekce „Revize proti zásadám projektu“ (10 nálezů, odstavec Náhled = schválený stav).
 Paměť projektu: web-nasazeni.md, navrh-nahled-ne-text.md (uživatel chce vidět náhled, ne text).
 
 Stav k 11. 10. 2026:
-- Živě je pořád 7 motivů (7efd5e3). Revize skinů a tento plán jsou jen v docs; commity docs mohou být ahead origin/main — push plánu nebyl schválen, zeptej se spolu s pushem implementace.
-- Uživatel v náhledu schválil: 4 motivy (Inkoust, Teplé světlo, Hluboká práce, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
-- Testy na začátku: 71 Python + 15 JS zelených.
+- Živě je pořád 7 motivů (7efd5e3). Lokálně hotové Tasky 0–2 (2c1282f, 10d848a) a přejmenování motivů (83736c6); main je ahead origin/main, NIC nepushnuto — push nebyl schválen, zeptej se po Tasku 9 (snímky).
+- Uživatel během implementace přejmenoval Teplé světlo → Veselé, Hluboká práce → Voda (jen názvy, id teple/hluboka zůstala kvůli uloženým volbám; rozhodnutí 12 v tabulce).
+- Uživatel v náhledu schválil: 4 motivy (Inkoust, Veselé, Voda, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
+- Testy po Tasku 2: 74 Python + 17 JS zelených.
 - Náhled z 11. 10. byl jen ve scratchpadu té session (neexistuje). Očekávaný vzhled popisuje Task 9, Step 4.
 
 Otevřené (mimo tento plán, čeká na uživatele):
+- Uložená VYŘAZENÁ hodnota (např. skin=kyberpunk v localStorage): skript v <head> index.html ji nekontroluje a nastaví data-skin="kyberpunk"; skin.js (defer) ji pak opraví na inkoust, ale v úložišti zůstane → možné krátké bliknutí při každé návštěvě. Oprava = pár řádků (smazat neplatnou hodnotu). Navrženo uživateli 11. 10., zatím bez odpovědi.
 - Počet velikostí písma (~7–8 místo 2–3) a starý anglický <title> „Lukáš - AI Micro-Tools & Digital Creator“ (nálezy 5 a 10 revize).
 - Neověřeno ve Firefoxu a Safari (mask-composite, color-mix, oklch(from …), background-clip: text).
 - (5) Token GitHub API na asus-server platí do 2027-01-08 (docs/plans/2026-10-10-projekty.md, bod 5). Uživatel: „zatím neřeším“.
