@@ -12,6 +12,7 @@ from pathlib import Path
 KOREN = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(KOREN / "tools"))
 import enso  # noqa: E402
+import projekty  # noqa: E402
 
 
 def text(cesta):
@@ -142,6 +143,48 @@ class TestMrizka(unittest.TestCase):
         self.assertEqual(len(tela), 1)
         self.assertIn("calc((100% - 60px) / 3)", tela[0])
         self.assertIn("gap: 30px", tela[0])
+
+
+class TestBarvyBanneru(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: barvy z původního banneru — opar za ensō a barevné hlavní karty
+    (docs/plans/2026-10-11-barvy-design.md)."""
+
+    RGB = {"fialova": "168, 34, 196", "tyrkys": "60, 193, 154", "zlata": "224, 184, 58", "zelena": "54, 196, 102",
+           "malina": "205, 52, 91", "azur": "32, 152, 227", "modra": "81, 135, 244", "purpur": "172, 50, 148"}
+
+    def test_trida_pro_kazdou_barvu_palety(self):
+        self.assertEqual(set(self.RGB), set(projekty.PALETA))
+        css = text("style.css")
+        for nazev, rgb in self.RGB.items():
+            tela = pravidla(css, f".barva-{nazev}")
+            self.assertEqual(len(tela), 1, nazev)
+            self.assertIn(f"--barva: {rgb};", tela[0], nazev)
+
+    def test_barevna_karta_bokeh_a_sloupce(self):
+        css = text("style.css")
+        tela = pravidla(css, ".projekty-barevna")
+        self.assertEqual(len(tela), 1)
+        self.assertIn("radial-gradient", tela[0])
+        self.assertIn("var(--barva)", tela[0])
+        # jen background-image: barva pozadí karty a její :hover zůstanou
+        self.assertIn("background-image:", tela[0])
+        self.assertNotRegex(tela[0], r"background\s*:")
+        sloupce = pravidla(css, '.projekty-barevna .projekty-graf rect[fill="#000"]')
+        self.assertEqual(len(sloupce), 1)
+        self.assertIn("fill: rgb(var(--barva));", sloupce[0])
+
+    def test_opar_za_enso(self):
+        css = text("style.css")
+        banner = pravidla(css, ".enso-banner")
+        self.assertTrue(any("isolation: isolate" in t and "position: relative" in t for t in banner))
+        opar = pravidla(css, ".enso-banner::before")
+        self.assertEqual(len(opar), 1)
+        for nazev in ("fialova", "tyrkys", "zlata", "azur"):
+            self.assertIn(self.RGB[nazev], opar[0], nazev)
+        self.assertIn("filter: blur(", opar[0])
+        self.assertIn("mask-image: radial-gradient(", opar[0])
+        self.assertIn("z-index: -1", opar[0])
+        self.assertIn("inset: -60px 0;", opar[0])   # do stran nepřesahuje → na mobilu žádný vodorovný posuvník
 
 
 class TestVelkyMonitor(unittest.TestCase):

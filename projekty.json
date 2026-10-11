@@ -15,12 +15,12 @@
  "skryt": ["web", "LukasWana", "ent-backup", "Dychani", "emailrator-info"],
  "max_aktivnich": 8,
  "projekty": {
-  "EmailRator": {"nazev": "EmailRator", "popis": "Vytěžování údajů z firemní pošty jazykovými modely, panel v Gmailu"},
-  "WanGP_SD_wholepipeline": {"nazev": "WanGP pipeline", "popis": "Lokální výroba obrázků, videa a řeči na jedné grafické kartě"},
-  "whisper-sk-transcriber": {"nazev": "whisper-sk-transcriber", "popis": "Lokální přepis porad a rozlišení mluvčích (slovenština, čeština)"},
-  "Gramps": {"nazev": "Rodokmen", "popis": "Rodokmen rodiny v Gramps Web na domácím serveru"},
-  "NakupUX": {"nazev": "NakupUX", "popis": "Doplněk do Chrome, který zpřehlední a zpříjemní nákup v e-shopu Fichema"},
-  "meditation-app": {"nazev": "Meditácie", "popis": "Mluvená meditace s afirmacemi na míru, hudba k relaxaci a dýchací cvičení"}
+  "EmailRator": {"nazev": "EmailRator", "popis": "Vytěžování údajů z firemní pošty jazykovými modely, panel v Gmailu", "barva": "fialova"},
+  "WanGP_SD_wholepipeline": {"nazev": "WanGP pipeline", "popis": "Lokální výroba obrázků, videa a řeči na jedné grafické kartě", "barva": "zlata"},
+  "whisper-sk-transcriber": {"nazev": "whisper-sk-transcriber", "popis": "Lokální přepis porad a rozlišení mluvčích (slovenština, čeština)", "barva": "zelena"},
+  "Gramps": {"nazev": "Rodokmen", "popis": "Rodokmen rodiny v Gramps Web na domácím serveru", "barva": "tyrkys"},
+  "NakupUX": {"nazev": "NakupUX", "popis": "Doplněk do Chrome, který zpřehlední a zpříjemní nákup v e-shopu Fichema", "barva": "malina"},
+  "meditation-app": {"nazev": "Meditácie", "popis": "Mluvená meditace s afirmacemi na míru, hudba k relaxaci a dýchací cvičení", "barva": "azur"}
  },
  "starsi": [
   {"nazev": "ACRS", "popis": "AI generátor reklamních bannerů: rozbor podkladů značky a návrhy pro sociální sítě",

@@ -18,7 +18,10 @@ from pathlib import Path
 API = "https://api.github.com"
 TYDNU = 12
 HROMADNY_PRAH = 5
-POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url", "web", "odkazy")
+POLE_KARTA = ("nazev", "popis", "jazyk", "posledni", "dni_prace", "tydny", "stitky", "url", "web", "odkazy", "barva")
+# Barvy třpytek z původního banneru (docs/plans/2026-10-11-barvy-design.md); RGB je v style.css.
+# Hlavních karet je nejvýš max_aktivnich = 8, takže každá dostane jinou.
+PALETA = ("fialova", "tyrkys", "zlata", "zelena", "malina", "azur", "modra", "purpur")
 POLE_ARCHIV = ("nazev", "jazyk", "posledni", "url")
 POLE_SAMOSTATNE = ("nazev", "popis", "posledni", "dni_prace", "tydny", "aplikace")
 POLE_APLIKACE = ("nazev", "popis")
@@ -126,6 +129,7 @@ def sestav(repa, nastaveni, skryt, dnes):
 
     aktivni, archiv, samostatne = [], [], []
     neaktivni = {}   # klíč karty → plný záznam, pro doplnění volných míst
+    bez_barvy = set()   # názvy karet skupin: zůstávají černobílé
     for klic_karty, clenove in karty.items():
         skupina = klic_karty in skupiny
         info = skupiny[klic_karty] if skupina else popisy.get(klic_karty, {})
@@ -141,7 +145,10 @@ def sestav(repa, nastaveni, skryt, dnes):
             "stitky": sorted(r["nazev"][len(klic_karty):] for r in clenove) if skupina else [],
             "web": info.get("web"),   # živý web: celá karta na něj odkazuje
             "odkazy": dalsi_odkazy(info),
+            "barva": None if skupina else info.get("barva"),
         }
+        if skupina:
+            bez_barvy.add(zaklad["nazev"])
         okno = [c for r in clenove for c in ciste_commity(r["commity_okno"], automaty, hromadne)]
         akt = aktivita(okno, dnes)
         if akt:
@@ -172,7 +179,17 @@ def sestav(repa, nastaveni, skryt, dnes):
         archiv[:0] = [jen_pole(k, POLE_ARCHIV) for k in aktivni[limit:]]
         del aktivni[limit:]
     aktivni += doplnene
+    obarvi(aktivni, bez_barvy)
     return {"aktivni": aktivni, "archiv": archiv, "samostatne": samostatne, "starsi": starsi}
+
+
+def obarvi(karty, bez_barvy):
+    """Karta bez barvy z nastavení dostane první barvu palety, kterou nemá žádná jiná karta.
+    Barva z nastavení má přednost; skupiny (bez_barvy) zůstávají černobílé. Dojdou-li barvy, karta zůstane bez."""
+    volne = [b for b in PALETA if b not in {k.get("barva") for k in karty}]
+    for k in karty:
+        if "barva" not in k and k["nazev"] not in bez_barvy and volne:
+            k["barva"] = volne.pop(0)
 
 
 def starsi_karta(info, clenove, automaty, hromadne):

@@ -1,4 +1,5 @@
 import datetime as dt
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -231,6 +232,65 @@ class Samostatne(unittest.TestCase):
         self.assertEqual(box["posledni"], "2025-03-01")
         self.assertNotIn("tydny", box)
         self.assertEqual(d["archiv"], [])
+
+
+class Barvy(unittest.TestCase):
+    """Pokyn uživatele 2026-10-11: hlavní projekty mají barvy z původního banneru, každý jinou;
+    Domácí server a starší projekty zůstávají černobílé (docs/plans/2026-10-11-barvy-design.md)."""
+
+    NAST = {"skupiny": {"asus-server-": {"nazev": "Domácí server", "popis": "služby"}},
+            "projekty": {"EmailRator": {"nazev": "EmailRator", "popis": "e-maily", "barva": "fialova"}}}
+
+    def test_paleta_osmi_barev_z_banneru(self):
+        self.assertEqual(len(p.PALETA), 8)
+        self.assertEqual(len(set(p.PALETA)), 8)
+        self.assertIn("barva", p.POLE_KARTA)
+
+    def test_barva_z_nastaveni_projde_na_kartu(self):
+        d = p.sestav([repo("EmailRator", okno=[c("a", "2026-10-09")])], self.NAST, set(), DNES)
+        self.assertEqual(d["aktivni"][0]["barva"], "fialova")
+
+    def test_karta_bez_barvy_dostane_volnou(self):
+        repa = [repo("EmailRator", okno=[c("a", "2026-10-09")]), repo("Dychani", okno=[c("b", "2026-10-08")])]
+        d = p.sestav(repa, self.NAST, set(), DNES)
+        barvy = [k["barva"] for k in d["aktivni"]]
+        self.assertEqual(barvy[0], "fialova")
+        self.assertIn(barvy[1], p.PALETA)
+        self.assertNotEqual(barvy[1], "fialova")
+
+    def test_osm_karet_osm_ruznych_barev(self):
+        repa = [repo(f"P{i}", okno=[c(str(i), f"2026-09-{10 + i}")]) for i in range(10)]
+        repa.append(repo("EmailRator", okno=[c("e", "2026-10-09")]))
+        d = p.sestav(repa, dict(self.NAST, max_aktivnich=8), set(), DNES)
+        barvy = [k["barva"] for k in d["aktivni"]]
+        self.assertEqual(len(barvy), 8)
+        self.assertEqual(sorted(barvy), sorted(p.PALETA))
+
+    def test_doplnena_karta_ma_barvu(self):
+        repa = [repo("Akt", okno=[c("a", "2026-10-09")]), repo("B", hlavni=[c("y", "2026-03-21")])]
+        d = p.sestav(repa, dict(self.NAST, max_aktivnich=4, doplnit=["B"]), set(), DNES)
+        barvy = [k.get("barva") for k in d["aktivni"]]
+        self.assertEqual(len(set(barvy)), 2)
+        self.assertTrue(set(barvy) <= set(p.PALETA))
+
+    def test_skupina_archiv_a_starsi_bez_barvy(self):
+        repa = [repo("asus-server-zvuk", okno=[c("a", "2026-10-09")]), repo("Stare", hlavni=[c("x", "2025-03-01")]),
+                repo("ACRS", hlavni=[c("y", "2025-02-01")])]
+        nast = dict(self.NAST, starsi=[{"nazev": "ACRS", "popis": "bannery", "repa": ["ACRS"]}])
+        d = p.sestav(repa, nast, set(), DNES)
+        self.assertEqual(d["aktivni"][0]["nazev"], "Domácí server")
+        self.assertNotIn("barva", d["aktivni"][0])
+        self.assertNotIn("barva", d["archiv"][0])
+        self.assertNotIn("barva", d["starsi"][0])
+
+    def test_skutecne_nastaveni(self):
+        nast = json.loads((Path(__file__).resolve().parent.parent / "projekty.json").read_text(encoding="utf-8"))
+        barvy = {k: v.get("barva") for k, v in nast["projekty"].items()}
+        self.assertEqual(barvy, {"EmailRator": "fialova", "Gramps": "tyrkys", "WanGP_SD_wholepipeline": "zlata",
+                                 "whisper-sk-transcriber": "zelena", "NakupUX": "malina", "meditation-app": "azur"})
+        self.assertLessEqual(nast["max_aktivnich"], len(p.PALETA))   # víc karet než barev = unikátnost nejde
+        for skupina in nast["skupiny"].values():
+            self.assertNotIn("barva", skupina)
 
 
 class Strankovani(unittest.TestCase):

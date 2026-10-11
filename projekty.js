@@ -61,7 +61,9 @@
       return '<a class="projekty-dalsi" href="' + esc(o.url) + '" target="_blank" rel="noopener">' +
         esc(o.nazev) + ' ↗</a>';
     }).join('');
-    return '<article class="projekty-karta' + (k.web ? ' projekty-karta-web' : '') + '">' + web +
+    // Barva z banneru (tools/projekty.py, PALETA): jen název z malých písmen, jinak nic.
+    var barva = /^[a-z]+$/.test(k.barva || '') ? ' projekty-barevna barva-' + k.barva : '';
+    return '<article class="projekty-karta' + (k.web ? ' projekty-karta-web' : '') + barva + '">' + web +
       '<header><h3>' + esc(k.nazev) + '</h3>' +
       (k.jazyk ? '<span class="projekty-jazyk">' + esc(k.jazyk) + '</span>' : '') + '</header>' +
       (k.popis ? '<p class="projekty-popis">' + esc(k.popis) + '</p>' : '') +

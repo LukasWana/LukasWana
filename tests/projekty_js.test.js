@@ -77,3 +77,15 @@ test('karta: další odkazy (obchody, nápověda) v patičce vedle webu', () => 
   const bez = p.karta({ nazev: 'X', posledni: '2025-11-10' }, DNES);
   assert.doesNotMatch(bez, /projekty-dalsi/);
 });
+
+test('karta: barva z banneru jako třída (docs/plans/2026-10-11-barvy-design.md)', () => {
+  const html = p.karta({ nazev: 'EmailRator', posledni: '2026-10-09', barva: 'fialova' }, DNES);
+  assert.match(html, /^<article class="projekty-karta projekty-barevna barva-fialova">/);
+  const web = p.karta({ nazev: 'W', posledni: '2026-10-09', web: 'https://x.cz/', barva: 'azur' }, DNES);
+  assert.match(web, /^<article class="projekty-karta projekty-karta-web projekty-barevna barva-azur">/);
+  // bez barvy (starší projekty) a s nečekanou hodnotou: žádná třída barvy
+  assert.doesNotMatch(p.karta({ nazev: 'X', posledni: '2025-11-10' }, DNES), /barv/);
+  assert.doesNotMatch(p.karta({ nazev: 'X', posledni: '2025-11-10', barva: 'x" onclick="y' }, DNES), /barv/);
+  // box Domácí server barvu nikdy nemá
+  assert.doesNotMatch(p.boxSamostatny({ nazev: 'S', posledni: '2025-03-01', aplikace: [], barva: 'zlata' }, DNES), /barv/);
+});
