@@ -34,6 +34,12 @@ test('datumCesky', () => {
   assert.strictEqual(p.datumCesky('2026-10-09'), '9. 10. 2026');
 });
 
+test('aktualizovano: datum a čas v pražském čase, starý formát jen datum', () => {
+  assert.strictEqual(p.aktualizovano('2026-10-11T12:17Z'), '11. 10. 2026 v 14:17');  // letní čas +2
+  assert.strictEqual(p.aktualizovano('2026-12-31T23:05Z'), '1. 1. 2027 v 00:05');   // zimní +1, přes půlnoc
+  assert.strictEqual(p.aktualizovano('2026-10-11'), '11. 10. 2026');
+});
+
 test('boxSamostatny: aplikace, graf jen při aktivitě', () => {
   const b = { nazev: 'Domácí server', popis: 'služby', posledni: '2026-10-09', dni_prace: 3,
     tydny: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 4],

@@ -301,5 +301,32 @@ class Strankovani(unittest.TestCase):
         self.assertIsNone(p.dalsi_stranka(""))
 
 
+class Razitko(unittest.TestCase):
+    """Rozhodnutí uživatele 2026-10-11: „Aktualizováno“ s časem poslední změny dat. Nový čas jen při změně dat
+    nebo v novém dni (UTC), jinak zůstane starý → soubor se nezmění a sync.sh necommituje (nejvýš 1 commit denně navíc)."""
+
+    TED = dt.datetime(2026, 10, 11, 12, 17, 5, tzinfo=dt.timezone.utc)
+
+    def test_bez_stareho_souboru_novy_cas(self):
+        self.assertEqual(p.razitko(None, {"a": 1}, self.TED), "2026-10-11T12:17Z")
+
+    def test_stejna_data_stejny_den_stary_cas(self):
+        stara = {"a": 1, "aktualizovano": "2026-10-11T01:17Z"}
+        self.assertEqual(p.razitko(stara, {"a": 1}, self.TED), "2026-10-11T01:17Z")
+
+    def test_zmenena_data_novy_cas(self):
+        stara = {"a": 1, "aktualizovano": "2026-10-11T01:17Z"}
+        self.assertEqual(p.razitko(stara, {"a": 2}, self.TED), "2026-10-11T12:17Z")
+
+    def test_novy_den_novy_cas(self):
+        stara = {"a": 1, "aktualizovano": "2026-10-10T23:17Z"}
+        self.assertEqual(p.razitko(stara, {"a": 1}, self.TED), "2026-10-11T12:17Z")
+
+    def test_stary_format_bez_casu_prepise(self):
+        # data z doby před časem (jen datum): první běh zapíše čas i beze změny dat
+        stara = {"a": 1, "aktualizovano": "2026-10-11"}
+        self.assertEqual(p.razitko(stara, {"a": 1}, self.TED), "2026-10-11T12:17Z")
+
+
 if __name__ == "__main__":
     unittest.main()

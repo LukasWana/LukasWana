@@ -296,6 +296,28 @@ def nacti_skryt(cesta):
     return {r.strip() for r in radky if r.strip() and not r.startswith("#")}
 
 
+def razitko(stara, nova, ted):
+    """Hodnota „aktualizovano“ (UTC, minuty): čas poslední změny dat. Starý čas zůstane, když se data nezměnila
+    a je týž den (UTC) — soubor je pak beze změny a sync.sh necommituje. Nový den zapíše nový čas i bez změny,
+    takže zastavený server je na webu poznat podle data (rozhodnutí uživatele 2026-10-11)."""
+    novy = ted.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+    if not stara:
+        return novy
+    stary = str(stara.get("aktualizovano", ""))
+    bez = {k: v for k, v in stara.items() if k != "aktualizovano"}
+    stejna = json.dumps(bez, sort_keys=True) == json.dumps(nova, sort_keys=True)
+    if stejna and "T" in stary and stary[:10] == novy[:10]:
+        return stary
+    return novy
+
+
+def nacti_stara(cesta):
+    try:
+        return json.loads(Path(cesta).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
 def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description="Generátor přehledu projektů pro web.")
@@ -311,10 +333,11 @@ def main(argv=None):
     if not token:
         sys.exit("chybí token: --token-soubor nebo GITHUB_TOKEN")
     nastaveni = json.loads(NASTAVENI.read_text(encoding="utf-8"))
-    dnes = dt.datetime.now(dt.timezone.utc).date()
+    ted = dt.datetime.now(dt.timezone.utc)
+    dnes = ted.date()
     data = sestav(stahni(token, dnes), nastaveni, nacti_skryt(a.skryt_soubor), dnes)
-    # den generování (ne čas): bez změny dat nejvýš 1 commit denně; na webu „Aktualizováno …“
-    data["aktualizovano"] = dnes.isoformat()
+    # čas poslední změny dat (razitko): bez změny dat nejvýš 1 commit denně; na webu „Aktualizováno … v HH:MM“
+    data["aktualizovano"] = razitko(nacti_stara(a.vystup), data, ted)
     # chr(10) a newline="": LF i na Windows a v kódu žádné zpětné lomítko (Git Bash)
     text = json.dumps(data, ensure_ascii=False, indent=1) + chr(10)
     if a.nanecisto:

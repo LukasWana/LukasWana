@@ -38,6 +38,17 @@
     return Number(c[2]) + '. ' + Number(c[1]) + '. ' + c[0];
   }
 
+  // „aktualizovano“ z tools/projekty.py: UTC s minutami (2026-10-11T12:17Z) → pražský čas; starší data jen datum
+  function aktualizovano(s) {
+    if (s.indexOf('T') < 0) return datumCesky(s);
+    var casti = {};
+    new Intl.DateTimeFormat('cs-CZ', { timeZone: 'Europe/Prague', year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(s)).forEach(function (c) {
+      casti[c.type] = c.value;
+    });
+    return casti.day + '. ' + casti.month + '. ' + casti.year + ' v ' + casti.hour + ':' + casti.minute;
+  }
+
   function graf(tydny) {
     var max = Math.max.apply(null, tydny.concat([1]));
     var sirka = tydny.length * 8 - 2;
@@ -110,13 +121,13 @@
       document.getElementById('projekty-archiv').hidden = false;
     }
     if (data.aktualizovano) {
-      document.getElementById('projekty-data-k').textContent = 'Aktualizováno ' + datumCesky(data.aktualizovano);
+      document.getElementById('projekty-data-k').textContent = 'Aktualizováno ' + aktualizovano(data.aktualizovano);
     }
     document.getElementById('projekty').hidden = false;
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { pred: pred, dniPrace: dniPrace, esc: esc, datumCesky: datumCesky, graf: graf,
+    module.exports = { pred: pred, dniPrace: dniPrace, esc: esc, datumCesky: datumCesky, aktualizovano: aktualizovano, graf: graf,
       boxSamostatny: boxSamostatny, karta: karta };
     return;
   }
