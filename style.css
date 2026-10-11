@@ -364,7 +364,6 @@ body {
 }
 
 .kontakt {
-    font-size: 16px;
     color: var(--inkoust);
     text-decoration: none;
     border-bottom: 1px solid currentColor;
@@ -798,6 +797,14 @@ body {
         padding-top: 60px; /* tlačítko Vzhled nad nadpisem, ať se ho nedotýká */
     }
 
+    .paticka-info {
+        flex-direction: column;
+    }
+
+    .paticka-oddelovac {
+        display: none;
+    }
+
     .main-title {
         font-size: 42px;
     }
@@ -1052,9 +1059,21 @@ body {
     outline-color: var(--inv-text);
 }
 
-.projekty-data-k {
+/* Patička pod mottem: „Aktualizováno … · e-mail“ na střed (pokyn uživatele 2026-10-11); na mobilu pod sebou */
+.paticka-info {
     margin-top: 20px;
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; /* i pro mobil: toto pravidlo stojí za @media (max-width: 768px) a přebilo by ho */
+    gap: 4px 10px;
+    font-size: 13px;
+    color: var(--text-popisek);
+}
+
+/* Bez dat projektů (projekty.js nenačte JSON) zůstane jen e-mail, bez visícího oddělovače */
+.projekty-data-k:empty + .paticka-oddelovac {
+    display: none;
 }
 
 /* Hlavní karty v barvách třpytek z původního banneru: barvu určí projekt (projekty.json → tools/projekty.py,

@@ -104,10 +104,23 @@ class TestHlavicka(unittest.TestCase):
         telo = pravidla(self.css, "body")[0]
         self.assertIn("font-family: 'Inter Tight'", telo)
 
-    def test_kontakt_v_hlavicce(self):
+    def test_kontakt_v_paticce_za_aktualizaci(self):
+        # pokyn uživatele 2026-10-11: e-mail ze shora za čas aktualizace, na mobilu pod něj
         hlavicka = self.html.split('<header class="header">')[1].split("</header>")[0]
-        self.assertIn('href="mailto:qwanap@gmail.com"', hlavicka)
-        self.assertIn(">qwanap@gmail.com</a>", hlavicka)  # adresa je vidět jako text
+        self.assertNotIn("mailto:", hlavicka)
+        self.assertEqual(self.html.count("mailto:qwanap@gmail.com"), 1)
+        paticka = self.html.split('<p class="paticka-info">')[1].split("</p>")[0]
+        self.assertLess(paticka.index('id="projekty-data-k"'), paticka.index('href="mailto:qwanap@gmail.com"'))
+        self.assertIn(">qwanap@gmail.com</a>", paticka)  # adresa je vidět jako text
+        self.assertGreater(self.html.index('<p class="paticka-info">'), self.html.index('<p class="motto">'))
+        # oddělovač jen když je datum (bez dat zůstane samotný e-mail); na mobilu pod sebou bez oddělovače
+        self.assertIn("display: none;", pravidla(self.css, ".projekty-data-k:empty + .paticka-oddelovac")[0])
+        # na střed i na mobilu: hlavní pravidlo stojí v CSS za @media, jeho align-items platí i tam
+        self.assertTrue(any("align-items: center;" in t for t in pravidla(self.css, ".paticka-info")))
+        self.assertFalse(any("align-items: baseline;" in t for t in pravidla(self.css, ".paticka-info")))
+        mobil = self.css.split("@media (max-width: 768px)")[1]
+        self.assertIn("flex-direction: column;", pravidla(mobil, ".paticka-info")[0])
+        self.assertIn("display: none;", pravidla(mobil, ".paticka-oddelovac")[0])
 
     def test_podtitul_zkraceny(self):
         self.assertIn('<p class="subtitle">vibecoder · rychlé prototypy · technická řešení</p>', self.html)
