@@ -194,7 +194,7 @@ body {
 
 /* Základní barvy: kolečka v přechodu akcentu */
 .vzhled-barvy .vzhled-mrizka {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .vzhled-kolecko {

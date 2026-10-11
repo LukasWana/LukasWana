@@ -343,7 +343,7 @@ def kontrast(a, b):
 
 
 class TestSkiny(unittest.TestCase):
-    """Skiny 2026-10-11 (docs/plans/2026-10-11-skiny-design.md): tlačítko Vzhled s panelem, 7 motivů × světlý/tmavý,
+    """Skiny 2026-10-11 (docs/plans/2026-10-11-skiny-design.md): tlačítko Vzhled s panelem, 4 motivy (zúženo 2026-10-11) × světlý/tmavý,
     Základní barvy a Pozadí jako volby nad motivem. Barvy jsou jen v CSS, skin.js nese seznamy id."""
 
     ROLE = ("--pozadi", "--inkoust", "--text", "--text-tlumeny", "--text-popisek", "--plocha", "--plocha-hover",
@@ -361,7 +361,7 @@ class TestSkiny(unittest.TestCase):
 
     def test_kazdy_motiv_ma_svetly_i_tmavy_se_vsemi_rolemi(self):
         skiny = ids(self.js, "SKINY")
-        self.assertEqual(skiny, ["inkoust", "teple", "hluboka", "indigo", "priroda", "kyberpunk", "minimal"])
+        self.assertEqual(skiny, ["inkoust", "teple", "hluboka", "priroda"])
         for skin in skiny:
             for rezim in ("svetly", "tmavy"):
                 p = self.blok(skin, rezim)
@@ -369,6 +369,24 @@ class TestSkiny(unittest.TestCase):
                     self.assertIn(role, p, (skin, rezim, role))
                 self.assertIn(f"color-scheme: {'light' if rezim == 'svetly' else 'dark'}",
                               pravidla(self.css, f'[data-skin="{skin}"][data-rezim="{rezim}"]')[0], (skin, rezim))
+
+    def test_bez_osirelych_pravidel(self):
+        # zúžení 2026-10-11: v CSS nesmí zůstat pravidla motivů, barev a pozadí, které panel nenabízí
+        bez_komentaru = re.sub(r"/\*.*?\*/", "", self.css, flags=re.S)   # hlavička skiny.css ukazuje [data-skin="id"]
+        for atribut, seznam in (("data-skin", "SKINY"), ("data-akcent", "AKCENTY"), ("data-pozadi", "POZADI")):
+            v_css = set(re.findall(rf'\[{atribut}="([a-z]+)"\]', bez_komentaru))
+            self.assertEqual(v_css, set(ids(self.js, seznam)), atribut)
+
+    def test_jmeno_a_podtitul_plnou_barvou(self):
+        # revize 2026-10-11: text vyplněný přechodem se hůř čte a test kontrastu ho neumí změřit
+        skiny = text("skiny.css")
+        self.assertNotIn("--nadpis", skiny)
+        self.assertNotIn("--podtitul", skiny)
+
+    def test_zakladni_barvy_ve_ctyrech_sloupcich(self):
+        # 7 barev + „podle motivu“ = dvě plné řady po 4, stejně široké jako Pozadí
+        self.assertIn("grid-template-columns: repeat(4, 1fr);",
+                      pravidla(text("style.css"), ".vzhled-barvy .vzhled-mrizka")[0])
 
     def test_kontrast_textu_wcag_aa(self):
         # text na pozadí i na ploše karty a světlý text na inverzní kartě: aspoň 4,5 : 1 (WCAG AA)
