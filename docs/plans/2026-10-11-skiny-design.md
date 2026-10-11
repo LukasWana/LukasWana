@@ -119,6 +119,13 @@ převezmou barvy motivu. Kyberpunk a Minimal vyřadit. Z pozadí ponechat Papír
 verzálek změnit na kladné nebo jméno sázet bez verzálek. V grafech zrušit čárky prázdných dnů. Sloučit zdvojené
 barvy. Uživatel chce vidět náhled, ne text (paměť `navrh-nahled-ne-text`).
 
+**Náhled (11. 10., na „ano“ uživatele):** kopie webu ve scratchpadu session (ne v repu) s body 1–4, 6–9 a s jedinou
+změnou z bodu 5 (prostrkání jména +0,02em). Obsahuje motivy Inkoust, Teplé světlo, Hlubokou práci a Přírodu (Indigo
+vyřazeno, protože se fialovou kryje s Teplým světlem), pozadí Papír a Tečky, 7 Základních barev (bez Zlaté a Azurové).
+Jméno a podtitul jsou plnou barvou, ikony v inkoustu motivu, opar barevných motivů je z akcentů motivu (Inkoust si
+nechal barvy původního banneru) a v grafech chybějí čárky prázdných týdnů. Barvy projektů na kartách zůstaly
+(pokyn „každý projekt unikátní barvu“). Neřešeno: počet velikostí písma a `<title>`. Čeká se na verdikt uživatele.
+
 ## Předávka
 
 Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.claude/rules/konec-session.md`. Historie je v gitu.
