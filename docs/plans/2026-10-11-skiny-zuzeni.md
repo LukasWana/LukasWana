@@ -37,6 +37,16 @@ zásadám projektu“ (10 nálezů + odstavec „Náhled“). Tam je i důvod ka
 | 10 | Grafy bez čárek prázdných týdnů (nález 4 revize) | Task 7 |
 | 11 | Verzálky jména s kladným prostrkáním +0,02em (nález 5) | Task 8 |
 | 12 | „Teplé světlo přejmenuj na Veselé, Hluboká práce na Voda“ (během implementace) — jen `nazev`, id `teple`/`hluboka` zůstala kvůli uloženým volbám návštěvníků | mimo tasky, commit po Tasku 2 |
+| 13 | Papír podle inspirace uživatele (foto starého béžového papíru): škrábance, smítka, jemné zrno, „po stranách prohlížeče lehké měkké zatmavení“, „každý barevný motiv lehce zatónuje barvu papíru“ → „víc zatónovat“. Odladěno v náhledu, push schválen („zapiš to do repa a pushni“) | mimo tasky, viz níž |
+
+**Papír (rozhodnutí 13).** Textura je `img/papir-svetly.svg` a `img/papir-tmavy.svg` (dlaždice 640 px, ~25 KB),
+vyrobené `tools/papir.py` (pevné semínko; test hlídá, že se soubory s generátorem shodují). V `skiny.css` nad ní
+leží ztmavené strany (`linear-gradient(90deg …)`, od 16 % šířky ke kraji), slabá vinětace a tón papíru: béžová
+smíchaná s `--motiv-akcent` na `--papir-dotyk` (30 % světlý, ×2 tmavý; Inkoust 0 %, protože jeho akcent je černá
+a papír by jen zašedil). Tón bere jen motiv, ne Základní barvu návštěvníka (nabídnuto, uživatel nežádal).
+Zrno laděno dvakrát: v tmavém bylo „moc“, ve světlém „nevidím“ → obě stejně drobné (frekvence 1.6), tmavé slabší.
+Neplatné měření z náhledu: první srovnání běželo z `http.server` s cache, takže prohlížeč mohl ukazovat staré
+CSS — další náhledy už ze serveru s `Cache-Control: no-store`.
 
 **Mimo rozsah (vědomě):** počet velikostí písma (nález 5, ~7–8 velikostí místo 2–3) a starý anglický `<title>`
 (nález 10). Uživatel je zatím neřešil, zůstávají v Otevřeném.

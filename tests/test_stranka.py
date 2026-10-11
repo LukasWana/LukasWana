@@ -12,6 +12,7 @@ from pathlib import Path
 KOREN = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(KOREN / "tools"))
 import enso  # noqa: E402
+import papir  # noqa: E402
 import projekty  # noqa: E402
 
 
@@ -38,6 +39,27 @@ class TestEnso(unittest.TestCase):
 
     def test_generator_je_deterministicky(self):
         self.assertEqual(enso.enso(400), enso.enso(400))
+
+
+class TestPapir(unittest.TestCase):
+    """Pozadí Papír podle inspirace uživatele 2026-10-11: škrábance, smítka, jemné zrno,
+    měkce ztmavené strany a tón od hlavní barvy motivu (Inkoust bez tónu)."""
+
+    def test_soubory_odpovidaji_generatoru(self):
+        self.assertEqual(text("img/papir-svetly.svg"), papir.svg(True))
+        self.assertEqual(text("img/papir-tmavy.svg"), papir.svg(False))
+
+    def test_css_bere_textury_a_ton_motivu(self):
+        css = text("skiny.css")
+        svetly = pravidla(css, '[data-pozadi="papir"][data-rezim="svetly"]')[0]
+        tmavy = pravidla(css, '[data-pozadi="papir"][data-rezim="tmavy"]')[0]
+        self.assertIn('url("img/papir-svetly.svg")', svetly)
+        self.assertIn('url("img/papir-tmavy.svg")', tmavy)
+        for telo in (svetly, tmavy):
+            self.assertIn("linear-gradient(90deg", telo)  # ztmavené strany
+            self.assertIn("var(--motiv-akcent)", telo)
+        self.assertIn("--papir-dotyk: 30%", pravidla(css, '[data-pozadi="papir"]')[0])
+        self.assertIn("--papir-dotyk: 0%", pravidla(css, '[data-skin="inkoust"][data-pozadi="papir"]')[0])
 
     def test_platne_svg_cerny_inkoust(self):
         for cesta, viewbox in (("img/enso.svg", "0 0 400 400"), ("img/tah.svg", "0 0 240 24")):
@@ -415,9 +437,10 @@ class TestSkiny(unittest.TestCase):
             for v in ("--volba-akcent:", "--volba-akcent-2:", "--volba-akcent-3:"):
                 self.assertIn(v, telo[0], akcent)
         for pozadi in ids(self.js, "POZADI"):
-            tela = (pravidla(self.css, f'[data-pozadi="{pozadi}"]')
-                    or pravidla(self.css, f'[data-pozadi="{pozadi}"][data-rezim="svetly"]')
-                    + pravidla(self.css, f'[data-pozadi="{pozadi}"][data-rezim="tmavy"]'))
+            # vzor po režimech má přednost (Papír má i holé pravidlo, ale jen se silou tónu)
+            tela = (pravidla(self.css, f'[data-pozadi="{pozadi}"][data-rezim="svetly"]')
+                    + pravidla(self.css, f'[data-pozadi="{pozadi}"][data-rezim="tmavy"]')
+                    or pravidla(self.css, f'[data-pozadi="{pozadi}"]'))
             self.assertIn(len(tela), (1, 2), pozadi)
             self.assertTrue(all("--volba-vzor:" in t for t in tela), pozadi)
 

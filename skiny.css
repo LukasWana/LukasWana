@@ -161,7 +161,7 @@
 [data-akcent="modra"] { --volba-akcent: 81, 135, 244; --volba-akcent-2: 168, 34, 196; --volba-akcent-3: 32, 152, 227; }
 
 /* ===== Pozadí (volba návštěvníka): průsvitný vzor nad barvou motivu, takže čitelnost drží motiv a režim.
-   Čáry a tečky berou barvu z inkoustu motivu; zrno papíru je SVG, proto má světlou a tmavou verzi. ===== */
+   Čáry a tečky berou barvu z inkoustu motivu; papír je SVG (img/papir-*.svg z tools/papir.py), proto má světlou a tmavou verzi. ===== */
 [data-pozadi="mrizka"] {
     --volba-vzor:
         linear-gradient(color-mix(in srgb, var(--inkoust) 7%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
@@ -172,14 +172,24 @@
     --volba-vzor: radial-gradient(color-mix(in srgb, var(--inkoust) 18%, transparent) 1px, transparent 1.6px) 0 0 / 18px 18px;
 }
 
+/* Papír: béžový tón lehce dotčený hlavní barvou motivu (Inkoust je černobílý, proto bez dotyku) */
+[data-pozadi="papir"] { --papir-dotyk: 30%; }
+[data-skin="inkoust"][data-pozadi="papir"] { --papir-dotyk: 0%; }
+
 [data-pozadi="papir"][data-rezim="svetly"] {
+    --papir-ton: color-mix(in srgb, rgba(226, 210, 176, .55), rgba(var(--motiv-akcent), .55) var(--papir-dotyk));
     --volba-vzor:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .15 .55 0 0 0 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-        linear-gradient(rgba(214, 190, 150, .16), rgba(214, 190, 150, .16));
+        url("img/papir-svetly.svg") 0 0 / 640px 640px,
+        linear-gradient(90deg, rgba(165, 125, 65, .34), rgba(165, 125, 65, .12) 5%, transparent 16%, transparent 84%, rgba(165, 125, 65, .12) 95%, rgba(165, 125, 65, .34)),
+        radial-gradient(ellipse 85% 80% at 50% 45%, transparent 60%, rgba(170, 130, 70, .18) 100%),
+        linear-gradient(var(--papir-ton), var(--papir-ton));
 }
 
 [data-pozadi="papir"][data-rezim="tmavy"] {
+    --papir-ton: color-mix(in srgb, rgba(120, 95, 60, .16), rgba(var(--motiv-akcent), .16) calc(var(--papir-dotyk) * 2));
     --volba-vzor:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .85 .45 0 0 0 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
-        linear-gradient(rgba(120, 100, 70, .10), rgba(120, 100, 70, .10));
+        url("img/papir-tmavy.svg") 0 0 / 640px 640px,
+        linear-gradient(90deg, rgba(0, 0, 0, .40), rgba(0, 0, 0, .14) 5%, transparent 16%, transparent 84%, rgba(0, 0, 0, .14) 95%, rgba(0, 0, 0, .40)),
+        radial-gradient(ellipse 85% 80% at 50% 45%, transparent 60%, rgba(0, 0, 0, .25) 100%),
+        linear-gradient(var(--papir-ton), var(--papir-ton));
 }

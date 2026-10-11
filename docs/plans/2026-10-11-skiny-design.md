@@ -37,7 +37,8 @@ zůstávají skutečné, koncept je měl vymyšlené.
   nastaví `--volba-vzor`). Výsledné role skládá obecné pravidlo `:root, [data-skin]`:
   `--akcent: var(--volba-akcent, var(--motiv-akcent))`. Pozadí je průsvitný vzor přes barvu motivu, takže
   čitelnost drží motiv a režim. Čáry a tečky berou barvu z `--inkoust`, zrno papíru a krajina jsou SVG
-  a mají světlou i tmavou verzi.
+  a mají světlou i tmavou verzi. (Krajina vyřazena; Papír od 11. 10. = soubory `img/papir-*.svg` z `tools/papir.py`,
+  ztmavené strany a tón od motivu, rozhodnutí 13 v `2026-10-11-skiny-zuzeni.md`.)
 - **Soubory:** `style.css` obsahuje obecné pravidlo a výchozí Inkoust ve světlém režimu, takže se stránka
   vykreslí i bez druhého souboru. Na snímcích se nenačtený `skiny.css` projevil neviditelným nadpisem. `skiny.css`
   obsahuje ostatní motivy, tmavé verze, Základní barvy a Pozadí. `skin.js` drží seznamy id a staví panel.
