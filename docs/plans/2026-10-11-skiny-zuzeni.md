@@ -548,9 +548,10 @@ Paměť projektu: web-nasazeni.md, navrh-nahled-ne-text.md (uživatel chce vidě
 
 Stav k 11. 10. 2026:
 - Živě (push schválen uživatelem 11. 10., Action 394193a success, velikosti souborů = repo): Tasky 0–2 (2c1282f, 10d848a) a přejmenování motivů (83736c6) — 4 motivy, 3 pozadí, 7 barev, režim první v panelu. Mezistav: ikony patičky jsou v inkoustu (barvy značek zrušeny v Tasku 2, přechod akcentů přijde s Taskem 3), opar a karty mají dál barvy natvrdo. Další push zase až po schválení, nejlépe po Tasku 9 (snímky).
+- Živě také nový Papír (rozhodnutí 13, commit 5870fc2, push schválen „zapiš to do repa a pushni“; Action success, Pages build d41243f, velikosti skiny.css a img/papir-*.svg na webu = repo). skiny.css a SVG jsou bajtově shodné s odsouhlaseným náhledem (cmp); na živém webu snímkem neověřeno (volbu pozadí nejde v headless Chromu na cizí doméně vnutit).
 - Uživatel během implementace přejmenoval Teplé světlo → Veselé, Hluboká práce → Voda (jen názvy, id teple/hluboka zůstala kvůli uloženým volbám; rozhodnutí 12 v tabulce).
 - Uživatel v náhledu schválil: 4 motivy (Inkoust, Veselé, Voda, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
-- Testy po Tasku 2: 74 Python + 17 JS zelených.
+- Testy po Papíru: 76 Python + 17 JS zelených (Papír přidal TestPapir ×2; test_zakladni_barvy_a_pozadi_maji_pravidla upraven: pravidla po režimech mají přednost před holým [data-pozadi="papir"], které nese jen --papir-dotyk).
 - Náhled z 11. 10. byl jen ve scratchpadu té session (neexistuje). Očekávaný vzhled popisuje Task 9, Step 4.
 
 Otevřené (mimo tento plán, čeká na uživatele):
