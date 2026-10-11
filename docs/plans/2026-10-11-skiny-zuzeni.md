@@ -566,11 +566,13 @@ Stav k 11. 10. 2026:
 - Uživatel během implementace přejmenoval Teplé světlo → Veselé, Hluboká práce → Voda (jen názvy, id teple/hluboka zůstala kvůli uloženým volbám; rozhodnutí 12 v tabulce).
 - Uživatel v náhledu schválil: 4 motivy (Inkoust, Veselé, Voda, Příroda), pozadí Papír/Mřížka/Tečky, 7 Základních barev, režim první v panelu, jméno a podtitul plnou barvou, ikony v přechodu akcentů, opar z akcentu i Základní barvy, projekty v odstínech akcentu, výchozí Inkoust černobílý, grafy bez čárek, verzálky +0,02em.
 - Odpoledne a večer 11. 10. mimo plán, vše pushnuto se schválením a živě (Action success): 1a50545 „Aktualizováno“ s časem HH:MM, 91acaee e-mail do patičky, c566a6c panel Vzhled fixed nahoře (nahradil chybný výklad 4568a9e), ff6ce3b Starší projekty inverzně v barvě ikon (var(--inkoust); od 8ee5b07 var(--ikony)), 8ee5b07 Inkoust: všechny karty inverzně, b4f8afe Veselé: ikony po krocích akcent → akcent-2 → akcent-3, 516d916 Veselé: Starší projekty jedním přechodem přes celou mřížku (projekty.js prechodPresKarty + ResizeObserver). Detaily ve Stavu nahoře a v docs/plans/2026-10-10-projekty.md, bod 2.
-- Dopad na Task 3: Veselé má vlastní ikony v skiny.css (specifičtější selektor) — Task 3 je nesmí přebít; jak je sladit s obecným přechodem, rozhodne uživatel.
-- Testy teď: 86 Python + 19 JS zelených (ověřeno 11. 10. večer).
+- 11. 10. večer (c6fd55c, push schválen „dej to na live“, Action success, živý style.css a skiny.css = repo): ve SVĚTLÉM Inkoustu projekty a Domácí server světlé s černým textem, inverzně jen Starší projekty a ikony; inverzní všechny karty jen v tmavém Inkoustu. Se Základní barvou ve světlém Inkoustu: světlé karty nádech akcentu, Starší projekty a ikony jako Veselé (selektory v skiny.css rozšířené). Panel Vzhled: Základní barvy i miniatury motivů kreslí skutečné ensō a podtah (masky img/enso.svg, img/tah.svg, přechod --enso/--tah). Detail ve Stavu nahoře, odstavec „Večer téhož dne“.
+- Dopad na Task 3: Veselé a světlý Inkoust se Základní barvou mají vlastní ikony v skiny.css (specifičtější selektor) — Task 3 je nesmí přebít; jak je sladit s obecným přechodem, rozhodne uživatel.
+- Testy teď: 88 Python + 19 JS zelených (ověřeno 11. 10. večer po c6fd55c).
 - Náhled z 11. 10. byl jen ve scratchpadu té session (neexistuje). Očekávaný vzhled popisuje Task 9, Step 4.
 
 Otevřené (mimo tento plán, čeká na uživatele):
+- Bílý text Starších projektů na světlých Základních barvách (zelená, žlutá) má slabší kontrast, stejně jako u Veselého. Nabídnuto 11. 10. večer: tmavý text, nebo barvy ztmavit. Bez odpovědi.
 - Uložená VYŘAZENÁ hodnota (např. skin=kyberpunk v localStorage): skript v <head> index.html ji nekontroluje a nastaví data-skin="kyberpunk"; skin.js (defer) ji pak opraví na inkoust, ale v úložišti zůstane → možné krátké bliknutí při každé návštěvě. Oprava = pár řádků (smazat neplatnou hodnotu). Navrženo uživateli 11. 10., zatím bez odpovědi.
 - Počet velikostí písma (~7–8 místo 2–3) a starý anglický <title> „Lukáš - AI Micro-Tools & Digital Creator“ (nálezy 5 a 10 revize).
 - Neověřeno ve Firefoxu a Safari (mask-composite, color-mix, oklch(from …), background-clip: text).
@@ -579,7 +581,7 @@ Otevřené (mimo tento plán, čeká na uživatele):
 
 Užitečné příkazy:
 - Testy: python -m pytest -q tests/ (BEZ -I) a node --test tests/*.test.js
-- Náhled: lokální server v kořeni repa (python -m http.server) + Chrome headless --disable-lcd-text; mobil přes iframe 400 px, ne --window-size.
+- Náhled: lokální server v kořeni repa s hlavičkou Cache-Control: no-store (holý python -m http.server cachuje a prohlížeč pak ukazuje staré CSS; port 8765 drží EmailRator) + Chrome headless --disable-lcd-text --virtual-time-budget=4000; volby vnutit podvrženým Storage.prototype.getItem v <head> (paměť web-nasazeni); mobil přes iframe 400 px, ne --window-size.
 - Log cronu: ssh asus-server 'tail -n 12 ~/.local/state/lukaswana-web/sync.log | cut -c1-200'
 
 Důležité:

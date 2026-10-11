@@ -318,7 +318,7 @@ class TestStarsiInverzne(unittest.TestCase):
 
 class TestInkoustKartyInverzne(unittest.TestCase):
     """Pokyn uživatele 2026-10-11: v tmavém Inkoustu jsou všechny karty obráceně jako kolečka ikon — plocha
-    v inkoustu, světlý text. Přepnutím proměnných v kartě, ne výčtem prvků. Večer téhož dne: ve světlém Inkoustu
+    v (světlém) inkoustu, tmavý text. Přepnutím proměnných v kartě, ne výčtem prvků. Večer téhož dne: ve světlém Inkoustu
     (výchozí vzhled) mají projekty a Domácí server světlou plochu a černý text, obráceně jsou jen Starší projekty
     a ikony; se Základní barvou se podbarvení mění podle ní."""
 
