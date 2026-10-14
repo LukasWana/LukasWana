@@ -6,7 +6,7 @@ Datum: 2026-10-10 · Stav: **implementováno 2026-10-10, živě od commitu `2869
 `docs/plans/2026-10-10-prezentace.md`. Jsou v něm 4 odchylky od tohoto návrhu (ensō přes `<img>`, text vedle kruhu,
 podtitul 22 px, podtah jako `::after`) i s důvody. Pátá odchylka vznikla nad náhledem: karty nemají rámeček, ale
 světlou plochu s oblými rohy (viz Karty níže).
-Repo: `c:/work/graphic/LukasWana` (zdroj webu https://lukaswana.github.io/web/, nasazení viz paměť `web-nasazeni.md`).
+Repo: `c:/work/projects/LUKASWANA` (zdroj webu https://lukaswana.github.io/web/, nasazení viz paměť `web-nasazeni.md`).
 
 ## Zadání uživatele
 

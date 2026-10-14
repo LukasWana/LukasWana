@@ -73,7 +73,7 @@ CSS — další náhledy už ze serveru s `Cache-Control: no-store`.
 
 ### ~~Task 0: Výchozí stav~~ ✅ 71 + 15 zelených
 
-**Step 1:** `cd /c/work/graphic/LukasWana && git status -sb && git log --oneline -3`
+**Step 1:** `cd /c/work/projects/LUKASWANA && git status -sb && git log --oneline -3`
 Expected: čistý strom. Commity s tímto plánem jsou buď pushnuté, nebo `ahead` (push plánu čeká na uživatele).
 
 **Step 2:** `python -m pytest -q tests/` (BEZ `-I`, s ním spadne import pygments)
@@ -556,7 +556,7 @@ Tuto sekci každá session na konci PŘEPÍŠE (ne připíše) — pravidlo `~/.
 ```
 Skills: superpowers:executing-plans (plán s tasky 0–10 a kontrolními body), superpowers:test-driven-development (Tasky 3–8: test → červená → kód → zelená), superpowers:verification-before-completion (Task 9 snímky a Task 10 push s ověřením živého webu).
 
-Pracovní adresář: c:\work\graphic\LukasWana (repo LukasWana/LukasWana, větev main). Push = živý web, jen po výslovném schválení uživatele.
+Pracovní adresář: c:\work\projects\LUKASWANA (repo LukasWana/LukasWana, větev main). Push = živý web, jen po výslovném schválení uživatele.
 Plán: docs/plans/2026-10-11-skiny-zuzeni.md (tento soubor) — Tasky 0–2 hotové, Task 6 předem (bez pravidla ikon), pokračuj Taskem 3; tasky odškrtávej průběžně. Nejdřív si přečti Stav nahoře (odstavce „Téhož dne“): úpravy na pokyn uživatele mimo plán, které Tasky 3–5 nesmí přebít.
 Návrh a důvody: docs/plans/2026-10-11-skiny-design.md, sekce „Revize proti zásadám projektu“ (10 nálezů, odstavec Náhled = schválený stav).
 Paměť projektu: web-nasazeni.md, navrh-nahled-ne-text.md (uživatel chce vidět náhled, ne text).
