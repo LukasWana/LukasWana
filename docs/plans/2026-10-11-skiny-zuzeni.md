@@ -579,6 +579,7 @@ Stav k 11. 10. 2026:
 - Náhled z 11. 10. byl jen ve scratchpadu té session (neexistuje). Očekávaný vzhled popisuje Task 9, Step 4.
 
 Otevřené (mimo tento plán, čeká na uživatele):
+- /impeccable na živém webu 14. 10. (desktop i 390x844): jediný nález `gradient-text` na .main-title (style.css:381–397, záměr — výplň z `var(--nadpis)` skinu, schváleno 11. 10.). Nabídnuto: nechat, nebo výjimka `npx impeccable ignores`; uživatel nerozhodl. Telemetrie impeccable vypnutá env `IMPECCABLE_NO_TELEMETRY=1` (uživatelská proměnná Windows; příkaz `telemetry off` ve 4.5.2 neexistuje).
 - Bílý text Starších projektů na světlých Základních barvách (zelená, žlutá) má slabší kontrast, stejně jako u Veselého. Nabídnuto 11. 10. večer: tmavý text, nebo barvy ztmavit. Bez odpovědi.
 - Obráceně v TMAVÉM Inkoustu se Základní barvou (od 1917ec1): text Starších projektů je tmavý (`--inv-text` tmavého Inkoustu) a na tmavších barvách (fialová, modrá) je hůř čitelný (snímek tmavý + modrá 11. 10. v noci). Nabídnuto uživateli: světlý text. Bez odpovědi.
 - Uložená VYŘAZENÁ hodnota (např. skin=kyberpunk v localStorage): skript v <head> index.html ji nekontroluje a nastaví data-skin="kyberpunk"; skin.js (defer) ji pak opraví na inkoust, ale v úložišti zůstane → možné krátké bliknutí při každé návštěvě. Oprava = pár řádků (smazat neplatnou hodnotu). Navrženo uživateli 11. 10., zatím bez odpovědi.
